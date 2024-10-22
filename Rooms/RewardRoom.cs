@@ -1,6 +1,12 @@
-public class RewardRoom : Room
+ class RewardRoom : Room
 {
-    protected RewardRoom(string roomName) : base(roomName)
+    public int Reward = 10;
+    public RewardRoom(string roomName) : base(roomName)
+    {
+    }
+
+    public RewardRoom()
     {
     }
 }
+
