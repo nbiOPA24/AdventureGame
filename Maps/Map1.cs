@@ -1,5 +1,6 @@
 public static class MainMap
 {
+    public static Room[,] rooms;
     public static void map()
     {
         Room e = new Room();
@@ -39,7 +40,7 @@ public static class MainMap
         Room p9 = new PuzzleRoom("Maze of the Eternal Paradox");
         #endregion
         
-        Room[,] rooms = new Room[9, 15]
+        rooms = new Room[9, 15]
         {
             { o, o , o , o , o , o , o , o , o , o , o , o , o , o , o },
             { o, x2, e , p3, e , e , p5, e , e , e , x5, e , e , x4, o },
