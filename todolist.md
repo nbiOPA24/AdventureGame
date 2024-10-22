@@ -1,14 +1,14 @@
 # ToDoLista:
-- [ ] Skapa en huvudmeny med switch
-- [ ] Skapa Rum klass
-- [ ] Skapa Rum Subklasser
-- [ ] Skapa Karaktär klass
-- [ ] Skapa Karatär Subklasser 
-- [ ] Skapa Inventory klass
-- [ ] Skapa Item Klass
-- [ ] Skapa Movement Klass Move() metod
-- [ ] Skapa combatLogik
-- [ ] Skapa vinstlogik
+- [ ] Skapa en huvudmeny med switch            A-L
+- [ ] Skapa Rum klass                           L
+- [ ] Skapa Rum Subklasser                      L
+- [ ] Skapa Karaktär klass                      A
+- [ ] Skapa Karatär Subklasser-Player-Enemy     A
+- [ ] Skapa Inventory klass                     -
+- [ ] Skapa Item Klass                          -
+- [ ] Skapa Movement Klass Move() metod         -
+- [ ] Skapa combatLogik                         -
+- [ ] Skapa vinstlogik                          -
 -----------------------------------------------------------------
 - [ ] Skapa en roombuilder                  <= Senare Expansion
 - [ ] Skapa slumpItems                      <= Senare Expansion
