@@ -10,7 +10,7 @@ public class Character
 
     public Character(string name,int startingHealth,IRace race,int baseDamage,int armor)
     {
-        Race =race;
+        Race = race;
         CurrentHealth = race.AdjustHealth(startingHealth);
         BaseDamage = race.AdjustDamage(baseDamage);
         Name = name;

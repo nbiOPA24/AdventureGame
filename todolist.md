@@ -7,7 +7,7 @@
 - [ ] Skapa Inventory klass                     -
 - [ ] Skapa Item Klass                          -
 - [ ] Skapa Movement Klass Move() metod         -
-- [ ] Skapa combatLogik                         -
+- [ ] Skapa combatLogik                         A
 - [ ] Skapa vinstlogik                          -
 -----------------------------------------------------------------
 - [ ] Skapa en roombuilder                  <= Senare Expansion
