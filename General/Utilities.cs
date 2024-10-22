@@ -140,8 +140,9 @@ class Utilities
             {
                 if(i == markedIndex)
                 {
-                    Console.Write("*");
-                    Console.WriteLine(list[i]+"*");
+                    Utilities.ConsoleWriteColor("*",ConsoleColor.Blue);
+                    Console.Write(list[i]);
+                    Utilities.ConsoleWriteLineColor("*",ConsoleColor.Blue);
 
                 }
                 else
