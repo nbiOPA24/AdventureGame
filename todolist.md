@@ -10,11 +10,13 @@
 - [ ] Skapa combatLogik                         A
 - [ ] Skapa vinstlogik                          -
 -----------------------------------------------------------------
+## Framtida förbättringar:
 - [ ] Skapa en roombuilder                  <= Senare Expansion
 - [ ] Skapa slumpItems                      <= Senare Expansion
-- [ ]
+- [ ] ?
+
 # Mål:
-1. [ ] Skapa en enkel karta. Där spelaren kan navigera i och slåss enkelt med fiender och lösa gåtor/pussel och komma i mål.
-2. [ ] 
-3. [ ] 
-4. [ ] 
+1. Skapa en enkel karta. Där spelaren kan navigera i och slåss enkelt med fiender och lösa gåtor/pussel och komma i mål.
+2.  
+3. 
+4. 
