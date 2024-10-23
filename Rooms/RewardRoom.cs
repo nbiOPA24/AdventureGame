@@ -1,12 +1,8 @@
  class RewardRoom : Room
 {
-    public int Reward = 10;
-    public RewardRoom(string roomName) : base(roomName)
+    public int Reward {get;set;}
+    public RewardRoom(string roomName, string roomIcon, int reward) : base(roomName, roomIcon)
     {
-    }
-
-    public RewardRoom()
-    {
+        Reward = reward;
     }
 }
-

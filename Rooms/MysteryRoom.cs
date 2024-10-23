@@ -1,12 +1,7 @@
 class MysteryRoom : RewardRoom
 {
-    public override string RoomIcon {get; set;} = "[?]";
 
-    public MysteryRoom(string roomName) : base(roomName)
-    {
-    }
-
-    public MysteryRoom()
+    public MysteryRoom(string roomName, int reward) : base(roomName, "[?]", reward)
     {
     }
 
@@ -21,17 +16,14 @@ class MysteryRoom : RewardRoom
         else if (rndNr < 8000)
         {
             HandleReward("uncommon", random);
-
         }
         else if (rndNr < 9500)
         {
             HandleReward("rare", random);
-
         }
         else
         {
             HandleReward("very rare", random);
-
         }
         RoomState = true;
     }

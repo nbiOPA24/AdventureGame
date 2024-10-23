@@ -1,16 +1,20 @@
 public class Room
 {
-    public string RoomName {get;set;} = string.Empty;
-    public virtual bool RoomState {get;set;} = false;
-    public virtual string RoomIcon {get; set;} = "[ ]";
+    public string RoomName {get;set;}
+    public bool RoomState {get;set;} 
+    public string RoomIcon {get; set;}
 
-    public Room(string roomName)
+    public Room(string roomName, string roomIcon)
     {
         RoomName = roomName;
+        RoomIcon = roomIcon;
+        RoomState = false;
     }
+
     public Room()
-    { 
+    {
+        RoomName = "Empty Room";
+        RoomIcon = "[ ]";
+        RoomState = false;
     }
-
-
 }

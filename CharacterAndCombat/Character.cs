@@ -6,6 +6,8 @@ public class Character
     public int BaseDamage {get;set;}
     public int Armor {get;set;}
     public IRace Race {get;set;}
+    public int XPos {get;set;}
+    public int YPos {get;set;}
 
 
     public Character(string name,int startingHealth,IRace race,int baseDamage,int armor)
