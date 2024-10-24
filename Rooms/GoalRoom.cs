@@ -1,11 +1,19 @@
 public class GoalRoom : Room
 {
-    public override string RoomIcon {get; set;} = "[⚑]";
-
-    public GoalRoom(string roomName) : base(roomName)
+    public GoalRoom() : base("Goal room", "[⚑]")
     {
     }
-    public GoalRoom()
+    public override void RunRoom()
     {
+        if (RoomState == false)
+        {
+            Console.WriteLine("Congratulations, adventurer! You've reached your goal! Take a moment to celebrate your victory. [✓]");
+            RoomState = true;
+            // Avsluta spelet? Return to mainMenu med en Thread.Sleep?
+        }
+        else
+        {
+            Console.WriteLine("You've already reached the goal. The adventure is complete, but you can always revisit for nostalgia.");
+        }
     }
 }
