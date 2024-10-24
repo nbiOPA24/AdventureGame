@@ -15,6 +15,16 @@ public static class MainMap
         Room x5 = new EnemyRoom("Bandit's Hideout", 10);
         #endregion
 
+        /* 
+            listwithrooms.txt/Json
+            Loopar igenom arrayen.
+            If (X)
+                Loopar igenom filen.
+            Namn:Reward
+            split(":")
+            Målet 
+                new EnemyRoom()
+        */
         #region MysterRooms
         Room m1 = new MysteryRoom("hej",10);
         Room m2 = new MysteryRoom("hej",10);
@@ -82,36 +92,32 @@ public static class MainMap
     {
         ConsoleKeyInfo movement = Console.ReadKey(true);
 
-        switch (movement.Key)
+        if (movement.Key == ConsoleKey.UpArrow && player.YPos > 0 && arrayWithRooms[player.YPos - 1, player.XPos].RoomIcon != "[█]")
         {
-            case ConsoleKey.UpArrow:
-                if (player.YPos > 0 && arrayWithRooms[player.YPos - 1, player.XPos].RoomIcon != "[█]")
-                {
-                    player.YPos--;
-                }
-                break;
-
-            case ConsoleKey.DownArrow:
-                if (player.YPos < arrayWithRooms.GetLength(0)-1 && arrayWithRooms[player.YPos + 1, player.XPos].RoomIcon != "[█]")
-                {
-                    player.YPos++;
-                }
-                break;
-
-            case ConsoleKey.LeftArrow:
-                if (player.XPos > 0 && arrayWithRooms[player.YPos, player.XPos - 1].RoomIcon != "[█]")
-                {
-                    player.XPos--;
-                }
-                break;
-
-            case ConsoleKey.RightArrow:
-                if (player.XPos < arrayWithRooms.GetLength(1)-1 && arrayWithRooms[player.YPos, player.XPos + 1].RoomIcon != "[█]")
-                {
-                    player.XPos++;
-                }
-                break;
+            player.YPos--;
         }
+
+        if (movement.Key == ConsoleKey.DownArrow && player.YPos < arrayWithRooms.GetLength(0)-1 && arrayWithRooms[player.YPos + 1, player.XPos].RoomIcon != "[█]")
+        {
+            player.YPos++;
+        }
+
+        if (movement.Key == ConsoleKey.LeftArrow && player.XPos > 0 && arrayWithRooms[player.YPos, player.XPos - 1].RoomIcon != "[█]")
+        {
+            player.XPos--;
+        }
+
+        if (movement.Key == ConsoleKey.RightArrow && player.XPos < arrayWithRooms.GetLength(1)-1 && arrayWithRooms[player.YPos, player.XPos + 1].RoomIcon != "[█]")
+        {
+            player.XPos++;
+        }
+
     }
+
+    public static void ActivateRoom(Player player, Room[,] arrayWithRooms)
+    {
+        arrayWithRooms[player.YPos,player.XPos].RunRoom();
+    }
+
 
 }
