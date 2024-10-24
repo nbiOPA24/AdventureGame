@@ -1,7 +1,7 @@
 class MysteryRoom : RewardRoom
 {
 
-    public MysteryRoom(string roomName, int reward) : base(roomName, "[?]", reward)
+    public MysteryRoom(string roomName, int reward) : base(roomName, " ? ", reward)
     {
     }
 
