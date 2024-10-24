@@ -1,5 +1,6 @@
 class Utilities
 {
+    #region Validation methods
     public static int ValidateInteger()
     {
         int tries = 0;
@@ -96,7 +97,8 @@ class Utilities
 
         }
     }
-
+    #endregion
+    #region Text manipulation
     public static void ConsoleWriteColor(string input, ConsoleColor color)
     {
         Console.ForegroundColor = color;
@@ -128,6 +130,30 @@ class Utilities
         }
         Console.ResetColor();
     }
+    public static void CharByChar(string input,int delay,ConsoleColor color,bool runMethod)
+    {
+        if(runMethod)
+        { 
+            CharByChar(input,delay,color);
+        }
+        else
+        { 
+            CharByChar(input,0,color);
+        }
+    }
+    public static void CharByChar(string input,int delay,bool runMethod)
+    {
+        if(runMethod)
+        {
+            CharByChar(input,delay);
+        }
+        else
+        { 
+            CharByChar(input,0);
+        }
+    }
+    #endregion
+    #region Menupicker
     public static int PickIndexFromList(List<string> list)
     {
         int markedIndex = 0;
@@ -135,7 +161,7 @@ class Utilities
         int returnValue = 0;
         while(stillChoosing)
         {
-            Console.Clear();
+            
             for(int i = 0; i< list.Count; i++)
             {
                 if(i == markedIndex)
@@ -158,21 +184,78 @@ class Utilities
                     if(markedIndex > 0 )
                     {
                         markedIndex--;
+                        
                     }
                     break;
                 case ConsoleKey.S:
                 case ConsoleKey.DownArrow:
                     if(markedIndex < list.Count -1 )
                     {
-                        markedIndex++;
+                        markedIndex++;  
+                    }
+                    break;
+                case ConsoleKey.Enter:
+                    
+                    returnValue = markedIndex;
+                    stillChoosing = false;
+                    break;
+            }
+            Console.Clear();
+        }
+        return returnValue;
+    }
+    public static int PickIndexFromList(List<string> list,string questionToPromptSelection)
+    {
+        int markedIndex = 0;
+        bool stillChoosing = true;
+        int returnValue = 0;
+        
+        while(stillChoosing)
+        {
+            Console.Clear();
+            Console.WriteLine(questionToPromptSelection);
+            for(int i = 0; i< list.Count; i++)
+            {
+                if(i == markedIndex)
+                {
+                    Utilities.ConsoleWriteColor("*",ConsoleColor.Blue);
+                    Console.Write(list[i]);
+                    Utilities.ConsoleWriteLineColor("*",ConsoleColor.Blue);
+
+                }
+                else
+                {
+                    Console.WriteLine(list[i]);
+                }
+            }
+            ConsoleKeyInfo pressedKey = Console.ReadKey(true);
+            switch(pressedKey.Key)
+            {
+                case ConsoleKey.W:
+                case ConsoleKey.UpArrow:
+                    if(markedIndex > 0 )
+                    {
+                        markedIndex--;
+                        
+                    }
+                    break;
+                case ConsoleKey.S:
+                case ConsoleKey.DownArrow:
+                    if(markedIndex < list.Count -1 )
+                    {
+                        markedIndex++;  
                     }
                     break;
                 case ConsoleKey.Enter:
                     returnValue = markedIndex;
                     stillChoosing = false;
                     break;
+                
+
             }
+            Console.Clear();
         }
         return returnValue;
     }
+    #endregion
 }
