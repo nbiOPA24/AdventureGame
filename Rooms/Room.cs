@@ -17,4 +17,15 @@ public class Room
         RoomIcon = "[ ]";
         RoomState = false;
     }
+
+    public virtual void RunRoom()
+    {
+
+    }
+}
+
+
+interface IRoom
+{
+    void RunRoom();
 }
