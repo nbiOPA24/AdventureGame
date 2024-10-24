@@ -32,9 +32,10 @@ public class Character
         CurrentHealth -= damage-Armor;
         if(CurrentHealth < 0) CurrentHealth = 0;
     }
-    public int DealDamage()
+    public int DealDamage(Ability a)
     {
-        return BaseDamage;
+
+        return a.BaseDamage;
     }
     //Fills chosen abilities with abilities from "AllKnownAbilities"
     public void SetInitialAbilities()
@@ -57,8 +58,8 @@ public class Character
         bool keepGoing = true;
         while(keepGoing)
         {
-            int chosenIndex = Utilities.PickIndexFromList(Ability.ToStringList(ChosenAbilities),"What ability would you like to replace?");
-            int newAbilityIndex =Utilities.PickIndexFromList(Ability.ToStringList(AllKnownAbilities),$"What ability would you like to use instead of {ChosenAbilities[chosenIndex].Name} ");
+            int chosenIndex = PickFromChosenAbilities("What ability would you like to replace?");
+            int newAbilityIndex =PickFromAllKnownAbilities($"What ability would you like to use instead of {ChosenAbilities[chosenIndex].Name} ");
             bool isKnown = false;
             for(int i = 0; i< ChosenAbilities.Length ; i++)
             {
@@ -89,4 +90,13 @@ public class Character
                 }
         }
     }   
+    public int PickFromChosenAbilities(string message)
+    {
+        int chosenIndex = Utilities.PickIndexFromList(Ability.ToStringList(ChosenAbilities),message);
+        return chosenIndex;
+    }
+    public int PickFromAllKnownAbilities(string message)
+    {
+        return Utilities.PickIndexFromList(Ability.ToStringList(AllKnownAbilities),message);
+    }
 }
