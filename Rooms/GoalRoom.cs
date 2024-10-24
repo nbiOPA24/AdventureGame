@@ -3,7 +3,7 @@ public class GoalRoom : Room
     public GoalRoom() : base("Goal room", "[⚑]")
     {
     }
-    public override void RunRoom()
+    public override void RunRoom(Player player)
     {
         if (RoomState == false)
         {

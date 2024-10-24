@@ -18,7 +18,7 @@ public class Room
         RoomState = false;
     }
 
-    public virtual void RunRoom()
+    public virtual void RunRoom(Player player)
     {
 
     }
