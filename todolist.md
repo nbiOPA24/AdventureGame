@@ -1,12 +1,12 @@
 # ToDoLista:
 - [ ] Skapa en huvudmeny med switch            A-L
-- [ ] Skapa Rum klass                           L
-- [ ] Skapa Rum Subklasser                      L
-- [ ] Skapa Karaktär klass                      A
-- [ ] Skapa Karatär Subklasser-Player-Enemy     A
+- [X] Skapa Rum klass                           L
+- [X] Skapa Rum Subklasser                      L
+- [X] Skapa Karaktär klass                      A
+- [X] Skapa Karatär Subklasser-Player-Enemy     A
 - [ ] Skapa Inventory klass                     -
 - [ ] Skapa Item Klass                          -
-- [ ] Skapa Movement Klass Move() metod         -
+- [X] Skapa Movement Klass Move() metod         -
 - [ ] Skapa combatLogik                         A
 - [ ] Skapa vinstlogik                          -
 -----------------------------------------------------------------
