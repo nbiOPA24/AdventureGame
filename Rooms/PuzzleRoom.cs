@@ -3,7 +3,7 @@ class PuzzleRoom : RewardRoom
     public string Question { get; set; }
     public string SecretAnswer { get; set; }
 
-    public PuzzleRoom(string roomName, int reward, string question, string secretAnswer) : base(roomName, "[⌘]", reward)
+    public PuzzleRoom(string roomName, int reward, string question, string secretAnswer) : base(roomName, " ⌘ ", reward)
     {
         Question = question;
         SecretAnswer = secretAnswer;
