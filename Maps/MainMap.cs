@@ -8,11 +8,11 @@ public static class MainMap
         Room g = new GoalRoom();
 
         #region EnemyRooms
-        Room x1 = new EnemyRoom("Goblin's Den", 10);
-        Room x2 = new EnemyRoom("Orc's Lair", 10);
-        Room x3 = new EnemyRoom("Troll's Cave", 10);
-        Room x4 = new EnemyRoom("Dragon's Nest", 10);
-        Room x5 = new EnemyRoom("Bandit's Hideout", 10);
+        Room x1 = new EnemyRoom("Goblin's Den", 10, 3, DifficultyLevel.Hard, "goblin");
+        Room x2 = new EnemyRoom("Orc's Lair", 10, 3, DifficultyLevel.Easy, "goblin");
+        Room x3 = new EnemyRoom("Troll's Cave", 10, 3, DifficultyLevel.Easy, "goblin");
+        Room x4 = new EnemyRoom("Dragon's Nest", 10, 3, DifficultyLevel.Easy, "goblin");
+        Room x5 = new EnemyRoom("Bandit's Hideout", 10, 3, DifficultyLevel.Easy, "goblin");
         #endregion
 
         /* 
@@ -41,39 +41,33 @@ public static class MainMap
         Room p1 = new PuzzleRoom("Chamber of Calculations", 10, 
             "What is the value of 7 multiplied by 6?", 
             "42");
-
         Room p2 = new PuzzleRoom("Hall of Equations", 10, 
             "If x + 3 = 10, what is the value of x?", 
             "7");
-
         Room p3 = new PuzzleRoom("Room of Fractions", 10, 
             "What is 1/2 plus 1/3 in simplest form?", 
             "5/6");
-
         Room p4 = new PuzzleRoom("Crypt of Squares", 10, 
             "What is the square of 12?", 
             "144");
-
         Room p5 = new PuzzleRoom("Algebraic Antechamber", 10, 
             "Solve for y: 2y - 4 = 10", 
             "7");
-
         Room p6 = new PuzzleRoom("Geometry Gallery", 10, 
             "What is the area of a circle with radius 5? (Use π = 3.14)", 
             "78.5");
-
         Room p7 = new PuzzleRoom("Prime Passage", 10, 
             "What is the smallest prime number greater than 20?", 
             "23");
-
         Room p8 = new PuzzleRoom("Maze of Multiples", 10, 
             "What is the least common multiple of 4 and 6?", 
             "12");
-
         Room p9 = new PuzzleRoom("Division Den", 10, 
             "What is 81 divided by 9?", 
             "9");
+
         #endregion
+
         
         Room[,] rooms = new Room[9, 15]
         {
@@ -102,7 +96,7 @@ public static class MainMap
             {
                 if (i == player.YPos && j == player.XPos)
                 {
-                    Console.Write("[☻]");
+                    Console.Write(" ☻ ");
                 }
 
                 else
@@ -118,22 +112,22 @@ public static class MainMap
     {
         ConsoleKeyInfo movement = Console.ReadKey(true);
 
-        if (movement.Key == ConsoleKey.UpArrow && player.YPos > 0 && arrayWithRooms[player.YPos - 1, player.XPos].RoomIcon != "[█]")
+        if (movement.Key == ConsoleKey.UpArrow && player.YPos > 0 && arrayWithRooms[player.YPos - 1, player.XPos].RoomIcon != "███")
         {
             player.YPos--;
         }
 
-        if (movement.Key == ConsoleKey.DownArrow && player.YPos < arrayWithRooms.GetLength(0)-1 && arrayWithRooms[player.YPos + 1, player.XPos].RoomIcon != "[█]")
+        if (movement.Key == ConsoleKey.DownArrow && player.YPos < arrayWithRooms.GetLength(0)-1 && arrayWithRooms[player.YPos + 1, player.XPos].RoomIcon != "███")
         {
             player.YPos++;
         }
 
-        if (movement.Key == ConsoleKey.LeftArrow && player.XPos > 0 && arrayWithRooms[player.YPos, player.XPos - 1].RoomIcon != "[█]")
+        if (movement.Key == ConsoleKey.LeftArrow && player.XPos > 0 && arrayWithRooms[player.YPos, player.XPos - 1].RoomIcon != "███")
         {
             player.XPos--;
         }
 
-        if (movement.Key == ConsoleKey.RightArrow && player.XPos < arrayWithRooms.GetLength(1)-1 && arrayWithRooms[player.YPos, player.XPos + 1].RoomIcon != "[█]")
+        if (movement.Key == ConsoleKey.RightArrow && player.XPos < arrayWithRooms.GetLength(1)-1 && arrayWithRooms[player.YPos, player.XPos + 1].RoomIcon != "███")
         {
             player.XPos++;
         }
