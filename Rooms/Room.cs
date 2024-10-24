@@ -14,7 +14,7 @@ public class Room
     public Room()
     {
         RoomName = "Empty Room";
-        RoomIcon = "[ ]";
+        RoomIcon = "   ";
         RoomState = false;
     }
 

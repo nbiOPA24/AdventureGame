@@ -1,6 +1,6 @@
 public class GoalRoom : Room
 {
-    public GoalRoom() : base("Goal room", "[⚑]")
+    public GoalRoom() : base("Goal room", " ⚑ ")
     {
     }
     public override void RunRoom(Player player)

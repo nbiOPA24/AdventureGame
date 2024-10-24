@@ -1,6 +1,6 @@
 public class ObstacleRoom : Room
 {
-    public ObstacleRoom() : base("ObstacleRoom", "[█]")
+    public ObstacleRoom() : base("ObstacleRoom", "███")
     {
     }
 }
