@@ -5,7 +5,7 @@ class MysteryRoom : RewardRoom
     {
     }
 
-    public override void RunRoom()
+    public override void RunRoom(Player player)
     {
         if (RoomState == false)
         {
@@ -14,22 +14,22 @@ class MysteryRoom : RewardRoom
             if (rndNr < 6000)
             {
                 int hp = 10;
-                HandleReward("common", random, hp);
+                HandleReward("common", random, hp, player);
             }
             else if (rndNr < 8000)
             {
                 int hp = 20;
-                HandleReward("uncommon", random, hp);
+                HandleReward("uncommon", random, hp, player);
             }
             else if (rndNr < 9500)
             {
                 int hp = 30;
-                HandleReward("rare", random, hp);
+                HandleReward("rare", random, hp, player);
             }
             else
             {
                 int hp = 50;
-                HandleReward("very rare", random, hp);
+                HandleReward("very rare", random, hp, player);
             }
             RoomState = true;
         }
@@ -39,17 +39,19 @@ class MysteryRoom : RewardRoom
         }
     }
 
-    private void HandleReward(string rarityLevel, Random random, int hp)
+    private void HandleReward(string rarityLevel, Random random, int hp, Player player)
     {
         int badOrGood = random.Next(1,3);
         if (badOrGood == 1)
         {
-            Console.WriteLine($"You get a {rarityLevel} good Reward!");
-        }
-        else
-        {
-            Console.WriteLine($"You get a {rarityLevel} bad Reward");
+            Console.WriteLine($"You get a {rarityLevel} good reward! Your health increases by {hp} points.");
+            player.CurrentHealth += hp;
         }
 
+        else
+        {
+            Console.WriteLine($"You get a {rarityLevel} bad reward! Your health decreases by {hp} points.");
+            player.CurrentHealth -= hp;
+        }
     }
 }

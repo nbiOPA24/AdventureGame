@@ -38,15 +38,41 @@ public static class MainMap
         #endregion
 
         #region PuzzleRooms
-        Room p1 = new PuzzleRoom("Crypt of the Enigmatic Pharaoh", 10);
-        Room p2 = new PuzzleRoom("Hall of the Riddling Sphinx", 10);
-        Room p3 = new PuzzleRoom("Chamber of Shifting Runes", 10);
-        Room p4 = new PuzzleRoom("Vault of the Arcane Cipher", 10);
-        Room p5 = new PuzzleRoom("Labyrinth of the Forgotten Glyphs", 10);
-        Room p6 = new PuzzleRoom("Sanctum of the Whispering Stones", 10);
-        Room p7 = new PuzzleRoom("Shrine of the Celestial Puzzle", 10);
-        Room p8 = new PuzzleRoom("Altar of the Twisted Mind", 10);
-        Room p9 = new PuzzleRoom("Maze of the Eternal Paradox", 10);
+        Room p1 = new PuzzleRoom("Chamber of Calculations", 10, 
+            "What is the value of 7 multiplied by 6?", 
+            "42");
+
+        Room p2 = new PuzzleRoom("Hall of Equations", 10, 
+            "If x + 3 = 10, what is the value of x?", 
+            "7");
+
+        Room p3 = new PuzzleRoom("Room of Fractions", 10, 
+            "What is 1/2 plus 1/3 in simplest form?", 
+            "5/6");
+
+        Room p4 = new PuzzleRoom("Crypt of Squares", 10, 
+            "What is the square of 12?", 
+            "144");
+
+        Room p5 = new PuzzleRoom("Algebraic Antechamber", 10, 
+            "Solve for y: 2y - 4 = 10", 
+            "7");
+
+        Room p6 = new PuzzleRoom("Geometry Gallery", 10, 
+            "What is the area of a circle with radius 5? (Use π = 3.14)", 
+            "78.5");
+
+        Room p7 = new PuzzleRoom("Prime Passage", 10, 
+            "What is the smallest prime number greater than 20?", 
+            "23");
+
+        Room p8 = new PuzzleRoom("Maze of Multiples", 10, 
+            "What is the least common multiple of 4 and 6?", 
+            "12");
+
+        Room p9 = new PuzzleRoom("Division Den", 10, 
+            "What is 81 divided by 9?", 
+            "9");
         #endregion
         
         Room[,] rooms = new Room[9, 15]
@@ -116,7 +142,7 @@ public static class MainMap
 
     public static void ActivateRoom(Player player, Room[,] arrayWithRooms)
     {
-        arrayWithRooms[player.YPos,player.XPos].RunRoom();
+        arrayWithRooms[player.YPos,player.XPos].RunRoom(player);
     }
 
 

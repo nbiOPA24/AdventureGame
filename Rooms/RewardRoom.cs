@@ -1,7 +1,8 @@
- class RewardRoom : Room
+ abstract class RewardRoom : Room
 {
     public int Reward {get;set;}
-    public RewardRoom(string roomName, string roomIcon, int reward) : base(roomName, roomIcon)
+    public bool Success {get; set;}
+    public RewardRoom(string roomName, string roomIcon, int reward) : base (roomName, roomIcon)
     {
         Reward = reward;
     }
