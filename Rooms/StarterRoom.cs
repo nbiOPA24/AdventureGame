@@ -4,7 +4,7 @@ public class StarterRoom : Room
     {
     }
 
-    public override void RunRoom()
+    public override void RunRoom(Player player)
     {
         if (RoomState == false)
         {
