@@ -1,6 +1,5 @@
 class EnemyRoom : RewardRoom
 {
-    public bool Success {get;set;} = false;
     public int NrOfEnemies {get;set;}
     public DifficultyLevel Difficulty {get; set;}
     public string Race {get; set;}
@@ -16,7 +15,7 @@ class EnemyRoom : RewardRoom
     {
         if (RoomState == false)
         {
-            // Skapafiender till listan metod.
+            string encounterMessage = $"You enter the enemy lair, and {NrOfEnemies} foes immediately block your path!";
             CombatHandler.RunCombatScenario(CreateEnemies(),player);
 
             
@@ -24,7 +23,7 @@ class EnemyRoom : RewardRoom
         }
         else
         {
-            Console.WriteLine("You've been here before. YOU FAILED!!!!! No battles yet, but stay tuned! Andreas is preparing something exciting!");
+            Console.WriteLine("You've been here before. No battles yet, but stay tuned! Andreas is preparing something exciting!");
         }
     }
 

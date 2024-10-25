@@ -139,5 +139,18 @@ public static class MainMap
         arrayWithRooms[player.YPos,player.XPos].RunRoom(player);
     }
 
+    public static void RunEntireMap(Player player, Room[,] arrayWithRooms)
+    {
+        while (player.CurrentHealth > 0)
+        {
+            Console.Clear();
+            Console.WriteLine($"{"Name",-8} {"HP",-5} {"Race",-8} {"Damage",-7} {"Armor",-6} {"Cords",-7}");
+            Console.WriteLine($"{player.Name,-8} {player.CurrentHealth,-5} {player.Race,-8} {player.BaseDamage,-7} {player.Armor,-6} [{player.YPos},{player.XPos}]");
+            DrawMap(player, arrayWithRooms);
+            ActivateRoom(player,arrayWithRooms);
+            MovePlayer(player, arrayWithRooms);
+        }
+    }
+
 
 }
