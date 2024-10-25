@@ -25,7 +25,6 @@ public class Character
         //En spelares användningsredo abilities. 4 stycken
         ChosenAbilities = new Ability[4];
         SetInitialAbilities();  
-
     } 
 
     public void TakeDamage(int damage)

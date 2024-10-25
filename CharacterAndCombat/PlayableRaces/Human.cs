@@ -1,5 +1,4 @@
 
-
 public class Human : IRace
 {
     #region Human Specific Abilities
