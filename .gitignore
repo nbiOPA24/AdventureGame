@@ -5,6 +5,7 @@
 
 #Our custom ignores
 Test.cs
+DungeonMusic.wav
 
 # dotenv files
 .env
