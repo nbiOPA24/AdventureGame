@@ -157,6 +157,7 @@ class Utilities
             Console.Write(c);
             Thread.Sleep(delay);
         }
+        Console.WriteLine();
     }
     public static void CharByCharLine(string input,int delay,ConsoleColor color)
     {

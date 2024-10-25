@@ -8,10 +8,10 @@ public static  class CombatHandler
     /// </summary>
     /// <param name="enemyList"></param>
     /// <returns></returns>
-    public static bool RunCombatScenario(List<Enemy> enemyList,Player player)//TODO add string message be4 merging with main
+    public static bool RunCombatScenario(List<Enemy> enemyList,Player player,string message)
     {
         Console.Clear();
-        // TODO Utilities.CharByChar(message,40,ConsoleColor.DarkGreen,true);
+        Utilities.CharByChar(message,5,ConsoleColor.DarkGreen,true);
         DisplayPlayerCombatOptions(enemyList,player);
         //Checks if player is alive after the Combat has finnished
         if(player.CurrentHealth > 0 )
@@ -53,14 +53,18 @@ public static  class CombatHandler
                     List<string> enemyStringList = Utilities.ToStringList(enemyList);   //Turns enemies into list format        
                     int pickedEnemyIndex = Utilities.PickIndexFromList(enemyStringList,"Who do you want to attack?",ConsoleColor.DarkBlue);
                     Enemy chosenEnemy = enemyList[pickedEnemyIndex];        //this is the chosen enemy for the attack
-                    chosenEnemy.TakeDamage(player.DealDamage(usedAbility)); //Deals damage to the enemy object
+                    player.DealDamage(chosenEnemy,usedAbility); //Deals damage to the enemy object
+                    Console.ReadKey(true);
                     if(chosenEnemy.CurrentHealth <= 0) //removes enemies from list if they die
                     {
                         enemyList.Remove(chosenEnemy);
                     }
+                    //Enemies attack player.
                     foreach(Enemy e in enemyList)
                     {
-                        player.TakeDamage(e.DealDamage());
+                        e.DealDamage(player);
+                        
+                        Console.ReadKey(true);
                     }
                     
                     break;
