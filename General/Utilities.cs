@@ -98,7 +98,7 @@ class Utilities
         }
     }
     #endregion
-    #region Text manipulation
+    #region ConsoleWriteColor
     public static void ConsoleWriteColor(string input, ConsoleColor color)
     {
         Console.ForegroundColor = color;
@@ -110,6 +110,8 @@ class Utilities
         ConsoleWriteColor(input,color);
         Console.WriteLine();
     }
+    #endregion
+    #region CharByChar
     //Skriver ut en sträng med vald delay
     public static void CharByChar(string input,int delay)
     {
@@ -123,11 +125,7 @@ class Utilities
     public static void CharByChar(string input,int delay,ConsoleColor color)
     {
         Console.ForegroundColor = color;
-        foreach(char c in input)
-        {
-            Console.Write(c);
-            Thread.Sleep(delay);
-        }
+        CharByChar(input,delay);
         Console.ResetColor();
     }
     public static void CharByChar(string input,int delay,ConsoleColor color,bool runMethod)
@@ -152,8 +150,35 @@ class Utilities
             CharByChar(input,0);
         }
     }
+    public static void CharByCharLine(string input,int delay)
+    {
+        foreach(char c in input)
+        {
+            Console.Write(c);
+            Thread.Sleep(delay);
+        }
+        Console.WriteLine();
+    }
+    public static void CharByCharLine(string input,int delay,ConsoleColor color)
+    {
+        Console.ForegroundColor = color;
+        CharByCharLine(input,delay);
+        Console.ResetColor();
+    }
+        public static void CharByCharLine(string input,int delay,ConsoleColor color,bool runMethod)
+    {
+        if(runMethod)
+        { 
+            CharByCharLine(input,delay,color);
+        }
+        else
+        { 
+            CharByCharLine(input,0,color);
+        }
+    }
     #endregion
     #region Menupicker
+   
     public static int PickIndexFromList(List<string> list)
     {
         int markedIndex = 0;
@@ -166,9 +191,9 @@ class Utilities
             {
                 if(i == markedIndex)
                 {
-                    Utilities.ConsoleWriteColor("*",ConsoleColor.Blue);
+                    ConsoleWriteColor("*",ConsoleColor.Blue);
                     Console.Write(list[i]);
-                    Utilities.ConsoleWriteLineColor("*",ConsoleColor.Blue);
+                    ConsoleWriteLineColor("*",ConsoleColor.Blue);
 
                 }
                 else
@@ -204,7 +229,7 @@ class Utilities
         }
         return returnValue;
     }
-    public static int PickIndexFromList(List<string> list,string questionToPromptSelection)
+    public static int PickIndexFromList(List<string> list,string questionToPromptSelection,ConsoleColor color = ConsoleColor.Gray)
     {
         int markedIndex = 0;
         bool stillChoosing = true;
@@ -213,14 +238,16 @@ class Utilities
         while(stillChoosing)
         {
             Console.Clear();
+            Console.ForegroundColor = color;
             Console.WriteLine(questionToPromptSelection);
+            Console.ResetColor();
             for(int i = 0; i< list.Count; i++)
             {
                 if(i == markedIndex)
                 {
-                    Utilities.ConsoleWriteColor("*",ConsoleColor.Blue);
+                    ConsoleWriteColor("*",ConsoleColor.Blue);
                     Console.Write(list[i]);
-                    Utilities.ConsoleWriteLineColor("*",ConsoleColor.Blue);
+                    ConsoleWriteLineColor("*",ConsoleColor.Blue);
 
                 }
                 else
@@ -258,4 +285,41 @@ class Utilities
         return returnValue;
     }
     #endregion
+    #region ToStringList
+        public static List<string> ToStringList(List<Ability> abilityList)
+    {
+        //puts all the names of the abilities into a string list
+            List<string> stringReturnList = new();
+            foreach(Ability a in abilityList)
+            {
+                stringReturnList.Add(a.Name);
+                Console.WriteLine(a.Name);
+            }
+            return stringReturnList;
+    }
+    public static List<string> ToStringList(Ability[] abilityList)
+    {
+        //puts all the names of the abilities into a string list
+            List<string> stringReturnList = new();
+            foreach(Ability a in abilityList)
+            {
+                if(a != null)
+                {
+                stringReturnList.Add(a.Name);
+                Console.WriteLine(a.Name);
+                }
+            }
+            return stringReturnList;
+    }
+    public static List<string> ToStringList(List<Enemy> enemyList)
+    {
+        List<string> stringReturnList  = new();
+        foreach(Enemy e in enemyList)
+        {
+            stringReturnList.Add(e.Name);
+        } 
+        return stringReturnList;
+            
+    }
+    #endregion 
 }
