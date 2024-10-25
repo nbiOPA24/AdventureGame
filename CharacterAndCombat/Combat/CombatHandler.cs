@@ -8,19 +8,29 @@ public static  class CombatHandler
     /// </summary>
     /// <param name="enemyList"></param>
     /// <returns></returns>
-    public static bool RunCombatScenario(List<Enemy> enemyList,Player player)
+    public static bool RunCombatScenario(List<Enemy> enemyList,Player player)//TODO add string message be4 merging with main
     {
-        
+        Console.Clear();
+        // TODO Utilities.CharByChar(message,40,ConsoleColor.DarkGreen,true);
         DisplayPlayerCombatOptions(enemyList,player);
-        
-
         //Checks if player is alive after the Combat has finnished
         if(player.CurrentHealth > 0 )
         {
-            return true; //player killed all monsters
+            if(enemyList.Count <= 0)
+            {
+                Console.WriteLine("You have slain all enemies. Collect your reward");
+                return true; //player killed all monsters
+            }
+            else
+            {
+                Console.WriteLine("You have fled! shame on you");
+                return false;
+            }
         }
+        
         else
         {
+            Console.WriteLine("You have Died! Adjust your strategy and try again");
             return false; // player died
         }   
     }
@@ -31,39 +41,50 @@ public static  class CombatHandler
             "Attack",
             "Use item",
             "Flee"
-        };        
-        switch(PickAction(combatOptions,enemyList))
+        };     
+        bool stillInCombat = true;   
+        while(player.CurrentHealth > 0 && enemyList.Count > 0 && stillInCombat )
         {
-            case 0:
-                int chosenAbilityIndex = player.PickFromChosenAbilities("What ability do you want to use");
-                Ability usedAbility = player.ChosenAbilities[chosenAbilityIndex]; //chosen ability
-                List<string> enemyStringList = new();
-                foreach(Enemy e in enemyList)
-                {
-                    enemyStringList.Add(e.Name);
-                } 
-                int pickedEnemyIndex = Utilities.PickIndexFromList(enemyStringList,"Who do you want to attack?");
-                enemyList[pickedEnemyIndex].TakeDamage(player.DealDamage(usedAbility));
-                //attack code here choose ability  is probably the right name for it
-                break;
-            case 1:
-                //TODO create items and inventory first
-                //Lists usable consumables such as healing potions or such
-                break;
-            case 2:
-                //attempt to flee results in a loss
-                break;
+            switch(PickAction(combatOptions,enemyList))
+            {
+                case 0:
+                    int chosenAbilityIndex = player.PickFromChosenAbilities("What ability do you want to use");
+                    Ability usedAbility = player.ChosenAbilities[chosenAbilityIndex]; //chosen ability
+                    List<string> enemyStringList = Utilities.ToStringList(enemyList);   //Turns enemies into list format        
+                    int pickedEnemyIndex = Utilities.PickIndexFromList(enemyStringList,"Who do you want to attack?",ConsoleColor.DarkBlue);
+                    Enemy chosenEnemy = enemyList[pickedEnemyIndex];        //this is the chosen enemy for the attack
+                    chosenEnemy.TakeDamage(player.DealDamage(usedAbility)); //Deals damage to the enemy object
+                    if(chosenEnemy.CurrentHealth <= 0) //removes enemies from list if they die
+                    {
+                        enemyList.Remove(chosenEnemy);
+                    }
+                    foreach(Enemy e in enemyList)
+                    {
+                        player.TakeDamage(e.DealDamage());
+                    }
+                    
+                    break;
+                case 1:
+                    //TODO create items and inventory first
+                    //Lists usable consumables such as healing potions or such
+                    break;
+                case 2:
+                    //attempt to flee results in a loss
+                    stillInCombat = false;
+                    break;
+                    
+            }
         }
     }
     //Displays enemylist in a userfriendly format
     public static void DisplayEnemyList(List<Enemy> enemyList)
     {   
-        Console.WriteLine("Name           Health      Race");
+        Console.WriteLine($"{"Name",-15}{"Health",-11}Race");
         foreach(Enemy e in enemyList)
         {
             Console.Write($"{e.Name,-15}");
-            Utilities.ConsoleWriteColor($"[{e.CurrentHealth}/{e.MaxHealth}]",ConsoleColor.DarkRed);
-            Console.WriteLine($"     {e.Race.RaceName}");
+            Utilities.ConsoleWriteColor($"[{e.CurrentHealth}/{e.MaxHealth}]    ",ConsoleColor.DarkRed);
+            Console.WriteLine($"{e.Race.RaceName}");
         }
     }
 

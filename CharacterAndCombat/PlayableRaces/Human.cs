@@ -1,4 +1,4 @@
-using System.Diagnostics.Contracts;
+
 
 public class Human : IRace
 {

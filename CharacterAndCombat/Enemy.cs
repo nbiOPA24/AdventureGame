@@ -4,4 +4,22 @@ public class Enemy : Character
     {
 
     }
+    public int DealDamage()
+    {
+        Ability a = DecideAbility();
+        Console.WriteLine($"{Name} Uses {a.Name} ");
+        return base.DealDamage(a);
+    }
+    public Ability DecideAbility()
+    {
+        Random random = new Random();
+        int index;
+        do 
+        {
+            index = random.Next(0,4);
+        }
+        while(ChosenAbilities[index] == null);
+
+        return ChosenAbilities[index];
+    }
 }

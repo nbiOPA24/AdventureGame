@@ -25,14 +25,29 @@ public class Character
         //En spelares användningsredo abilities. 4 stycken
         ChosenAbilities = new Ability[4];
         SetInitialAbilities();  
+
     } 
 
     public void TakeDamage(int damage)
     {
-        CurrentHealth -= damage-Armor;
-        if(CurrentHealth < 0) CurrentHealth = 0;
+        
+        int trueDamage = CalculateDamageTaken(damage);
+        int absorbed = damage - trueDamage;
+        DisplayDamageTaken(trueDamage,absorbed);
+        CurrentHealth -= trueDamage;
+
+        if(CurrentHealth < 0) CurrentHealth = 0;//make sure no negative health
     }
-    public int DealDamage(Ability a)
+    public void DisplayDamageTaken(int damage,int absorbed)
+    {
+        Console.WriteLine($"{Name} Takes {damage}, [{absorbed}] absorbed by armor");
+    }
+    public int CalculateDamageTaken(int damage)
+    {
+        damage -= Armor;
+        return damage < 0 ? 0 : damage; // make sure dmage isnt negative
+    }
+    public virtual int DealDamage(Ability a)
     {
 
         return a.BaseDamage;
@@ -99,4 +114,5 @@ public class Character
     {
         return Utilities.PickIndexFromList(Ability.ToStringList(AllKnownAbilities),message);
     }
+    
 }
