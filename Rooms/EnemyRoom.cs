@@ -16,7 +16,7 @@ class EnemyRoom : RewardRoom
         if (RoomState == false)
         {
             string encounterMessage = $"You enter the enemy lair, and {NrOfEnemies} foes immediately block your path!";
-            CombatHandler.RunCombatScenario(CreateEnemies(),player);
+            CombatHandler.RunCombatScenario(CreateEnemies(),player,encounterMessage);
 
             
             RoomState = true;

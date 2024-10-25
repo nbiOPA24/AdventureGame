@@ -51,7 +51,7 @@ public class Program
     }
     static void PlayBackgroundMusic()
     {
-        SoundPlayer player = new SoundPlayer("DungeonMusic.wav"); // Uppdatera med WAV-filen
+        SoundPlayer player = new SoundPlayer("Music.wav"); // Uppdatera med WAV-filen
         player.PlayLooping(); // Spelar musiken i en loop
     }
 
