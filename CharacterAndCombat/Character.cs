@@ -36,21 +36,34 @@ public class Character
         DisplayDamageTaken(trueDamage,absorbed);
         CurrentHealth -= trueDamage;
 
-        if(CurrentHealth < 0) CurrentHealth = 0;//make sure no negative health
+        if(CurrentHealth < 0) 
+        {
+        CurrentHealth = 0;//make sure no negative health
+        Utilities.ConsoleWriteLineColor($"{Name} has died",ConsoleColor.DarkRed);
+        }
     }
     public void DisplayDamageTaken(int damage,int absorbed)
     {
-        Console.WriteLine($"{Name} Takes {damage}, [{absorbed}] absorbed by armor");
+        
+        Utilities.ConsoleWriteColor(Name,ConsoleColor.Cyan);
+        Console.Write(" Takes ");
+        string stringOfDamage = damage.ToString();
+        string stringOfAbsorbed = absorbed.ToString();
+        Utilities.ConsoleWriteColor(stringOfDamage,ConsoleColor.Red);
+        Console.Write(", ");
+        Utilities.ConsoleWriteColor(stringOfAbsorbed,ConsoleColor.DarkYellow);
+        Console.WriteLine(" absorbed by armor");
     }
     public int CalculateDamageTaken(int damage)
     {
         damage -= Armor;
         return damage < 0 ? 0 : damage; // make sure dmage isnt negative
     }
-    public virtual int DealDamage(Ability a)
+    public virtual void DealDamage(Enemy enemy,Ability a)
     {
-
-        return a.BaseDamage;
+        Utilities.ConsoleWriteColor(Name,ConsoleColor.Cyan);
+        Utilities.CharByCharLine($" Uses {a.Name} ",8);
+        enemy.TakeDamage(a.BaseDamage);
     }
     //Fills chosen abilities with abilities from "AllKnownAbilities"
     public void SetInitialAbilities()

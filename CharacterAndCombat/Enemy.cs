@@ -4,11 +4,13 @@ public class Enemy : Character
     {
 
     }
-    public int DealDamage()
+    public void DealDamage(Player player)
     {
+        //decides ability to use
         Ability a = DecideAbility();
-        Console.WriteLine($"{Name} Uses {a.Name} ");
-        return base.DealDamage(a);
+        Utilities.ConsoleWriteColor(Name,ConsoleColor.Cyan);
+        Utilities.CharByCharLine($" Uses {a.Name} ",8);
+        player.TakeDamage(a.BaseDamage);
     }
     public Ability DecideAbility()
     {
