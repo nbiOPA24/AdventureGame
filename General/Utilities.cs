@@ -177,6 +177,7 @@ class Utilities
     }
     #endregion
     #region Menupicker
+   
     public static int PickIndexFromList(List<string> list)
     {
         int markedIndex = 0;
@@ -189,9 +190,9 @@ class Utilities
             {
                 if(i == markedIndex)
                 {
-                    Utilities.ConsoleWriteColor("*",ConsoleColor.Blue);
+                    ConsoleWriteColor("*",ConsoleColor.Blue);
                     Console.Write(list[i]);
-                    Utilities.ConsoleWriteLineColor("*",ConsoleColor.Blue);
+                    ConsoleWriteLineColor("*",ConsoleColor.Blue);
 
                 }
                 else
@@ -227,7 +228,7 @@ class Utilities
         }
         return returnValue;
     }
-    public static int PickIndexFromList(List<string> list,string questionToPromptSelection)
+    public static int PickIndexFromList(List<string> list,string questionToPromptSelection,ConsoleColor color = ConsoleColor.Gray)
     {
         int markedIndex = 0;
         bool stillChoosing = true;
@@ -236,14 +237,16 @@ class Utilities
         while(stillChoosing)
         {
             Console.Clear();
+            Console.ForegroundColor = color;
             Console.WriteLine(questionToPromptSelection);
+            Console.ResetColor();
             for(int i = 0; i< list.Count; i++)
             {
                 if(i == markedIndex)
                 {
-                    Utilities.ConsoleWriteColor("*",ConsoleColor.Blue);
+                    ConsoleWriteColor("*",ConsoleColor.Blue);
                     Console.Write(list[i]);
-                    Utilities.ConsoleWriteLineColor("*",ConsoleColor.Blue);
+                    ConsoleWriteLineColor("*",ConsoleColor.Blue);
 
                 }
                 else

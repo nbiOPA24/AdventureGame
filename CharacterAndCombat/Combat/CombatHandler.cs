@@ -51,7 +51,7 @@ public static  class CombatHandler
                     int chosenAbilityIndex = player.PickFromChosenAbilities("What ability do you want to use");
                     Ability usedAbility = player.ChosenAbilities[chosenAbilityIndex]; //chosen ability
                     List<string> enemyStringList = Utilities.ToStringList(enemyList);   //Turns enemies into list format        
-                    int pickedEnemyIndex = Utilities.PickIndexFromList(enemyStringList,"Who do you want to attack?");
+                    int pickedEnemyIndex = Utilities.PickIndexFromList(enemyStringList,"Who do you want to attack?",ConsoleColor.DarkBlue);
                     Enemy chosenEnemy = enemyList[pickedEnemyIndex];        //this is the chosen enemy for the attack
                     chosenEnemy.TakeDamage(player.DealDamage(usedAbility)); //Deals damage to the enemy object
                     if(chosenEnemy.CurrentHealth <= 0) //removes enemies from list if they die
