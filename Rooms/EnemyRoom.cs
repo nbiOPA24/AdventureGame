@@ -13,17 +13,23 @@ class EnemyRoom : RewardRoom
 
     public override void RunRoom(Player player)
     {
-        if (RoomState == false)
+        if (RoomState == false) // Never entered the room before!
         {
-            string encounterMessage = $"You enter the enemy lair, and {NrOfEnemies} foes immediately block your path!";
-            CombatHandler.RunCombatScenario(CreateEnemies(),player,encounterMessage);
-
-            
+            string encounterMessage = $"As you step into the enemy lair, {NrOfEnemies} fierce foes appear, blocking your path!";
+            Success = CombatHandler.RunCombatScenario(CreateEnemies(),player,encounterMessage);
             RoomState = true;
         }
-        else
+        else // Entered the room before
         {
-            Console.WriteLine("You've been here before. No battles yet, but stay tuned! Andreas is preparing something exciting!");
+            if (!Success)
+            {
+                string encounterMessage = $"\"Ah, it's you again! You weak and pitiful {player.Race}, fleeing from us last time. You should have stayed away, coward!\"";
+                Success = CombatHandler.RunCombatScenario(CreateEnemies(),player,encounterMessage);
+            }
+            else
+            {
+                Utilities.CharByCharLine("The room is quiet now... The scent of past victory lingers in the air. You have been here before.", 8, ConsoleColor.DarkBlue);
+            }                
         }
     }
 
