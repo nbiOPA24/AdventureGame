@@ -30,7 +30,7 @@ public class Program
                     "2. Load game",
                     "Q. Exit game"
                 };
-                int menuIndex = Utilities.PickIndexFromList(mainMenu, "Welcome to the adventure game!");
+                int menuIndex = Utilities.PickIndexFromList(mainMenu, "Welcome to the adventure game!", ConsoleColor.DarkBlue);
                 switch(menuIndex)
                 {
                     // Start new game, creating a character.
@@ -39,17 +39,19 @@ public class Program
                         Player playerName = CreateCharacter();
                         Room [,] gameMap = MainMap.GenerateMap();
                         playerName = MapHandler.PlayerStartPos(playerName, gameMap);
+                        GreetingNewPlayerMessage(playerName);
                         MainMap.RunEntireMap(playerName, gameMap);
-
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        Utilities.CharByChar("Terminating game session...", 15, ConsoleColor.Red);
                         break;
                 }
-
-
-                
                 break;
         }
     }
-    static void PlayBackgroundMusic()
+    public static void PlayBackgroundMusic()
     {
         SoundPlayer player = new SoundPlayer("Music.wav"); // Uppdatera med WAV-filen
         player.PlayLooping(); // Spelar musiken i en loop
@@ -87,5 +89,20 @@ public class Program
             return new Player(name, 80, race, 15, 4);
         }
         throw new Exception("SKAPADE INGEN CHARKTÄR!! NÅNTING ÄR FEL I CreateCharacter() METODEN!!!");
+    }
+
+    static void GreetingNewPlayerMessage(Player player)
+    {
+        Console.Clear();
+        string greetMessage = @$"
+Darkness surrounds you, {player.Name}, the {player.Race}.
+In the distance, you hear the echoes of forgotten battles...
+The dungeon awaits, and with every step, danger looms closer.
+Will you survive, or will you join the souls lost in these cursed halls?
+
+Prepare yourself... for the journey begins now.";
+        Utilities.CharByCharLine(greetMessage, 25, ConsoleColor.DarkBlue);
+        Utilities.CharByChar("PRESS ANY KEY TO ENTER THE DUNGEON: ", 25, ConsoleColor.DarkRed);
+        Console.ReadKey(true);
     }
 }
