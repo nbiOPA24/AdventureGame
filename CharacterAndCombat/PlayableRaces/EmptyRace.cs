@@ -1,14 +1,12 @@
-public class Dwarf : IRace
+public class EmptyRace : IRace
 {
-    
-    #region DwarfSpecific abilities
 
-    #endregion
     public string RaceName {get;}
     public  List<Ability> Abilities{get;}
-    public Dwarf()
+    public EmptyRace()
     {
-        RaceName = "Dwarf";
+        Abilities = new List<Ability>();
+        RaceName = "Test";
     }
     public int  AdjustHealth(int baseHealth)
     {

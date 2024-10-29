@@ -11,7 +11,7 @@ public static  class CombatHandler
     public static bool RunCombatScenario(List<Enemy> enemyList,Player player,string message)
     {
         Console.Clear();
-        Utilities.CharByChar(message,5,ConsoleColor.DarkGreen,true);
+        Utilities.CharByCharLine(message,5,ConsoleColor.DarkGreen,true);
         DisplayPlayerCombatOptions(enemyList,player);
         //Checks if player is alive after the Combat has finnished
         if(player.CurrentHealth > 0 )
@@ -48,25 +48,51 @@ public static  class CombatHandler
             switch(PickAction(combatOptions,enemyList))
             {
                 case 0:
+                    //Players turn
                     int chosenAbilityIndex = player.PickFromChosenAbilities("What ability do you want to use");
-                    Ability usedAbility = player.ChosenAbilities[chosenAbilityIndex]; //chosen ability
-                    List<string> enemyStringList = Utilities.ToStringList(enemyList);   //Turns enemies into list format        
-                    int pickedEnemyIndex = Utilities.PickIndexFromList(enemyStringList,"Who do you want to attack?",ConsoleColor.DarkBlue);
-                    Enemy chosenEnemy = enemyList[pickedEnemyIndex];        //this is the chosen enemy for the attack
-                    player.DealDamage(chosenEnemy,usedAbility); //Deals damage to the enemy object
-                    Console.ReadKey(true);
-                    if(chosenEnemy.CurrentHealth <= 0) //removes enemies from list if they die
+                    Ability chosenAbility = player.ChosenAbilities[chosenAbilityIndex]; //chosen ability
+                    switch(chosenAbility.Target)
                     {
-                        enemyList.Remove(chosenEnemy);
+                        case TargetType.Self:
+                            player.UseAbilityOn(player,chosenAbility);
+                            break;
+                        case TargetType.Friendly:
+                            break;
+                            //if its an ability that targets enemies promts player to choose an enemy to attack
+                        case TargetType.Enemy:
+                            Enemy chosenEnemy = player.ChooseTarget(enemyList,"Who do you want to attack?");
+                            player.UseAbilityOn(chosenEnemy,chosenAbility); //Deals damage to the enemy object
+                            Console.ReadKey(true);
+                            if(chosenEnemy.CurrentHealth <= 0) //removes enemies from list if they die
+                            {
+                                enemyList.Remove(chosenEnemy);
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("New TargetType noticed check your code");
+                            break;
                     }
-                    //Enemies attack player.
+
+                    //Enemies turn
                     foreach(Enemy e in enemyList)
                     {
-                        e.DealDamage(player);
-                        
-                        Console.ReadKey(true);
+                        Ability monsterChosenAbility = e.DecideAbility();
+                        e.ResolveStatusEffects();
+                        //Console.ReadKey(true);
+                        switch(monsterChosenAbility.Target)
+                        {
+                            case TargetType.Self:
+                                e.UseAbilityOn(e,monsterChosenAbility);
+                                break;
+                            case TargetType.Friendly:
+                                break;
+                            case TargetType.Enemy:
+                                e.UseAbilityOn(player,monsterChosenAbility);
+                                break;
+                        }
                     }
-                    
+                    player.ResolveStatusEffects();
+                    Console.ReadKey(true);
                     break;
                 case 1:
                     //TODO create items and inventory first
@@ -100,6 +126,7 @@ public static  class CombatHandler
         int returnValue = 0;
         while(stillChoosing)
         {
+            Console.Clear();
             DisplayEnemyList(enemyList);
             for(int i = 0; i< list.Count; i++)
             {

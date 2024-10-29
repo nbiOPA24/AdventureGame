@@ -1,39 +1,46 @@
+using System.ComponentModel;
+
 public class Ability
 {
-    public string Name{get;set;}
-    public int BaseDamage{get;set;}
+    public string Name {get;set;}
+    public List<CombatEffect> CombatEffects {get;set;}
+    public TargetType Target {get;set;}
+
     
-    public Ability(string name,int baseDamage)
+    public Ability(string name,TargetType target)
     {
         Name = name;
-        BaseDamage = baseDamage;
+        CombatEffects = new();
+        Target = target;
+    }
+
+    public void AddFreezeEffect(int duration)
+    {
+        Freeze freeze = new(duration);
+        CombatEffects.Add(freeze);
+    }
+    public void AddPoisonEffect(int duration,int magnitude)
+    {
+        Poison poison = new(duration,magnitude);
+        CombatEffects.Add(poison);
+    }
+    public void AddImmuneEffect(int duration)
+    {
+        Immune immune = new(duration);
+        CombatEffects.Add(immune);
+    }
+    public void AddDamageEffect(int magnitude)
+    {
+        Damage damage = new(magnitude);
+        CombatEffects.Add(damage);
+    }
+    public void AddHealingEffect(int magnitude)
+    {
+        Healing healing = new(magnitude);
+        CombatEffects.Add(healing);
     }
 
 
-    public static List<string> ToStringList(List<Ability> abilityList)
-    {
-        //puts all the names of the abilities into a string list
-            List<string> stringReturnList = new();
-            foreach(Ability a in abilityList)
-            {
-                stringReturnList.Add(a.Name);
-                Console.WriteLine(a.Name);
-            }
-            return stringReturnList;
-    }
-    public static List<string> ToStringList(Ability[] abilityList)
-    {
-        //puts all the names of the abilities into a string list
-            List<string> stringReturnList = new();
-            foreach(Ability a in abilityList)
-            {
-                if(a != null)
-                {
-                stringReturnList.Add(a.Name);
-                Console.WriteLine(a.Name);
-                }
-            }
-            return stringReturnList;
-    }
 }
+
 
