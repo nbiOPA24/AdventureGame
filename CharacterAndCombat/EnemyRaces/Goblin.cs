@@ -1,8 +1,8 @@
 public class Goblin : IRace
 {
     #region Elfspecific Abilities
-    Ability Bash = new Ability("Bash",5);
-    Ability Growl = new Ability("Growl",3);
+    Ability Bash = new Ability("Bash",TargetType.Enemy);
+    Ability Growl = new Ability("Growl",TargetType.Enemy);
     #endregion
     public string RaceName{get;set;}
     public List<Ability> Abilities {get;set;}
