@@ -1,3 +1,5 @@
+using System.Dynamic;
+
 public class Character
 {
     public string Name {get;set;}
@@ -8,8 +10,10 @@ public class Character
     public IRace Race {get;set;}
     public int XPos {get;set;}
     public int YPos {get;set;}
+    public bool IsImmune {get;set;}
     public Ability[]  ChosenAbilities {get;set;}
     public List<Ability> AllKnownAbilities {get;set;}
+    public List<CombatEffect> CurrentStatusEffects {get;set;}
 
 
     public Character(string name,int startingHealth,IRace race,int baseDamage,int armor)
@@ -25,24 +29,32 @@ public class Character
         //En spelares användningsredo abilities. 4 stycken
         ChosenAbilities = new Ability[4];
         SetInitialAbilities();  
+        CurrentStatusEffects = new List<CombatEffect>();
+        IsImmune = false;
 
     } 
 
     public void TakeDamage(int damage)
     {
-        
-        int trueDamage = CalculateDamageTaken(damage);
-        int absorbed = damage - trueDamage;
-        DisplayDamageTaken(trueDamage,absorbed);
-        CurrentHealth -= trueDamage;
-
-        if(CurrentHealth < 0) 
+        if(IsImmune == true)
         {
-        CurrentHealth = 0;//make sure no negative health
-        Utilities.ConsoleWriteLineColor($"{Name} has died",ConsoleColor.DarkRed);
+            Console.WriteLine($"{Name} is Immune to damage this round");
+        }
+        else if(damage >0 )
+        {
+            int trueDamage = CalculateDamageTaken(damage);
+            int absorbed = damage - trueDamage;
+            DisplayDamageTaken(trueDamage,absorbed);
+            CurrentHealth -= trueDamage;
+
+            if(CurrentHealth < 0) 
+            {
+                CurrentHealth = 0;//make sure no negative health
+                Utilities.ConsoleWriteLineColor($"{Name} has died",ConsoleColor.DarkRed);
+            }
         }
     }
-    public void DisplayDamageTaken(int damage,int absorbed)
+    public virtual void DisplayDamageTaken(int damage,int absorbed)
     {
         
         Utilities.ConsoleWriteColor(Name,ConsoleColor.Cyan);
@@ -54,16 +66,28 @@ public class Character
         Utilities.ConsoleWriteColor(stringOfAbsorbed,ConsoleColor.DarkYellow);
         Console.WriteLine(" absorbed by armor");
     }
+    public int ResolveArmor(int unmitigatedDamage)
+    {
+        double percentageReduction =  (double)Armor/(Armor+25);
+        int trueDamage = (int)percentageReduction*(1-unmitigatedDamage);
+        return trueDamage;
+    }
     public int CalculateDamageTaken(int damage)
     {
         damage -= Armor;
         return damage < 0 ? 0 : damage; // make sure dmage isnt negative
     }
-    public virtual void DealDamage(Enemy enemy,Ability a)
+    public virtual void UseAbilityOn(Character character,Ability a)
     {
         Utilities.ConsoleWriteColor(Name,ConsoleColor.Cyan);
-        Utilities.CharByCharLine($" Uses {a.Name} ",8);
-        enemy.TakeDamage(a.BaseDamage);
+        Utilities.CharByChar($" Uses {a.Name} ",8);
+        Console.Write($"on ");
+        Utilities.ConsoleWriteLineColor($"{character.Name}",ConsoleColor.DarkGray);
+        foreach(CombatEffect s in a.CombatEffects)
+        {
+            s.ApplyEffect(character);
+        }
+        
     }
     //Fills chosen abilities with abilities from "AllKnownAbilities"
     public void SetInitialAbilities()
@@ -120,12 +144,28 @@ public class Character
     }   
     public int PickFromChosenAbilities(string message)
     {
-        int chosenIndex = Utilities.PickIndexFromList(Ability.ToStringList(ChosenAbilities),message);
+        int chosenIndex = Utilities.PickIndexFromList(Utilities.ToStringList(ChosenAbilities),message);
         return chosenIndex;
     }
     public int PickFromAllKnownAbilities(string message)
     {
-        return Utilities.PickIndexFromList(Ability.ToStringList(AllKnownAbilities),message);
+        return Utilities.PickIndexFromList(Utilities.ToStringList(AllKnownAbilities),message);
     }
-    
+    //handles the statuseffects currently affecting the player removes them once they reach 0 rounds remaining
+    public void ResolveStatusEffects()
+    {
+        if(CurrentStatusEffects.Count > 0)
+        {
+            for(int i = 0; i < CurrentStatusEffects.Count ; i++)
+            {
+                CurrentStatusEffects[i].ResolveEffect(this);
+                if(CurrentStatusEffects[i].Duration == 0)
+                {
+                    CurrentStatusEffects.RemoveAt(i);
+                }
+            }
+            
+            //Console.ReadKey(true);
+        }
+    }
 }
