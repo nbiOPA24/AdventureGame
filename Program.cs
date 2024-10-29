@@ -11,6 +11,8 @@ public class Program
         switch (choice)
         {
             case 1:
+                Test.RunTest();
+                return;
                 Room [,] rooms = MainMap.GenerateMap();
                 IRace race = new Human();
                 Player player = MapHandler.PlayerStartPos(new ("Goku", 100, race, 15, 10), rooms);  // Kan man inte lägga in så här istället: "new ("Goku", 100, new Human(), 15, 10)"
