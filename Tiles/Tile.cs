@@ -1,17 +1,17 @@
-public class Room
+public class Tile
 {
     public string RoomName {get;set;}
     public bool RoomState {get;set;} 
     public string RoomIcon {get; set;}
 
-    public Room(string roomName, string roomIcon)
+    public Tile(string roomName, string roomIcon)
     {
         RoomName = roomName;
         RoomIcon = roomIcon;
         RoomState = false;
     }
 
-    public Room()
+    public Tile()
     {
         RoomName = "Empty Room";
         RoomIcon = "   ";

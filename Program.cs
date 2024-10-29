@@ -13,10 +13,10 @@ public class Program
             case 1:
                 Test.RunTest();
                 return;
-                Room [,] rooms = MainMap.GenerateMap();
+                Tile [,] rooms = MainRoom.GenerateRoom();
                 IRace race = new Human();
-                Player player = MapHandler.PlayerStartPos(new ("Goku", 100, race, 15, 10), rooms);  // Kan man inte lägga in så här istället: "new ("Goku", 100, new Human(), 15, 10)"
-                MainMap.RunEntireMap(player, rooms);
+                Player player = RoomHandler.PlayerStartPos(new ("Goku", 100, race, 15, 10), rooms);  // Kan man inte lägga in så här istället: "new ("Goku", 100, new Human(), 15, 10)"
+                RoomHandler.RunEntireMap(player, rooms);
                 break;
             case 2: //Realistic experience
                 Console.Clear();
@@ -39,10 +39,10 @@ public class Program
                     
                     case 0:
                         Player playerName = CreateCharacter();
-                        Room [,] gameMap = MainMap.GenerateMap();
-                        playerName = MapHandler.PlayerStartPos(playerName, gameMap);
+                        Tile [,] gameMap = MainRoom.GenerateRoom();
+                        playerName = RoomHandler.PlayerStartPos(playerName, gameMap);
                         GreetingNewPlayerMessage(playerName);
-                        MainMap.RunEntireMap(playerName, gameMap);
+                        RoomHandler.RunEntireMap(playerName, gameMap);
                         break;
                     case 1:
                         break;
@@ -113,8 +113,8 @@ The dungeon awaits, and with every step, danger looms closer.
 Will you survive, or will you join the souls lost in these cursed halls?
 
 Prepare yourself... for the journey begins now.";
-        Utilities.CharByCharLine(greetMessage, 25, ConsoleColor.DarkBlue);
-        Utilities.CharByChar("PRESS ANY KEY TO ENTER THE DUNGEON: ", 25, ConsoleColor.DarkRed);
+        Utilities.CharByCharLine(greetMessage, 25, ConsoleColor.DarkBlue, false);
+        Utilities.CharByChar("PRESS ANY KEY TO ENTER THE DUNGEON: ", 25, ConsoleColor.DarkRed, false);
         Console.ReadKey(true);
     }
 }
