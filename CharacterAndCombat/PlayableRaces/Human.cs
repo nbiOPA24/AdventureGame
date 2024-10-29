@@ -9,7 +9,7 @@ public class Human : IRace
     public List<Ability> Abilities{get;set;}
     public Human()
     {
-
+        Abilities = new();
         RaceName = "Human";
     }
     public int  AdjustHealth(int baseHealth)

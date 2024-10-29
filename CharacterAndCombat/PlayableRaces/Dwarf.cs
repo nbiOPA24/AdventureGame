@@ -8,6 +8,7 @@ public class Dwarf : IRace
     public  List<Ability> Abilities{get;}
     public Dwarf()
     {
+        Abilities = new();
         RaceName = "Dwarf";
     }
     public int  AdjustHealth(int baseHealth)

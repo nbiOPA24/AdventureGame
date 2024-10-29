@@ -7,6 +7,7 @@ public class Elf : IRace
     public List<Ability> Abilities {get;set;}
     public Elf()
     {
+        Abilities = new();
         RaceName = "Elf";
 
     }

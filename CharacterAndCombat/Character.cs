@@ -14,6 +14,7 @@ public class Character
     public Ability[]  ChosenAbilities {get;set;}
     public List<Ability> AllKnownAbilities {get;set;}
     public List<CombatEffect> CurrentStatusEffects {get;set;}
+    public Inventory Inventory {get;set;}
 
 
     public Character(string name,int startingHealth,IRace race,int baseDamage,int armor)
@@ -25,12 +26,14 @@ public class Character
         MaxHealth = CurrentHealth;
         Armor = armor;
         //En lista på spelarens alla lärda abilities
+        AllKnownAbilities = new();
         AllKnownAbilities = Race.GetAbilities();
         //En spelares användningsredo abilities. 4 stycken
         ChosenAbilities = new Ability[4];
         SetInitialAbilities();  
         CurrentStatusEffects = new List<CombatEffect>();
         IsImmune = false;
+        Inventory = new();
 
     } 
 

@@ -45,7 +45,7 @@ class MysteryRoom : RewardRoom
         if (badOrGood == 1)
         {
             Console.WriteLine($"You get a {rarityLevel} good reward! Your health increases by {hp} points.");
-            player.CurrentHealth += hp;
+            player.CurrentHealth += hp; // Kontrollera att det inte är större än maxHP
         }
 
         else

@@ -18,7 +18,7 @@ public class Program
                 Player player = MapHandler.PlayerStartPos(new ("Goku", 100, race, 15, 10), rooms);  // Kan man inte lägga in så här istället: "new ("Goku", 100, new Human(), 15, 10)"
                 MainMap.RunEntireMap(player, rooms);
                 break;
-            case 2:
+            case 2: //Realistic experience
                 Console.Clear();
                 PlayBackgroundMusic();
                 Utilities.CharByChar("Welcome to the adventure game!", 8, ConsoleColor.DarkBlue); Console.WriteLine();
@@ -74,23 +74,33 @@ public class Program
 
         List<string> gameDifficulty = new() {"Easy", "Medium", "Hard"}; 
         int difficultyChoiceIndex = Utilities.PickIndexFromList(gameDifficulty, "Please Choose a difficulty!");
-        if (difficultyChoiceIndex == 0)
+        try
         {
-            //EASY
-            return new Player(name, 250, race, 40, 20);
-        }
-        else if (difficultyChoiceIndex == 1)
-        {
-            //MEDIUM
-            return new Player(name, 150, race, 30, 10);
+            if (difficultyChoiceIndex == 0)
+            {
+                //EASY
+                return new Player(name, 250, race, 40, 20);
+            }
+            else if (difficultyChoiceIndex == 1)
+            {
+                //MEDIUM
+                return new Player(name, 150, race, 30, 10);
+
+            }
+            else if (difficultyChoiceIndex == 2)
+            {
+                //HARD
+                return new Player(name, 80, race, 15, 4);
+            }
 
         }
-        else if (difficultyChoiceIndex == 2)
+        catch (Exception ex)
         {
-            //HARD
-            return new Player(name, 80, race, 15, 4);
+            Console.WriteLine($"NÅGOT GICK FEEEEL! {ex}");
         }
+        
         throw new Exception("SKAPADE INGEN CHARKTÄR!! NÅNTING ÄR FEL I CreateCharacter() METODEN!!!");
+
     }
 
     static void GreetingNewPlayerMessage(Player player)
