@@ -43,7 +43,6 @@ class EnemyTile : RewardTile
             IRace iRace;
             switch(Race.ToUpper())
             {
-                
                 case "GOBLIN":
                     
                     switch(random.Next(1,5))
