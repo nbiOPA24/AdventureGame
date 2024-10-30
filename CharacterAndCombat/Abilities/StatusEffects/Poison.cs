@@ -16,7 +16,7 @@ public class Poison : CombatEffect
             Utilities.ConsoleWriteColor("Poisoned",ConsoleColor.DarkGreen);
             Console.WriteLine($" for {Duration} rounds");
     }
-        public override void ResolveEffect(Character character)
+        public override void EndOfRound(Character character)
     {
         Console.Write($"{character.Name} suffers {Magnitude} damage due to  ");
         Utilities.ConsoleWriteColor("Poison ",ConsoleColor.DarkGreen);
@@ -25,7 +25,7 @@ public class Poison : CombatEffect
         
         Console.WriteLine($" {Duration} rounds remaining");
         //reduces duration by 1round
-        base.ResolveEffect(character);
+        base.EndOfRound(character);
     }
     public override CombatEffect CloneEffect()
     {

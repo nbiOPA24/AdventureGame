@@ -15,7 +15,8 @@ public class Program
                 return;
                 Room [,] rooms = MainMap.GenerateMap();
                 IRace race = new Human();
-                Player player = MapHandler.PlayerStartPos(new ("Goku", 100, race, 15, 10), rooms);  // Kan man inte lägga in så här istället: "new ("Goku", 100, new Human(), 15, 10)"
+                ICombatHandler playerCombatInterface = new PlayerCombatHandler();
+                Player player = MapHandler.PlayerStartPos(new ("Goku", 100, race, 15, 10,playerCombatInterface), rooms);  // Kan man inte lägga in så här istället: "new ("Goku", 100, new Human(), 15, 10)"
                 MainMap.RunEntireMap(player, rooms);
                 break;
             case 2: //Realistic experience
@@ -76,21 +77,22 @@ public class Program
         int difficultyChoiceIndex = Utilities.PickIndexFromList(gameDifficulty, "Please Choose a difficulty!");
         try
         {
+            ICombatHandler playerCombatInterface = new PlayerCombatHandler();
             if (difficultyChoiceIndex == 0)
             {
                 //EASY
-                return new Player(name, 250, race, 40, 20);
+                return new Player(name, 250, race, 40, 20,playerCombatInterface);
             }
             else if (difficultyChoiceIndex == 1)
             {
                 //MEDIUM
-                return new Player(name, 150, race, 30, 10);
+                return new Player(name, 150, race, 30, 10,playerCombatInterface);
 
             }
             else if (difficultyChoiceIndex == 2)
             {
                 //HARD
-                return new Player(name, 80, race, 15, 4);
+                return new Player(name, 80, race, 15, 4,playerCombatInterface);
             }
 
         }

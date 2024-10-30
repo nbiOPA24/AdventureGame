@@ -1,8 +1,8 @@
 public class Immune : CombatEffect
 {
-    public Immune(int duration) : base(duration,1,eCombatEffect.Immune)
+    public Immune(int duration) : base(duration++,1,eCombatEffect.Immune)
     {
-
+    
     }
 
     public override void ApplyEffect(Character character)
@@ -14,9 +14,9 @@ public class Immune : CombatEffect
     {
         Console.Write($"{character.Name} is ");
         Utilities.ConsoleWriteColor("Immune",ConsoleColor.DarkMagenta);
-        Console.WriteLine($" for {Duration} rounds");
+        Console.WriteLine($" for {Duration--} rounds");
     }
-        public override void ResolveEffect(Character character)
+        public override void EndOfRound(Character character)
     {
         if(Duration == 1)
         {
@@ -27,11 +27,11 @@ public class Immune : CombatEffect
         {
             Console.Write($"{character.Name} is ");
             Utilities.ConsoleWriteColor("Immune ",ConsoleColor.DarkMagenta);
-            Console.WriteLine($" for {Duration}more rounds");
+            Console.WriteLine($" for {Duration--}more rounds");
             
         }
         //reduces duration by 1round
-        base.ResolveEffect(character);
+        base.EndOfRound(character);
     }
     public override CombatEffect CloneEffect()
     {

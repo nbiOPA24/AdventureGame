@@ -43,11 +43,14 @@ public class CombatEffect
             {
                 if(foundStronger) //if effect*duration is stronger in the new effect the old version is overwritten
                 {
-                    character.CurrentStatusEffects[foundIndex] = CloneEffect();          
+                    character.CurrentStatusEffects[foundIndex] = CloneEffect();  
+                    PrintApplication(character);  
+
                 }
                 else
                 {
                     character.CurrentStatusEffects.Add(CloneEffect());
+                    PrintApplication(character);
                 }
 
 
@@ -55,13 +58,19 @@ public class CombatEffect
 
         }
     }
-    public virtual void ResolveEffect(Character character)
+    public virtual void StartOfRound()
+    {
+        Console.WriteLine("this effect has no StartOfRound() Method fix asap");
+    }
+    public virtual void EndOfRound(Character character)
     {
         if(Duration > 0 )
         {
-        Duration--;
+            Duration--;
         }   
+        
     }
+  
     public virtual CombatEffect CloneEffect()
     {
         Console.WriteLine("this abilityeffect have no override for CloneEffect fix it");
@@ -69,7 +78,7 @@ public class CombatEffect
     }
     public virtual void PrintApplication(Character character)
     {
-        Console.WriteLine("this effect has no PrintApplication() method fir asap");
+        Console.WriteLine("this effect has no PrintApplication() method fix asap");
     }
 
 

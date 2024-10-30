@@ -33,10 +33,10 @@ class EnemyRoom : RewardRoom
         }
     }
 
-    public List<Enemy> CreateEnemies()
+    public List<Character> CreateEnemies()
     {
         Random random = new Random();
-        List<Enemy> returnList = new();
+        List<Character> returnList = new();
         for(int i = 0; i< NrOfEnemies ; i++)
         {
             string name="";
@@ -66,8 +66,8 @@ class EnemyRoom : RewardRoom
                     }
                     iRace = new Goblin();
                     
-                    Enemy e = new Enemy(name,15*(int)Difficulty,iRace,10+random.Next(1,4),5*random.Next(1,4));
-                    returnList.Add(e);
+                    //Enemy e = new Enemy(name,15*(int)Difficulty,iRace,10+random.Next(1,4),5*random.Next(1,4));
+                    //returnList.Add(e);
                     break;
             }
         }
