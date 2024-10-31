@@ -24,7 +24,7 @@ public static  class CombatHandler
             Console.ReadKey(true);
             //player takes a Turn 
             //returns index choice if player wants to attack == 0, use item == 1, attempt to flee  == 2
-            int choiceIndex = PickAction(enemyList);
+            int choiceIndex = PickAction(currentSession);
             switch(choiceIndex)
             {
                 case 0:          
@@ -69,20 +69,11 @@ public static  class CombatHandler
         }   
     }
     //Displays enemylist in a userfriendly format
-    public static void DisplayEnemyList(List<Character> enemyList)
-    {   
-        Console.WriteLine($"{"Name",-15}{"Health",-15}");
-        foreach(Character e in enemyList)
-        {
-            Console.Write($"{e.Name,-15}");
-            Utilities.ConsoleWriteColor($"[{e.CurrentHealth}/{e.MaxHealth}]    ",ConsoleColor.DarkRed);
-            PrintAllEffectIcons(e);
-            Console.WriteLine();
-        }
-    }
+
+
 
     //basicly a copy of the utilities method for returning index frmo list but also displaying the enemies
-    public static int PickAction(List<Character> enemyList)
+    public static int PickAction(CombatSession session)
     {
         List<string> combatOptions = new()
         {
@@ -96,7 +87,8 @@ public static  class CombatHandler
         while(stillChoosing)
         {
             Console.Clear();
-            DisplayEnemyList(enemyList);
+            DisplayEnemyList(session.EnemyList);
+            DisplayPlayerList(session.PlayerList);
             for(int i = 0; i< combatOptions.Count; i++)
             {
                 if(i == markedIndex)
@@ -111,6 +103,7 @@ public static  class CombatHandler
                     Console.WriteLine(combatOptions[i]);
                 }
             }
+            
             ConsoleKeyInfo pressedKey = Console.ReadKey(true);
             switch(pressedKey.Key)
             {
@@ -262,6 +255,39 @@ public static  class CombatHandler
         AfterRound(session.Player);
         Console.ReadKey(true);
     }
+    
+    #region Displaying things
+    public static void DisplayEnemyList(List<Character> listToDisplay)
+    {   
+        Console.WriteLine($"{"Name",-15}{"Health",-15}");
+        Utilities.ConsoleWriteLineColor(",,,,,,,,,,,,,,,,,,,,,,,,,",ConsoleColor.DarkGray);
+        foreach(Character c in listToDisplay)
+        {
+            Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
+            Console.Write($"{c.Name,-15}");
+            Utilities.ConsoleWriteColor($"[{c.CurrentHealth-3}/{c.MaxHealth,3}]",ConsoleColor.Red);
+            Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
+            PrintAllEffectIcons(c);
+            Console.WriteLine();
+            
+        }
+        Utilities.ConsoleWriteLineColor("*************************",ConsoleColor.DarkGray);
+    }
+    public static void DisplayPlayerList(List<Character> listToDisplay)
+    {   
+        Utilities.ConsoleWriteLineColor(",,,,,,,,,,,,,,,,,,,,,,,,,",ConsoleColor.DarkGray);
+        foreach(Character c in listToDisplay)
+        {
+            Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
+            Console.Write($"{c.Name,-15}");
+            Utilities.ConsoleWriteColor($"[{c.CurrentHealth-3}/{c.MaxHealth,3}]",ConsoleColor.Green);
+            Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
+            PrintAllEffectIcons(c);
+            Console.WriteLine();
+        }
+        Utilities.ConsoleWriteLineColor("*************************",ConsoleColor.DarkGray);
+    }
+
     public static void PrintAllEffectIcons(Character character)
     {
         foreach(CombatEffect effect in character.CurrentStatusEffects)
@@ -269,4 +295,5 @@ public static  class CombatHandler
             effect.PrintEffectIcon();
         }
     }
+    #endregion
 }

@@ -99,7 +99,7 @@ public class CombatEffect
             Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.DarkGreen);
                 break;
             case eCombatEffect.Immune:
-            Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.DarkGreen);
+            Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.Magenta);
                 break;
             case eCombatEffect.HealingOverTime:
                 break;
@@ -107,6 +107,13 @@ public class CombatEffect
                 break;
         }
         //code for removing the effect
+    }
+    public void PrintAllEffectIcons(List<CombatEffect> list)
+    {
+        foreach(CombatEffect ce in list)
+        {
+            PrintEffectIcon();
+        }
     }
 
 
