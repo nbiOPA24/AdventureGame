@@ -71,7 +71,9 @@ public class Program
         int raceTypeIndex = Utilities.PickIndexFromList(raceType, "Please Choose your race!");
         List<IRace> races = new() {new Human(), new Dwarf(), new Elf()};
         IRace race = races[raceTypeIndex];
-
+        Ability HellBeam = new Ability("HellBeam",TargetType.Enemy);
+        HellBeam.AddDamageEffect(10);
+        Character player;
 
         List<string> gameDifficulty = new() {"Easy", "Medium", "Hard"}; 
         int difficultyChoiceIndex = Utilities.PickIndexFromList(gameDifficulty, "Please Choose a difficulty!");
@@ -81,19 +83,25 @@ public class Program
             if (difficultyChoiceIndex == 0)
             {
                 //EASY
-                return new Character(name, 250, race, 40, 20,playerCombatInterface);
+                player = new Character(name, 250, race, 40, 20,playerCombatInterface);
+                player.ChosenAbilities.Add(HellBeam);
+                return player;
             }
             else if (difficultyChoiceIndex == 1)
             {
                 //MEDIUM
-                return new Character(name, 150, race, 30, 10,playerCombatInterface);
-
+                player = new Character(name, 150, race, 30, 10,playerCombatInterface);
+                player.ChosenAbilities.Add(HellBeam);
+                return player;
             }
             else if (difficultyChoiceIndex == 2)
             {
                 //HARD
-                return new Character(name, 80, race, 15, 4,playerCombatInterface);
+                player = new Character(name, 80, race, 15, 4,playerCombatInterface);
+                player.ChosenAbilities.Add(HellBeam);
+                return player;
             }
+            
 
         }
         catch (Exception ex)
