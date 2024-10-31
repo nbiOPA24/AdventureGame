@@ -29,7 +29,7 @@ public class CombatEffect
             {
                 if(character.CurrentStatusEffects[i].Type == Type) //checking if the type already is contained in the list.
                 {
-                    if(character.CurrentStatusEffects[i].Magnitude*character.CurrentStatusEffects[i].Duration > Magnitude*Duration) //if the full damage over time is higher on already contained effect
+                    if(character.CurrentStatusEffects[i].Magnitude*character.CurrentStatusEffects[i].Duration >= Magnitude*Duration) //if the full damage over time is higher on already contained effect
                     {
                         alreadyContains = true; // says its already contained and wont be added
                     }
@@ -54,8 +54,6 @@ public class CombatEffect
                     character.CurrentStatusEffects.Add(CloneEffect());
                     PrintApplication(character);
                 }
-
-
             }
 
         }
@@ -72,7 +70,15 @@ public class CombatEffect
         }   
         
     }
-  
+    public virtual void AfterRound(Character character)
+    {
+
+    }
+    public virtual void AfterTurn(Character character)
+    {
+
+    }
+
     public virtual CombatEffect CloneEffect()
     {
         Console.WriteLine("this abilityeffect have no override for CloneEffect fix it");
@@ -82,7 +88,26 @@ public class CombatEffect
     {
         Console.WriteLine("this effect has no PrintApplication() method fix asap");
     }
-
+    public virtual void PrintEffectIcon()
+    {
+        switch(Type)
+        {
+            case eCombatEffect.Freeze:
+            Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.Blue);
+                break;
+            case eCombatEffect.Poison:
+            Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.DarkGreen);
+                break;
+            case eCombatEffect.Immune:
+            Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.DarkGreen);
+                break;
+            case eCombatEffect.HealingOverTime:
+                break;
+            case eCombatEffect.Shield:
+                break;
+        }
+        //code for removing the effect
+    }
 
 
 }

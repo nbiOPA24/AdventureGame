@@ -16,7 +16,7 @@ public class Program
                 Tile [,] rooms = MainRoom.GenerateRoom();
                 IRace race = new Human();
                 ICombatHandler playerCombatInterface = new PlayerCombatHandler();
-                Character player = RoomHandler.PlayerStartPos(new ("Goku", 100, race, 15, 10,playerCombatInterface), rooms);  // Kan man inte lägga in så här istället: "new ("Goku", 100, new Human(), 15, 10)"
+                Character player = RoomHandler.PlayerStartPos(new ("Goku", 100, race, 15, 10,playerCombatInterface,ConsoleColor.Cyan), rooms);  // Kan man inte lägga in så här istället: "new ("Goku", 100, new Human(), 15, 10)"
                 RoomHandler.RunEntireMap(player, rooms);
                 break;
             case 2: //Realistic experience
@@ -83,21 +83,21 @@ public class Program
             if (difficultyChoiceIndex == 0)
             {
                 //EASY
-                player = new Character(name, 250, race, 40, 20,playerCombatInterface);
+                player = new Character(name, 250, race, 40, 20,playerCombatInterface,ConsoleColor.Cyan);
                 player.ChosenAbilities.Add(HellBeam);
                 return player;
             }
             else if (difficultyChoiceIndex == 1)
             {
                 //MEDIUM
-                player = new Character(name, 150, race, 30, 10,playerCombatInterface);
+                player = new Character(name, 150, race, 30, 10,playerCombatInterface,ConsoleColor.Cyan);
                 player.ChosenAbilities.Add(HellBeam);
                 return player;
             }
             else if (difficultyChoiceIndex == 2)
             {
                 //HARD
-                player = new Character(name, 80, race, 15, 4,playerCombatInterface);
+                player = new Character(name, 80, race, 15, 4,playerCombatInterface,ConsoleColor.Cyan);
                 player.ChosenAbilities.Add(HellBeam);
                 return player;
             }

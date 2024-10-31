@@ -65,7 +65,7 @@ class EnemyTile : RewardTile
                     }
                     iRace = new Goblin();
                     ICombatHandler combatHandler = new MonsterCombatAI();
-                    Character e = new Character(name,15*(int)Difficulty,iRace,10+random.Next(1,4),5*random.Next(1,4),combatHandler);
+                    Character e = new Character(name,15*(int)Difficulty,iRace,10+random.Next(1,4),5*random.Next(1,4),combatHandler,ConsoleColor.DarkGray);
                     returnList.Add(e);
                     break;
             }

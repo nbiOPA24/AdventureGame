@@ -7,8 +7,10 @@ public class Immune : CombatEffect
 
     public override void ApplyEffect(Character character)
     {   
+        character.ClearAllEffects();
         base.ApplyEffect(character);
         character.IsImmune = true;
+        
     }
     public override void PrintApplication(Character character)
     {
@@ -16,7 +18,7 @@ public class Immune : CombatEffect
         Utilities.ConsoleWriteColor("Immune",ConsoleColor.DarkMagenta);
         Console.WriteLine($" for {Duration} rounds");
     }
-        public override void EndOfRound(Character character)
+    public override void AfterRound(Character character)
     {
         if(Duration == 0)
         {
@@ -33,7 +35,10 @@ public class Immune : CombatEffect
         //reduces duration by 1round
         if(!FirstRound)
         {
-            base.EndOfRound(character);
+            if(Duration > 0 )
+            {
+                Duration--;
+            }  
         }
         else
         {

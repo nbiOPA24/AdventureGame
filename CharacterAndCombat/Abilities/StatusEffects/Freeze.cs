@@ -12,11 +12,13 @@ public class Freeze : CombatEffect
     }
     public override void PrintApplication(Character character)
     {
-            Console.Write($"{character.Name} has been ");
+
+            Utilities.ConsoleWriteColor(character.Name,character.NameColor);
+            Console.Write($" Has been ");
             Utilities.ConsoleWriteColor("Frozen",ConsoleColor.Blue);
             Console.WriteLine($" for {Duration} rounds");
     }
-        public override void EndOfRound(Character character)
+        public override void AfterTurn(Character character)
     {
         Console.Write($"{character.Name} is ");
         Utilities.ConsoleWriteColor("Frozen ",ConsoleColor.Blue);
@@ -25,7 +27,10 @@ public class Freeze : CombatEffect
         //reduces duration by 1round if its not the first round
         if(!FirstRound)
         {
-            base.EndOfRound(character);
+            if(Duration > 0 )
+            {
+                Duration--;
+            }  
         }
         else
         {
@@ -36,4 +41,5 @@ public class Freeze : CombatEffect
     {
         return new Freeze(Duration);
     }
+
 }

@@ -12,11 +12,13 @@ public class Poison : CombatEffect
     }
     public override void PrintApplication(Character character)
     {
-            Console.Write($"{character.Name} has been ");
+
+            Utilities.ConsoleWriteColor(character.Name,character.NameColor);
+            Console.Write($" Has been ");
             Utilities.ConsoleWriteColor("Poisoned",ConsoleColor.DarkGreen);
             Console.WriteLine($" for {Duration} rounds");
     }
-        public override void EndOfRound(Character character)
+        public override void AfterRound(Character character)
     {
         Console.Write($"{character.Name} suffers {Magnitude} damage due to  ");
         Utilities.ConsoleWriteColor("Poison ",ConsoleColor.DarkGreen);
@@ -25,7 +27,10 @@ public class Poison : CombatEffect
         
         Console.WriteLine($" {Duration} rounds remaining");
         //reduces duration by 1round
-        base.EndOfRound(character);
+        if(Duration > 0 )
+        {
+            Duration--;
+        }  
     }
     public override CombatEffect CloneEffect()
     {

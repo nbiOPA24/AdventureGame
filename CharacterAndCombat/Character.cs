@@ -7,9 +7,11 @@ public class Character
     public int MaxHealth {get;set;}
     public int BaseDamage {get;set;}
     public int Armor {get;set;}
+    public int Shield{get;set;}
     public IRace Race {get;set;}
     public int XPos {get;set;}
     public int YPos {get;set;}
+    public ConsoleColor NameColor {get;set;}
     public bool IsImmune {get;set;}
     public List<Ability>  ChosenAbilities {get;set;}
     public List<Ability> AllKnownAbilities {get;set;}
@@ -19,7 +21,7 @@ public class Character
     public ICombatHandler ICombatHandler {get;set;}
     public int StartingHealth { get; }
 
-    public Character(string name,int startingHealth,IRace race,int baseDamage,int armor,ICombatHandler icombatHandler)
+    public Character(string name,int startingHealth,IRace race,int baseDamage,int armor,ICombatHandler icombatHandler,ConsoleColor nameColor)
     {
         AbleToAct = true;
         Race = race;
@@ -38,6 +40,8 @@ public class Character
         IsImmune = false;
         Inventory = new();
         ICombatHandler = icombatHandler;
+        Shield = 0;
+        NameColor = nameColor;
     }
 
 
@@ -65,7 +69,7 @@ public class Character
     public virtual void DisplayDamageTaken(int damage,int absorbed)
     {
         
-        Utilities.ConsoleWriteColor(Name,ConsoleColor.Cyan);
+        Utilities.ConsoleWriteColor(Name,NameColor);
         Console.Write(" Takes ");
         string stringOfDamage = damage.ToString();
         string stringOfAbsorbed = absorbed.ToString();
@@ -86,29 +90,47 @@ public class Character
         return damage < 0 ? 0 : damage; // make sure dmage isnt negative
     }
 #endregion
-#region combat stuff to be refactored
+#region Statuseffects
 
-        public void EndOfRound()
+
+    public virtual void ClearEffect(CombatEffect effect)
     {
-        ResolveStatusEndOfRound();
-        AbleToAct = true;
-    }
-    public void ResolveStatusEndOfRound()
-    {
-        if(CurrentStatusEffects.Count > 0)
+        switch(effect.Type)
         {
-            for(int i = 0; i < CurrentStatusEffects.Count ; i++)
-            {
-                CurrentStatusEffects[i].EndOfRound(this);
-                if(CurrentStatusEffects[i].Duration == 0)
-                {
-                    CurrentStatusEffects.RemoveAt(i);
-                }
-            }
-            
-            //Console.ReadKey(true);
+            case eCombatEffect.Freeze:
+            AbleToAct = true;
+            Utilities.ConsoleWriteColor(Name,NameColor);
+            Console.Write($" is no longer ");
+            Utilities.ConsoleWriteLineColor("Frozen",ConsoleColor.Blue);
+                break;
+            case eCombatEffect.Poison:
+            Utilities.ConsoleWriteColor(Name,NameColor);
+            Console.Write($" is no longer ");
+            Utilities.ConsoleWriteLineColor("Poisoned",ConsoleColor.DarkGreen);
+                break;
+            case eCombatEffect.Immune:
+            Utilities.ConsoleWriteColor(Name,NameColor);
+            Console.Write($" is no longer ");
+            Utilities.ConsoleWriteLineColor("Immune",ConsoleColor.DarkGreen);
+            IsImmune = false;
+                break;
+            case eCombatEffect.HealingOverTime:
+                break;
+            case eCombatEffect.Shield:
+            Shield = 0;
+                break;
+        }
+        //code for removing the effect
+    }
+    public virtual void ClearAllEffects()
+    {
+        for(int i = 0; i< CurrentStatusEffects.Count ; i++)
+        {
+            ClearEffect(CurrentStatusEffects[i]);
+            CurrentStatusEffects.Remove(CurrentStatusEffects[i]);
         }
     }
+
 #endregion
 #region setups
     //Fills chosen abilities with abilities from "AllKnownAbilities"
