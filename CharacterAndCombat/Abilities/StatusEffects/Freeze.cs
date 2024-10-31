@@ -8,6 +8,7 @@ public class Freeze : CombatEffect
     public override void ApplyEffect(Character character)
     {
         base.ApplyEffect(character);
+        character.AbleToAct = false;
     }
     public override void PrintApplication(Character character)
     {
@@ -15,13 +16,21 @@ public class Freeze : CombatEffect
             Utilities.ConsoleWriteColor("Frozen",ConsoleColor.Blue);
             Console.WriteLine($" for {Duration} rounds");
     }
-        public override void ResolveEffect(Character character)
+        public override void EndOfRound(Character character)
     {
         Console.Write($"{character.Name} is ");
         Utilities.ConsoleWriteColor("Frozen ",ConsoleColor.Blue);
         Console.WriteLine($" and thus unable to act, {Duration} rounds remaining");
-        //reduces duration by 1round
-        base.ResolveEffect(character);
+        character.AbleToAct = false;
+        //reduces duration by 1round if its not the first round
+        if(!FirstRound)
+        {
+            base.EndOfRound(character);
+        }
+        else
+        {
+            FirstRound = false;
+        }
     }
     public override CombatEffect CloneEffect()
     {

@@ -11,14 +11,17 @@ public class Character
     public int XPos {get;set;}
     public int YPos {get;set;}
     public bool IsImmune {get;set;}
-    public Ability[]  ChosenAbilities {get;set;}
+    public List<Ability>  ChosenAbilities {get;set;}
     public List<Ability> AllKnownAbilities {get;set;}
     public List<CombatEffect> CurrentStatusEffects {get;set;}
     public Inventory Inventory {get;set;}
+    public bool AbleToAct {get;set;}
+    public ICombatHandler ICombatHandler {get;set;}
+    public int StartingHealth { get; }
 
-
-    public Character(string name,int startingHealth,IRace race,int baseDamage,int armor)
+    public Character(string name,int startingHealth,IRace race,int baseDamage,int armor,ICombatHandler icombatHandler)
     {
+        AbleToAct = true;
         Race = race;
         CurrentHealth = race.AdjustHealth(startingHealth);
         BaseDamage = race.AdjustDamage(baseDamage);
@@ -29,14 +32,16 @@ public class Character
         AllKnownAbilities = new();
         AllKnownAbilities = Race.GetAbilities();
         //En spelares användningsredo abilities. 4 stycken
-        ChosenAbilities = new Ability[4];
+        ChosenAbilities = new();
         SetInitialAbilities();  
         CurrentStatusEffects = new List<CombatEffect>();
         IsImmune = false;
         Inventory = new();
+        ICombatHandler = icombatHandler;
+    }
 
-    } 
 
+    #region Taking damage
     public void TakeDamage(int damage)
     {
         if(IsImmune == true)
@@ -69,33 +74,47 @@ public class Character
         Utilities.ConsoleWriteColor(stringOfAbsorbed,ConsoleColor.DarkYellow);
         Console.WriteLine(" absorbed by armor");
     }
-    public int ResolveArmor(int unmitigatedDamage)
+    public int ReduceDamageByArmor(int unmitigatedDamage)
     {
         double percentageReduction =  (double)Armor/(Armor+25);
-        int trueDamage = (int)percentageReduction*(1-unmitigatedDamage);
+        int trueDamage = (int)(unmitigatedDamage*(1-percentageReduction));
         return trueDamage;
     }
     public int CalculateDamageTaken(int damage)
     {
-        damage -= Armor;
+        damage = ReduceDamageByArmor(damage);
         return damage < 0 ? 0 : damage; // make sure dmage isnt negative
     }
-    public virtual void UseAbilityOn(Character character,Ability a)
+#endregion
+#region combat stuff to be refactored
+
+        public void EndOfRound()
     {
-        Utilities.ConsoleWriteColor(Name,ConsoleColor.Cyan);
-        Utilities.CharByChar($" Uses {a.Name} ",8);
-        Console.Write($"on ");
-        Utilities.ConsoleWriteLineColor($"{character.Name}",ConsoleColor.DarkGray);
-        foreach(CombatEffect s in a.CombatEffects)
-        {
-            s.ApplyEffect(character);
-        }
-        
+        ResolveStatusEndOfRound();
+        AbleToAct = true;
     }
+    public void ResolveStatusEndOfRound()
+    {
+        if(CurrentStatusEffects.Count > 0)
+        {
+            for(int i = 0; i < CurrentStatusEffects.Count ; i++)
+            {
+                CurrentStatusEffects[i].EndOfRound(this);
+                if(CurrentStatusEffects[i].Duration == 0)
+                {
+                    CurrentStatusEffects.RemoveAt(i);
+                }
+            }
+            
+            //Console.ReadKey(true);
+        }
+    }
+#endregion
+#region setups
     //Fills chosen abilities with abilities from "AllKnownAbilities"
     public void SetInitialAbilities()
     {
-        for (int i = 0; i < ChosenAbilities.Length ; i++)
+        for (int i = 0; i < ChosenAbilities.Count ; i++)
         {
             if(i < AllKnownAbilities.Count)
             {
@@ -107,16 +126,18 @@ public class Character
             }      
         }
     }
+#endregion
+#region Abilityrelated methods
     //Allows the used to pick an ability and replace it with another from AllKnownAbilities
     public void ReplaceChosenAbilities()
     {
         bool keepGoing = true;
         while(keepGoing)
         {
-            int chosenIndex = PickFromChosenAbilities("What ability would you like to replace?");
+            int chosenIndex = SelectAbilityIndex("What ability do you want to replace?");
             int newAbilityIndex =PickFromAllKnownAbilities($"What ability would you like to use instead of {ChosenAbilities[chosenIndex].Name} ");
             bool isKnown = false;
-            for(int i = 0; i< ChosenAbilities.Length ; i++)
+            for(int i = 0; i< ChosenAbilities.Count ; i++)
             {
                 if(ChosenAbilities[i] == AllKnownAbilities[newAbilityIndex])
                 {
@@ -145,30 +166,18 @@ public class Character
                 }
         }
     }   
-    public int PickFromChosenAbilities(string message)
+
+    public int SelectAbilityIndex(string message)
     {
-        int chosenIndex = Utilities.PickIndexFromList(Utilities.ToStringList(ChosenAbilities),message);
-        return chosenIndex;
+        return  Utilities.PickIndexFromList(Utilities.ToStringList(ChosenAbilities),message);
     }
     public int PickFromAllKnownAbilities(string message)
     {
         return Utilities.PickIndexFromList(Utilities.ToStringList(AllKnownAbilities),message);
     }
+#endregion
     //handles the statuseffects currently affecting the player removes them once they reach 0 rounds remaining
-    public void ResolveStatusEffects()
-    {
-        if(CurrentStatusEffects.Count > 0)
-        {
-            for(int i = 0; i < CurrentStatusEffects.Count ; i++)
-            {
-                CurrentStatusEffects[i].ResolveEffect(this);
-                if(CurrentStatusEffects[i].Duration == 0)
-                {
-                    CurrentStatusEffects.RemoveAt(i);
-                }
-            }
-            
-            //Console.ReadKey(true);
-        }
-    }
+
+
+
 }

@@ -4,12 +4,14 @@ public class CombatEffect
     public int Duration {get;set;}
     public int Magnitude {get;set;}
     public eCombatEffect Type {get;set;}
+    public bool FirstRound {get;set;}
 
     public CombatEffect(int duration, int magnitude, eCombatEffect type)
     {
         Duration = duration;
         Magnitude = magnitude;
         Type = type;
+        FirstRound = true;
     }
     //Checks if the effect already is contained in the list of current ailments if not applies it
     public virtual  void ApplyEffect(Character character)
@@ -43,11 +45,14 @@ public class CombatEffect
             {
                 if(foundStronger) //if effect*duration is stronger in the new effect the old version is overwritten
                 {
-                    character.CurrentStatusEffects[foundIndex] = CloneEffect();          
+                    character.CurrentStatusEffects[foundIndex] = CloneEffect();  
+                    PrintApplication(character);  
+
                 }
                 else
                 {
                     character.CurrentStatusEffects.Add(CloneEffect());
+                    PrintApplication(character);
                 }
 
 
@@ -55,13 +60,19 @@ public class CombatEffect
 
         }
     }
-    public virtual void ResolveEffect(Character character)
+    public virtual void StartOfRound()
+    {
+        Console.WriteLine("this effect has no StartOfRound() Method fix asap");
+    }
+    public virtual void EndOfRound(Character character)
     {
         if(Duration > 0 )
         {
-        Duration--;
+            Duration--;
         }   
+        
     }
+  
     public virtual CombatEffect CloneEffect()
     {
         Console.WriteLine("this abilityeffect have no override for CloneEffect fix it");
@@ -69,7 +80,7 @@ public class CombatEffect
     }
     public virtual void PrintApplication(Character character)
     {
-        Console.WriteLine("this effect has no PrintApplication() method fir asap");
+        Console.WriteLine("this effect has no PrintApplication() method fix asap");
     }
 
 

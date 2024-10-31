@@ -311,12 +311,12 @@ class Utilities
             }
             return stringReturnList;
     }
-    public static List<string> ToStringList(List<Enemy> enemyList)
+    public static List<string> ToStringList(List<Character> enemyList)
     {
         List<string> stringReturnList  = new();
-        foreach(Enemy e in enemyList)
+        foreach(Character c in enemyList)
         {
-            stringReturnList.Add(e.Name);
+            stringReturnList.Add(c.Name);
         } 
         return stringReturnList;
             
