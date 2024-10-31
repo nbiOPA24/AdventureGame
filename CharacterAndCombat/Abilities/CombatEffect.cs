@@ -4,12 +4,14 @@ public class CombatEffect
     public int Duration {get;set;}
     public int Magnitude {get;set;}
     public eCombatEffect Type {get;set;}
+    public bool FirstRound {get;set;}
 
     public CombatEffect(int duration, int magnitude, eCombatEffect type)
     {
         Duration = duration;
         Magnitude = magnitude;
         Type = type;
+        FirstRound = true;
     }
     //Checks if the effect already is contained in the list of current ailments if not applies it
     public virtual  void ApplyEffect(Character character)

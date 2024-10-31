@@ -8,7 +8,7 @@ public static  class CombatHandler
     /// </summary>
     /// <param name="enemyList"></param>
     /// <returns></returns>
-    public static bool RunCombatScenario(List<Character> enemyList,Player player,string message)
+    public static bool RunCombatScenario(List<Character> enemyList,Character player,string message)
     {
         //Displays entering message and waits for keypress
         Console.Clear();
@@ -23,6 +23,10 @@ public static  class CombatHandler
         //Round start
         while(player.CurrentHealth > 0 && enemyList.Count > 0 && stillInCombat )
         {
+
+            int currentRound = 1;
+            Console.WriteLine($"currentRound : {currentRound}");
+            Console.ReadKey(true);
             //player takes a Turn 
             //returns index choice if player wants to attack == 0, use item == 1, attempt to flee  == 2
             int choiceIndex = PickAction(enemyList);
@@ -44,7 +48,7 @@ public static  class CombatHandler
             EnemiesTurn(playerList,enemyList);
 
             //Resikve end of round stuff (statuseffectupdates etc.)
-            foreach(Enemy e in enemyList)
+            foreach(Character e in enemyList)
             {
                 e.EndOfRound();
             }
@@ -65,8 +69,7 @@ public static  class CombatHandler
                 return false;
             }
         }
-        
-        else
+        else //current health is <= 0
         {
             Console.WriteLine("You have Died! Adjust your strategy and try again");
             return false; // player died
@@ -76,7 +79,7 @@ public static  class CombatHandler
     public static void DisplayEnemyList(List<Character> enemyList)
     {   
         Console.WriteLine($"{"Name",-15}{"Health",-11}Race");
-        foreach(Enemy e in enemyList)
+        foreach(Character e in enemyList)
         {
             Console.Write($"{e.Name,-15}");
             Utilities.ConsoleWriteColor($"[{e.CurrentHealth}/{e.MaxHealth}]    ",ConsoleColor.DarkRed);
@@ -155,7 +158,7 @@ public static  class CombatHandler
     }
     public static void EnemiesTurn(List<Character> targetList,List<Character> enemyList)
     {
-        foreach(Enemy e in enemyList)
+        foreach(Character e in enemyList)
         {
             CharacterTurn(e.ICombatHandler,e,targetList,ConsoleColor.DarkRed,ConsoleColor.Cyan);
         }

@@ -74,7 +74,7 @@ public class Character
         Utilities.ConsoleWriteColor(stringOfAbsorbed,ConsoleColor.DarkYellow);
         Console.WriteLine(" absorbed by armor");
     }
-    public int ResolveArmor(int unmitigatedDamage)
+    public int ReduceDamageByArmor(int unmitigatedDamage)
     {
         double percentageReduction =  (double)Armor/(Armor+25);
         int trueDamage = (int)(unmitigatedDamage*(1-percentageReduction));
@@ -82,11 +82,12 @@ public class Character
     }
     public int CalculateDamageTaken(int damage)
     {
-        damage = ResolveArmor(damage);
+        damage = ReduceDamageByArmor(damage);
         return damage < 0 ? 0 : damage; // make sure dmage isnt negative
     }
 #endregion
 #region combat stuff to be refactored
+
         public void EndOfRound()
     {
         ResolveStatusEndOfRound();

@@ -18,6 +18,4 @@ public class MonsterCombatAI : ICombatHandler
     {   
         return potentialTargets[0];
     }
-
-
 }
