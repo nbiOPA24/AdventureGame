@@ -1,6 +1,6 @@
-public class StarterRoom : Room
+public class StarterTile : Tile
 {
-    public StarterRoom() : base("Start", " S ")
+    public StarterTile() : base("Start", " S ")
     {
     }
 

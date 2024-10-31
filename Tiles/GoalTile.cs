@@ -1,6 +1,6 @@
-public class GoalRoom : Room
+public class GoalTile : Tile
 {
-    public GoalRoom() : base("Goal room", " ⚑ ")
+    public GoalTile() : base("Goal room", " ⚑ ")
     {
     }
     public override void RunRoom(Player player)

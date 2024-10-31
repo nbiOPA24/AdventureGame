@@ -1,10 +1,10 @@
-class EnemyRoom : RewardRoom
+class EnemyTile : RewardTile
 {
     public int NrOfEnemies {get;set;}
     public DifficultyLevel Difficulty {get; set;}
     public string Race {get; set;}
     
-    public EnemyRoom(string roomName, int reward, int nrOfEnemies, DifficultyLevel difficulty, string race) : base(roomName, " ☠ ", reward)
+    public EnemyTile(string roomName, int reward, int nrOfEnemies, DifficultyLevel difficulty, string race) : base(roomName, " ☠ ", reward)
     {
         NrOfEnemies = nrOfEnemies;
         Difficulty = difficulty;
@@ -43,7 +43,6 @@ class EnemyRoom : RewardRoom
             IRace iRace;
             switch(Race.ToUpper())
             {
-                
                 case "GOBLIN":
                     
                     switch(random.Next(1,5))
