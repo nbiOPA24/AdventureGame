@@ -1,6 +1,6 @@
 class RoomHandler
 {
-    public static Player PlayerStartPos(Player player, Tile[,] arrayWithRooms)
+    public static Character PlayerStartPos(Character player, Tile[,] arrayWithRooms)
     {
         for(int i = 0; i < arrayWithRooms.GetLength(0); i++)
         {
@@ -18,7 +18,7 @@ class RoomHandler
         return player;
     }
 
-   public static void DrawMap(Player player, Tile[,] arrayWithRooms)
+   public static void DrawMap(Character player, Tile[,] arrayWithRooms)
     {
         for (int i = 0; i < arrayWithRooms.GetLength(0); i++)
         {
@@ -38,7 +38,7 @@ class RoomHandler
         }
     }
 
-    public static void MovePlayer(Player player, Tile[,] arrayWithRooms)
+    public static void MovePlayer(Character player, Tile[,] arrayWithRooms)
     {
         ConsoleKeyInfo movement = Console.ReadKey(true);
         if (movement.Key == ConsoleKey.UpArrow && player.YPos > 0 && arrayWithRooms[player.YPos - 1, player.XPos].RoomIcon != "███")
@@ -59,12 +59,12 @@ class RoomHandler
         }
     }
 
-    public static void ActivateRoom(Player player, Tile[,] arrayWithRooms)
+    public static void ActivateRoom(Character player, Tile[,] arrayWithRooms)
     {
         arrayWithRooms[player.YPos,player.XPos].RunRoom(player);
     }
 
-    public static void RunEntireMap(Player player, Tile[,] arrayWithRooms)
+    public static void RunEntireMap(Character player, Tile[,] arrayWithRooms)
     {
         //Console.CursorVisible = false;
         while (player.CurrentHealth > 0)

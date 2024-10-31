@@ -18,7 +18,7 @@ public class Tile
         RoomState = false;
     }
 
-    public virtual void RunRoom(Player player)
+    public virtual void RunRoom(Character player)
     {
 
     }

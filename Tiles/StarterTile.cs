@@ -4,7 +4,7 @@ public class StarterTile : Tile
     {
     }
 
-    public override void RunRoom(Player player)
+    public override void RunRoom(Character player)
     {
         if (RoomState == false)
         {

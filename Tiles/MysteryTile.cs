@@ -5,7 +5,7 @@ class MysteryTile : RewardTile
     {
     }
 
-    public override void RunRoom(Player player)
+    public override void RunRoom(Character player)
     {
         if (RoomState == false)
         {
@@ -39,7 +39,7 @@ class MysteryTile : RewardTile
         }
     }
 
-    private void HandleReward(string rarityLevel, Random random, int hp, Player player)
+    private void HandleReward(string rarityLevel, Random random, int hp, Character player)
     {
         int badOrGood = random.Next(1,3);
         if (badOrGood == 1)

@@ -11,7 +11,7 @@ class EnemyTile : RewardTile
         Race = race;
     }
 
-    public override void RunRoom(Player player)
+    public override void RunRoom(Character player)
     {
         if (RoomState == false) // Never entered the room before!
         {
@@ -64,9 +64,9 @@ class EnemyTile : RewardTile
                             break;
                     }
                     iRace = new Goblin();
-                    
-                    //Enemy e = new Enemy(name,15*(int)Difficulty,iRace,10+random.Next(1,4),5*random.Next(1,4));
-                    //returnList.Add(e);
+                    ICombatHandler combatHandler = new MonsterCombatAI();
+                    Character e = new Character(name,15*(int)Difficulty,iRace,10+random.Next(1,4),5*random.Next(1,4),combatHandler);
+                    returnList.Add(e);
                     break;
             }
         }

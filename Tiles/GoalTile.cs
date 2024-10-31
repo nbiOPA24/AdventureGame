@@ -3,7 +3,7 @@ public class GoalTile : Tile
     public GoalTile() : base("Goal room", " ⚑ ")
     {
     }
-    public override void RunRoom(Player player)
+    public override void RunRoom(Character player)
     {
         if (RoomState == false)
         {

@@ -16,8 +16,8 @@ public class Program
                 Tile [,] rooms = MainRoom.GenerateRoom();
                 IRace race = new Human();
                 ICombatHandler playerCombatInterface = new PlayerCombatHandler();
-                Player player = MapHandler.PlayerStartPos(new ("Goku", 100, race, 15, 10,playerCombatInterface), rooms);  // Kan man inte lägga in så här istället: "new ("Goku", 100, new Human(), 15, 10)"
-                MainMap.RunEntireMap(player, rooms);
+                Character player = RoomHandler.PlayerStartPos(new ("Goku", 100, race, 15, 10,playerCombatInterface), rooms);  // Kan man inte lägga in så här istället: "new ("Goku", 100, new Human(), 15, 10)"
+                RoomHandler.RunEntireMap(player, rooms);
                 break;
             case 2: //Realistic experience
                 Console.Clear();
@@ -39,7 +39,7 @@ public class Program
                     // Start new game, creating a character.
                     
                     case 0:
-                        Player playerName = CreateCharacter();
+                        Character playerName = CreateCharacter();
                         Tile [,] gameMap = MainRoom.GenerateRoom();
                         playerName = RoomHandler.PlayerStartPos(playerName, gameMap);
                         GreetingNewPlayerMessage(playerName);
@@ -60,7 +60,7 @@ public class Program
         player.PlayLooping(); // Spelar musiken i en loop
     }
 
-    static Player CreateCharacter()
+    static Character CreateCharacter()
     {
         //string name,int startingHealth,IRace race,int baseDamage,int armor
         Utilities.CharByChar("Please enter a player name: ", 8, ConsoleColor.DarkBlue);
@@ -81,18 +81,18 @@ public class Program
             if (difficultyChoiceIndex == 0)
             {
                 //EASY
-                return new Player(name, 250, race, 40, 20,playerCombatInterface);
+                return new Character(name, 250, race, 40, 20,playerCombatInterface);
             }
             else if (difficultyChoiceIndex == 1)
             {
                 //MEDIUM
-                return new Player(name, 150, race, 30, 10,playerCombatInterface);
+                return new Character(name, 150, race, 30, 10,playerCombatInterface);
 
             }
             else if (difficultyChoiceIndex == 2)
             {
                 //HARD
-                return new Player(name, 80, race, 15, 4,playerCombatInterface);
+                return new Character(name, 80, race, 15, 4,playerCombatInterface);
             }
 
         }
@@ -105,7 +105,7 @@ public class Program
 
     }
 
-    static void GreetingNewPlayerMessage(Player player)
+    static void GreetingNewPlayerMessage(Character player)
     {
         Console.Clear();
         string greetMessage = @$"

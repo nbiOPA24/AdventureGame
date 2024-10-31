@@ -9,7 +9,7 @@ class PuzzleTile : RewardTile
         SecretAnswer = secretAnswer;
     }
 
-    public override void RunRoom(Player player)
+    public override void RunRoom(Character player)
     {
         if (RoomState == false)
         {
