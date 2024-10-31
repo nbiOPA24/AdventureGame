@@ -4,12 +4,12 @@ public class StarterTile : Tile
     {
     }
 
-    public override void RunRoom(Character player)
+    public override void RunTile(Character player)
     {
-        if (RoomState == false)
+        if (TileState == false)
         {
             Console.WriteLine("Welcome, adventurer! This is where your journey begins. Take a deep breath and step boldly into the unknown. Good luck!");
-            RoomState = true;
+            TileState = true;
         }
         else
         {

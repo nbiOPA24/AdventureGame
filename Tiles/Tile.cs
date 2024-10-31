@@ -1,24 +1,24 @@
 public class Tile
 {
-    public string RoomName {get;set;}
-    public bool RoomState {get;set;} 
-    public string RoomIcon {get; set;}
+    public string TileName {get;set;}
+    public bool TileState {get;set;} 
+    public string TileIcon {get; set;}
 
-    public Tile(string roomName, string roomIcon)
+    public Tile(string tileName, string tileIcon)
     {
-        RoomName = roomName;
-        RoomIcon = roomIcon;
-        RoomState = false;
+        TileName = tileName;
+        TileIcon = tileIcon;
+        TileState = false;
     }
 
     public Tile()
     {
-        RoomName = "Empty Room";
-        RoomIcon = "   ";
-        RoomState = false;
+        TileName = "Empty Tile";
+        TileIcon = "   ";
+        TileState = false;
     }
 
-    public virtual void RunRoom(Character player)
+    public virtual void RunTile(Character player)
     {
 
     }
@@ -27,5 +27,5 @@ public class Tile
 
 interface IRoom
 {
-    void RunRoom();
+    void RunTile();
 }

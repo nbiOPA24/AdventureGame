@@ -1,13 +1,13 @@
 class MysteryTile : RewardTile
 {
 
-    public MysteryTile(string roomName, int reward) : base(roomName, " ? ", reward)
+    public MysteryTile(string tileName, int reward) : base(tileName, " ? ", reward)
     {
     }
 
-    public override void RunRoom(Character player)
+    public override void RunTile(Character player)
     {
-        if (RoomState == false)
+        if (TileState == false)
         {
             Random random = new Random();
             int rndNr = random.Next(1,10000);
@@ -31,7 +31,7 @@ class MysteryTile : RewardTile
                 int hp = 50;
                 HandleReward("very rare", random, hp, player);
             }
-            RoomState = true;
+            TileState = true;
         }
         else
         {

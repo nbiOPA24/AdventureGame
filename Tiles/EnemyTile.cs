@@ -4,22 +4,22 @@ class EnemyTile : RewardTile
     public DifficultyLevel Difficulty {get; set;}
     public string Race {get; set;}
     
-    public EnemyTile(string roomName, int reward, int nrOfEnemies, DifficultyLevel difficulty, string race) : base(roomName, " ☠ ", reward)
+    public EnemyTile(string tileName, int reward, int nrOfEnemies, DifficultyLevel difficulty, string race) : base(tileName, " ☠ ", reward)
     {
         NrOfEnemies = nrOfEnemies;
         Difficulty = difficulty;
         Race = race;
     }
 
-    public override void RunRoom(Character player)
+    public override void RunTile(Character player)
     {
-        if (RoomState == false) // Never entered the room before!
+        if (TileState == false) // Never entered the tile before!
         {
             string encounterMessage = $"As you step into the enemy lair, {NrOfEnemies} fierce foes appear, blocking your path!";
             Success = CombatHandler.RunCombatScenario(CreateEnemies(),player,encounterMessage);
-            RoomState = true;
+            TileState = true;
         }
-        else // Entered the room before
+        else // Entered the tile before
         {
             if (!Success)
             {
