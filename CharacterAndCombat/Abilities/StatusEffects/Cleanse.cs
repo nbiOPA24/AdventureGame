@@ -8,19 +8,21 @@ public class Cleanse : CombatEffect
 
     public override void ApplyEffect(Character character)
     {   
-
-        character.IsImmune = true;
+        for(int i = 0 ; i< character.CurrentStatusEffects.Count;i++)
+        {
+            foreach(eCombatEffect effect in TypesToCleanse)
+            {
+                if(character.CurrentStatusEffects[i].Type == effect)
+                {
+                    character.ClearEffect(character.CurrentStatusEffects[i]);
+                }
+            }
+        }
+       
         
     }
-    public override void PrintApplication(Character character)
-    {
-        Console.Write($"{character.Name} is ");
-        Utilities.ConsoleWriteColor("Immune",ConsoleColor.DarkMagenta);
-        Console.WriteLine($" for {Duration} rounds");
-    }
-
     public override CombatEffect CloneEffect()
     {
-        return new Immune(Duration);
+        return new Cleanse(TypesToCleanse);
     }
 }
