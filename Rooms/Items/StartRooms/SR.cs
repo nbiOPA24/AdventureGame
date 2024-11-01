@@ -1,9 +1,9 @@
-public class StarterRoom : Room
+public class SR : Room
 {
-    public Tile[,] StartRoom {get;set;}
-    public StarterRoom()
+    public Tile[,] Room {get;set;}
+    public SR()
     {
-        StartRoom = GenerateRoom();
+        Room = GenerateRoom();
     }
     public Tile[,] GenerateRoom()
     {
@@ -11,17 +11,18 @@ public class StarterRoom : Room
         Tile e = new Tile();
         Tile o = new ObstacleTile();
         Tile d = new DoorTile();
+        Tile m = new MysteryTile(10);
 
 
         Tile[,] starterRoom = new Tile [,]
         {
-            { o, o , o , o , d , o , o , o , o },
+            { o, o , o , o , e , o , o , o , o },
             { o, e , e , e , e , e , e , e , o },
             { o, e , e , e , e , e , e , e , o },
-            { d, s , e , e , e , e , e , e , d },  // d2 
-            { o, e , e , e , e , e , e , e , o },   //
+            { o, s , e , e , m , e , e , e , e },    
+            { o, e , e , e , e , e , e , e , o },   
             { o, e , e , e , e , e , e , e , o },
-            { o, o , o , o , d , o , o , o , o }
+            { o, o , o , o , e , o , o , o , o }
 
         };
         

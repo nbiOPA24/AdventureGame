@@ -1,4 +1,4 @@
-class RoomHandler
+class MapHandler
 {
     public static Character PlayerStartPos(Character player, Tile[,] arrayWithRooms)
     {

@@ -1,7 +1,7 @@
 class MysteryTile : RewardTile
 {
 
-    public MysteryTile(string tileName, int reward) : base(tileName, " ? ", reward)
+    public MysteryTile(int reward) : base("Mystery Gift", " ? ", reward)
     {
     }
 
@@ -45,13 +45,13 @@ class MysteryTile : RewardTile
         if (badOrGood == 1)
         {
             Console.WriteLine($"You get a {rarityLevel} good reward! Your health increases by {hp} points.");
-            player.CurrentHealth += hp; // Kontrollera att det inte är större än maxHP
+            player.CurrentHealth += hp + Reward; // Kontrollera att det inte är större än maxHP
         }
 
         else
         {
             Console.WriteLine($"You get a {rarityLevel} bad reward! Your health decreases by {hp} points.");
-            player.CurrentHealth -= hp;
+            player.CurrentHealth -= hp + Reward;
         }
     }
 }
