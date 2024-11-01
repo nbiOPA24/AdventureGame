@@ -16,12 +16,12 @@ public class CR : Room
         Tile[,] crossRoom = new Tile [,]
         {
             { o, o , o , o , e , o , o , o , o },
-            { o, e , e , e , e , e , e , e , o },
-            { o, e , e , e , e , e , e , e , o },
+            { o, e , e , e , e , e , e , e , e },
+            { o, e , e , e , e , e , e , e , e },
             { e, e , e , e , e , e , e , e , e },
-            { o, e , e , e , e , e , e , e , o },
-            { o, e , e , e , e , e , e , e , o },
-            { o, o , o , o , e , o , o , o , o }
+            { o, e , e , e , e , e , e , e , e },
+            { o, e , e , e , e , e , e , e , e },
+            { o, e , e , e , e , e , e , e , e }
 
         };
         return crossRoom;

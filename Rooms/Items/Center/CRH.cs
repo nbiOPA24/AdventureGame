@@ -1,7 +1,7 @@
-public class CRE : Room
+public class CRH : Room
 {
     public Tile[,] Room {get; set;}
-    public CRE()
+    public CRH()
     {
         Room = GenerateRoom();
     }
@@ -9,10 +9,10 @@ public class CRE : Room
     {
         Tile e = new Tile();
         Tile o = new ObstacleTile();
-        Tile x = new EnemyTile("Monsters", 10, 3, DifficultyLevel.Easy, "Goblin");
+        Tile x = new EnemyTile("Monsters", 10, 3, DifficultyLevel.Hard, "Goblin");
 
 
-        Tile[,] crossRoomEasy = new Tile [,]
+        Tile[,] crossRoomHard = new Tile [,]
         {
             { o, o , o , o , e , o , o , o , o },
             { o, e , e , e , e , e , e , e , e },
@@ -22,6 +22,6 @@ public class CRE : Room
             { o, e , e , e , e , e , e , e , e },
             { o, e , e , e , e , e , e , e , e },
         };
-        return crossRoomEasy;
+        return crossRoomHard;
     }
 }
