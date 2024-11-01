@@ -18,12 +18,8 @@ public class Freeze : CombatEffect
             Utilities.ConsoleWriteColor("Frozen",ConsoleColor.Blue);
             Console.WriteLine($" for {Duration} rounds");
     }
-        public override void AfterTurn(Character character)
+    public override void AfterTurn(Character character)
     {
-        Console.Write($"{character.Name} is ");
-        Utilities.ConsoleWriteColor("Frozen ",ConsoleColor.Blue);
-        Console.WriteLine($" and thus unable to act, {Duration} rounds remaining");
-        character.AbleToAct = false;
         //reduces duration by 1round if its not the first round
         if(!FirstRound)
         {
@@ -36,6 +32,13 @@ public class Freeze : CombatEffect
         {
             FirstRound = false;
         }
+    }
+    public override void AfterRound(Character character)
+    {
+        Utilities.ConsoleWriteColor(character.Name,character.NameColor);
+        Console.Write(" is ");
+        Utilities.ConsoleWriteColor("Frozen ",ConsoleColor.Blue);
+        Console.WriteLine($"for {Duration}more rounds");
     }
     public override CombatEffect CloneEffect()
     {

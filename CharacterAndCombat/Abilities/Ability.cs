@@ -5,13 +5,18 @@ public class Ability
     public string Name {get;set;}
     public List<CombatEffect> CombatEffects {get;set;}
     public TargetType Target {get;set;}
+    public int CoolDownTimer {get;set;}
+    public int CurrentCooldown {get;set;}
 
     
-    public Ability(string name,TargetType target)
+    public Ability(string name,TargetType target,int cooldown)
     {
         Name = name;
         CombatEffects = new();
         Target = target;
+        CoolDownTimer = cooldown+1;
+        CurrentCooldown = cooldown+1;
+
     }
 
     public void AddFreezeEffect(int duration)

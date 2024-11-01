@@ -173,6 +173,8 @@ public static  class CombatHandler
                 Console.WriteLine("New TargetType noticed check your code");
                 break;
         }
+        //starts the cooldown roundtimer for the ability
+        a.CurrentCooldown = 0;
     }
     //uses ability on a target
     public static void UseAbilityOn(Character self,Character target ,Ability a,ConsoleColor colorSelf,ConsoleColor colorTarget)
@@ -230,6 +232,7 @@ public static  class CombatHandler
     }
     public static void AfterRound(Character character)
     {
+        //loops through the afterRound methods of combateffects
         if(character.CurrentStatusEffects.Count > 0)
         {
             for(int i = 0; i < character.CurrentStatusEffects.Count ; i++)
@@ -241,8 +244,15 @@ public static  class CombatHandler
                     character.CurrentStatusEffects.RemoveAt(i);
                 }
             }
-            
             //Console.ReadKey(true);
+        }
+        //Ability is 1 round closer to ready
+        foreach(Ability a in character.ChosenAbilities)
+        {
+            if(a.CurrentCooldown < a.CoolDownTimer)
+            {
+                a.CurrentCooldown++;    
+            }
         }
     }
     public static void EndOfRound(CombatSession session)

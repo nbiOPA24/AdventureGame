@@ -71,7 +71,7 @@ public class Program
         int raceTypeIndex = Utilities.PickIndexFromList(raceType, "Please Choose your race!");
         List<IRace> races = new() {new Human(), new Dwarf(), new Elf()};
         IRace race = races[raceTypeIndex];
-        Ability HellBeam = new Ability("HellBeam",TargetType.Enemy);
+        Ability HellBeam = new Ability("HellBeam",TargetType.Enemy,1);
         HellBeam.AddDamageEffect(10);
         Character player;
 
