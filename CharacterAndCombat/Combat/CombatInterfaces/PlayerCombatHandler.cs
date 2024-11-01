@@ -79,11 +79,83 @@ public class PlayerCombatHandler : ICombatHandler
         }
         return returnAbility;
     }
-    public Character ChooseEnemyTarget(List<Character> potentialTargets)
+public Character ChooseEnemyTarget(List<Character> potentialTargets)
+{
+    int markedIndex = 0;
+    bool stillChoosing = true;
+
+    while (stillChoosing)
     {
-        int index = Utilities.PickIndexFromList(Utilities.ToStringList(potentialTargets),"Who do you want to attack");
-        return potentialTargets[index];
+        Console.Clear();
+        Console.WriteLine("Who do you want to attack?");
+        
+        for (int i = 0; i < potentialTargets.Count; i++)
+        {
+            
+            Character target = potentialTargets[i];
+            if (i == markedIndex)
+            {
+                Utilities.ConsoleWriteColor("*", ConsoleColor.Blue);
+                Utilities.ConsoleWriteColor(target.Name, ConsoleColor.DarkRed);
+                Utilities.ConsoleWriteColor($"   [{target.CurrentHealth}/{target.MaxHealth}]",ConsoleColor.Red);
+                CombatHandler.PrintAllEffectIcons(target);
+                Utilities.ConsoleWriteLineColor("*", ConsoleColor.Blue);
+            }
+            else
+            {
+                Utilities.ConsoleWriteColor(target.Name, ConsoleColor.DarkRed);
+                Utilities.ConsoleWriteColor($"   [{target.CurrentHealth}/{target.MaxHealth}]",ConsoleColor.Red);
+                CombatHandler.PrintAllEffectIcons(target);
+                Console.WriteLine();
+            }
+        }
+
+        ConsoleKeyInfo pressedKey = Console.ReadKey(true);
+        switch (pressedKey.Key)
+        {
+            case ConsoleKey.W:
+            case ConsoleKey.UpArrow:
+                if (markedIndex > 0) markedIndex--;
+                break;
+            case ConsoleKey.S:
+            case ConsoleKey.DownArrow:
+                if (markedIndex < potentialTargets.Count - 1) markedIndex++;
+                break;
+            case ConsoleKey.Enter:
+                stillChoosing = false;
+                break;
+        }
+    }
+    
+    return potentialTargets[markedIndex];
+}
+
+    public void UpdateCombatState()
+    {
+        //Dont implement for player
+        throw new NotImplementedException();
     }
 
+    public Ability ChooseOffensiveAbility()
+    {
+        //Dont implement for player
+        throw new NotImplementedException();
+    }
 
+    public Ability ChooseDefensiveAbility()
+    {
+        //Dont implement for player
+        throw new NotImplementedException();
+    }
+
+    public Ability ChooseSupportiveAbility()
+    {
+        //Dont implement for player
+        throw new NotImplementedException();
+    }
+
+    public Character ChooseFriendlyTarget(List<Character> potentialTargets)
+    {
+        throw new NotImplementedException();
+    }
 }
