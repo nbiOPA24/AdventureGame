@@ -1,4 +1,4 @@
-class RoomHandler
+class MapHandler
 {
     public static Character PlayerStartPos(Character player, Tile[,] arrayWithRooms)
     {
@@ -6,7 +6,7 @@ class RoomHandler
         {
             for(int j = 0; j < arrayWithRooms.GetLength(1); j++)
             {
-                if (arrayWithRooms[i,j].RoomName == "Start")
+                if (arrayWithRooms[i,j].TileName == "Start")
                 {
                     player.YPos = i;
                     player.XPos = j;
@@ -31,7 +31,7 @@ class RoomHandler
 
                 else
                 {
-                    Console.Write(arrayWithRooms[i,j].RoomIcon);   
+                    Console.Write(arrayWithRooms[i,j].TileIcon);   
                 }
             }
             Console.WriteLine();
@@ -41,19 +41,19 @@ class RoomHandler
     public static void MovePlayer(Character player, Tile[,] arrayWithRooms)
     {
         ConsoleKeyInfo movement = Console.ReadKey(true);
-        if (movement.Key == ConsoleKey.UpArrow && player.YPos > 0 && arrayWithRooms[player.YPos - 1, player.XPos].RoomIcon != "███")
+        if (movement.Key == ConsoleKey.UpArrow && player.YPos > 0 && arrayWithRooms[player.YPos - 1, player.XPos].TileIcon != "███")
         {
             player.YPos--;
         }
-        if (movement.Key == ConsoleKey.DownArrow && player.YPos < arrayWithRooms.GetLength(0)-1 && arrayWithRooms[player.YPos + 1, player.XPos].RoomIcon != "███")
+        if (movement.Key == ConsoleKey.DownArrow && player.YPos < arrayWithRooms.GetLength(0)-1 && arrayWithRooms[player.YPos + 1, player.XPos].TileIcon != "███")
         {
             player.YPos++;
         }
-        if (movement.Key == ConsoleKey.LeftArrow && player.XPos > 0 && arrayWithRooms[player.YPos, player.XPos - 1].RoomIcon != "███")
+        if (movement.Key == ConsoleKey.LeftArrow && player.XPos > 0 && arrayWithRooms[player.YPos, player.XPos - 1].TileIcon != "███")
         {
             player.XPos--;
         }
-        if (movement.Key == ConsoleKey.RightArrow && player.XPos < arrayWithRooms.GetLength(1)-1 && arrayWithRooms[player.YPos, player.XPos + 1].RoomIcon != "███")
+        if (movement.Key == ConsoleKey.RightArrow && player.XPos < arrayWithRooms.GetLength(1)-1 && arrayWithRooms[player.YPos, player.XPos + 1].TileIcon != "███")
         {
             player.XPos++;
         }
@@ -61,7 +61,7 @@ class RoomHandler
 
     public static void ActivateRoom(Character player, Tile[,] arrayWithRooms)
     {
-        arrayWithRooms[player.YPos,player.XPos].RunRoom(player);
+        arrayWithRooms[player.YPos,player.XPos].RunTile(player);
     }
 
     public static void RunEntireMap(Character player, Tile[,] arrayWithRooms)

@@ -1,3 +1,4 @@
+
 public static class MainRoom
 {
     public static Tile[,] GenerateRoom()
@@ -16,15 +17,15 @@ public static class MainRoom
         #endregion
 
         #region MysterRooms
-        Tile m1 = new MysteryTile("hej",10);
-        Tile m2 = new MysteryTile("hej",10);
-        Tile m3 = new MysteryTile("hej",10);
-        Tile m4 = new MysteryTile("hej",10);
-        Tile m5 = new MysteryTile("hej",10);
-        Tile m6 = new MysteryTile("hej",10);
-        Tile m7 = new MysteryTile("hej",10);
-        Tile m8 = new MysteryTile("hej",10);
-        Tile m9 = new MysteryTile("hej",10);
+        Tile m1 = new MysteryTile(10);
+        Tile m2 = new MysteryTile(10);
+        Tile m3 = new MysteryTile(10);
+        Tile m4 = new MysteryTile(10);
+        Tile m5 = new MysteryTile(10);
+        Tile m6 = new MysteryTile(10);
+        Tile m7 = new MysteryTile(10);
+        Tile m8 = new MysteryTile(10);
+        Tile m9 = new MysteryTile(10);
         #endregion
 
         #region PuzzleRooms

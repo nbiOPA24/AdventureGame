@@ -3,15 +3,15 @@ class PuzzleTile : RewardTile
     public string Question { get; set; }
     public string SecretAnswer { get; set; }
 
-    public PuzzleTile(string roomName, int reward, string question, string secretAnswer) : base(roomName, " ⌘ ", reward)
+    public PuzzleTile(string tileName, int reward, string question, string secretAnswer) : base(tileName, " ⌘ ", reward)
     {
         Question = question;
         SecretAnswer = secretAnswer;
     }
 
-    public override void RunRoom(Character player)
+    public override void RunTile(Character player)
     {
-        if (RoomState == false)
+        if (TileState == false)
         {
             Console.WriteLine("You enter a room filled with mystery. To proceed, you must solve the puzzle that lies before you. Think carefully, adventurer, for the path forward depends on your wits.");
             Console.WriteLine(Question);
@@ -30,12 +30,12 @@ class PuzzleTile : RewardTile
                 Success = false;
             }
 
-            RoomState = true;
+            TileState = true;
         }
         else
         {
-            string roomStatus = Success ? "succeeded": "failed";
-            Console.WriteLine($"The puzzle has already been {roomStatus}. The room feels quieter now, as if waiting for the next adventurer to test their mind.");
+            string tileStatus = Success ? "succeeded": "failed";
+            Console.WriteLine($"The puzzle has already been {tileStatus}. The area feels quieter now, as if waiting for the next adventurer to test their mind.");
         }
     }
 }

@@ -13,12 +13,6 @@ public class Program
             case 1:
                 Test.RunTest();
                 return;
-                Tile [,] rooms = MainRoom.GenerateRoom();
-                IRace race = new Human();
-                ICombatHandler playerCombatInterface = new PlayerCombatHandler();
-                Character player = RoomHandler.PlayerStartPos(new ("Goku", 100, race, 15, 10,playerCombatInterface,ConsoleColor.Cyan), rooms);  // Kan man inte lägga in så här istället: "new ("Goku", 100, new Human(), 15, 10)"
-                RoomHandler.RunEntireMap(player, rooms);
-                break;
             case 2: //Realistic experience
                 Console.Clear();
                 PlayBackgroundMusic();
@@ -41,9 +35,9 @@ public class Program
                     case 0:
                         Character playerName = CreateCharacter();
                         Tile [,] gameMap = MainRoom.GenerateRoom();
-                        playerName = RoomHandler.PlayerStartPos(playerName, gameMap);
+                        playerName = MapHandler.PlayerStartPos(playerName, gameMap);
                         GreetingNewPlayerMessage(playerName);
-                        RoomHandler.RunEntireMap(playerName, gameMap);
+                        MapHandler.RunEntireMap(playerName, gameMap);
                         break;
                     case 1:
                         break;

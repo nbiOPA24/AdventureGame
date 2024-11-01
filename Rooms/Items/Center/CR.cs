@@ -1,6 +1,12 @@
-public class CrossRoom : Room
+public class CR : Room
 {
-    public Tile[,] GenerateRoom()
+    public Tile [,] Room {get;set;}
+
+    public CR()
+    {
+        Room = GeneratRoom();
+    }
+    public Tile[,] GeneratRoom()
     {
         Tile s = new StarterTile();
         Tile e = new Tile();

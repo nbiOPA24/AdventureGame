@@ -1,14 +1,14 @@
 public class GoalTile : Tile
 {
-    public GoalTile() : base("Goal room", " ⚑ ")
+    public GoalTile() : base("Goal tile", " ⚑ ")
     {
     }
-    public override void RunRoom(Character player)
+    public override void RunTile(Character player)
     {
-        if (RoomState == false)
+        if (TileState == false)
         {
             Console.WriteLine("Congratulations, adventurer! You've reached your goal! Take a moment to celebrate your victory. [✓]");
-            RoomState = true;
+            TileState = true;
             // Avsluta spelet? Return to mainMenu med en Thread.Sleep?
         }
         else

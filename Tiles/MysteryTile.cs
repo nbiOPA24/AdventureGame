@@ -1,13 +1,13 @@
 class MysteryTile : RewardTile
 {
 
-    public MysteryTile(string roomName, int reward) : base(roomName, " ? ", reward)
+    public MysteryTile(int reward) : base("Mystery Gift", " ? ", reward)
     {
     }
 
-    public override void RunRoom(Character player)
+    public override void RunTile(Character player)
     {
-        if (RoomState == false)
+        if (TileState == false)
         {
             Random random = new Random();
             int rndNr = random.Next(1,10000);
@@ -31,7 +31,7 @@ class MysteryTile : RewardTile
                 int hp = 50;
                 HandleReward("very rare", random, hp, player);
             }
-            RoomState = true;
+            TileState = true;
         }
         else
         {
@@ -45,13 +45,13 @@ class MysteryTile : RewardTile
         if (badOrGood == 1)
         {
             Console.WriteLine($"You get a {rarityLevel} good reward! Your health increases by {hp} points.");
-            player.CurrentHealth += hp; // Kontrollera att det inte är större än maxHP
+            player.CurrentHealth += hp + Reward; // Kontrollera att det inte är större än maxHP
         }
 
         else
         {
             Console.WriteLine($"You get a {rarityLevel} bad reward! Your health decreases by {hp} points.");
-            player.CurrentHealth -= hp;
+            player.CurrentHealth -= hp + Reward;
         }
     }
 }
