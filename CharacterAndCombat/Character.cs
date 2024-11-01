@@ -7,6 +7,7 @@ public class Character
     public int MaxHealth {get;set;}
     public int BaseDamage {get;set;}
     public int Armor {get;set;}
+    public int TempArmor {get;set;}
     public int Shield{get;set;}
     public IRace Race {get;set;}
     public int XPos {get;set;}
@@ -42,6 +43,8 @@ public class Character
         ICombatHandler = icombatHandler;
         Shield = 0;
         NameColor = nameColor;
+        TempArmor = 0;
+
     }
 
 
@@ -80,7 +83,8 @@ public class Character
     }
     public int ReduceDamageByArmor(int unmitigatedDamage)
     {
-        double percentageReduction =  (double)Armor/(Armor+25);
+        int totalArmor = Armor+TempArmor;
+        double percentageReduction =  (double)totalArmor/(totalArmor+50);
         int trueDamage = (int)(unmitigatedDamage*(1-percentageReduction));
         return trueDamage;
     }
