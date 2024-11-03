@@ -18,10 +18,10 @@ public class Character
     public List<CombatEffect> CurrentStatusEffects {get;set;}
     public Inventory Inventory {get;set;}
     public bool AbleToAct {get;set;}
-    public ICombatHandler ICombatHandler {get;set;}
+    public ICombatSelection ICombatHandler {get;set;}
     public int StartingHealth { get; }
 
-    public Character(string name,int startingHealth,int baseDamage,int armor,ICombatHandler icombatHandler,ConsoleColor nameColor)
+    public Character(string name,int startingHealth,int baseDamage,int armor,ICombatSelection icombatHandler,ConsoleColor nameColor)
     {
         AbleToAct = true;
         CurrentHealth = startingHealth;

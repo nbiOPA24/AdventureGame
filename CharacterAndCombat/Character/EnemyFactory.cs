@@ -3,14 +3,14 @@ public static class EnemyFactory
 
 
 
-    public static Character GenerateEnemy(string inputName,EnemyType enemyType )
+    public static Character GenerateEnemy(string inputName,EnemyType enemyType ,ConsoleColor selfColor)
     {
         string name = inputName;
         Character character = null;;
         switch(enemyType)
         {
             case EnemyType.Supportive:
-                ICombatHandler ai = new EnemySupportAI();
+                ICombatSelection ai = new EnemySupportAI();
                 Ability guard = new Ability("Guard",TargetType.Self,0,AbilityType.DefensiveSelf);
                 guard.AddArmorBuffEffect(5,3);
                 Ability healSelf = new Ability("Heal Self",TargetType.Self,2,AbilityType.HealingSelf);
@@ -19,15 +19,17 @@ public static class EnemyFactory
                 healOther.AddHealingEffect(10);
                 Ability stickSlam = new Ability("Stick Slam",TargetType.Enemy,0,AbilityType.Offensive);
                 stickSlam.AddDamageEffect(5);
-                Ability superStickSlam = new Ability("Super Stick Slam",TargetType.Enemy,0,AbilityType.Offensive);
-                stickSlam.AddDamageEffect(10);
-                character = new(name,25,5,10,ai,ConsoleColor.DarkRed);
+                Ability poisonDart = new Ability("Poison Dart",TargetType.Enemy,3,AbilityType.Offensive);
+                poisonDart.AddDamageEffect(10);
+                poisonDart.AddPoisonEffect(5,5);
+                character = new(name,25,5,10,ai,selfColor);
                 character.Abilities.Add(guard);
                 character.Abilities.Add(healOther);
                 character.Abilities.Add(healSelf);
                 character.Abilities.Add(stickSlam);
-                character.Abilities.Add(superStickSlam);
+                character.Abilities.Add(poisonDart);
                 character.ICombatHandler.AbilityList = character.Abilities;
+                character.ICombatHandler.Self = character;
                 break;
         }
         return character;

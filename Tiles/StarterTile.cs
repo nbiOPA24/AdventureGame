@@ -4,7 +4,7 @@ public class StarterTile : Tile
     {
     }
 
-    public override void RunTile(Character player)
+    public override void RunTile(List<Character> playerList)
     {
         if (TileState == false)
         {

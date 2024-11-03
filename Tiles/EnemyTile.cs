@@ -11,12 +11,12 @@ class EnemyTile : RewardTile
         Race = race;
     }
 
-    public override void RunTile(Character player)
+    public override void RunTile(List<Character> playerList)
     {
         if (TileState == false) // Never entered the tile before!
         {
             string encounterMessage = $"As you step into the enemy lair, {NrOfEnemies} fierce foes appear, blocking your path!";
-            Success = CombatHandler.RunCombatScenario(CreateEnemies(),player,encounterMessage);
+            Success = CombatHandler.RunCombatScenario(CreateEnemies(),playerList,encounterMessage);
             TileState = true;
         }
         else // Entered the tile before
@@ -24,7 +24,7 @@ class EnemyTile : RewardTile
             if (!Success)
             {
                 string encounterMessage = $"\"Ah, it's you again! You weak and pitiful human, fleeing from us last time. You should have stayed away, coward!\"";
-                Success = CombatHandler.RunCombatScenario(CreateEnemies(),player,encounterMessage);
+                Success = CombatHandler.RunCombatScenario(CreateEnemies(),playerList,encounterMessage);
             }
             else
             {
@@ -62,7 +62,7 @@ class EnemyTile : RewardTile
                         name = "Goblin tamer";
                             break;
                     }
-                    ICombatHandler combatHandler = new EnemySupportAI();
+                    ICombatSelection combatHandler = new EnemySupportAI();
                     Character e = new Character(name,15*(int)Difficulty,10+random.Next(1,4),5*random.Next(1,4),combatHandler,ConsoleColor.DarkGray);
                     returnList.Add(e);
                     break;

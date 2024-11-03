@@ -33,11 +33,15 @@ public class Program
                     // Start new game, creating a character.
                     
                     case 0:
-                        Character playerName = CreateCharacter();
+                        Character newPlayer = CreateCharacter();
+                        List<Character> playerList = new()
+                        {
+                            newPlayer
+                        };
                         Tile [,] gameMap = MainRoom.GenerateRoom();
-                        playerName = MapHandler.PlayerStartPos(playerName, gameMap);
-                        GreetingNewPlayerMessage(playerName);
-                        MapHandler.RunEntireMap(playerName, gameMap);
+                        newPlayer = MapHandler.PlayerStartPos(newPlayer, gameMap);
+                        GreetingNewPlayerMessage(newPlayer);
+                        MapHandler.RunEntireMap(playerList, gameMap);
                         break;
                     case 1:
                         break;
@@ -68,7 +72,7 @@ public class Program
         int difficultyChoiceIndex = Utilities.PickIndexFromList(gameDifficulty, "Please Choose a difficulty!");
         try
         {
-            ICombatHandler playerCombatInterface = new PlayerCombatHandler();
+            ICombatSelection playerCombatInterface = new PlayerCombatSelector();
             if (difficultyChoiceIndex == 0)
             {
                 //EASY

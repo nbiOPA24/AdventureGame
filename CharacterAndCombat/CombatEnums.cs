@@ -26,6 +26,7 @@ public enum CombatState
     Offensive,
     Defensive,
     Supportive,
+    Default,
 }
 public enum TargetType
 {

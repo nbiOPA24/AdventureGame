@@ -59,22 +59,22 @@ class MapHandler
         }
     }
 
-    public static void ActivateRoom(Character player, Tile[,] arrayWithRooms)
+    public static void ActivateRoom(List<Character> playerList, Tile[,] arrayWithRooms)
     {
-        arrayWithRooms[player.YPos,player.XPos].RunTile(player);
+        arrayWithRooms[playerList[0].YPos,playerList[0].XPos].RunTile(playerList);
     }
 
-    public static void RunEntireMap(Character player, Tile[,] arrayWithRooms)
+    public static void RunEntireMap(List<Character> playerList, Tile[,] arrayWithRooms)
     {
         //Console.CursorVisible = false;
-        while (player.CurrentHealth > 0)
+        while (playerList[0].CurrentHealth > 0)
         {
             Console.Clear();
             Console.WriteLine($"{"Name",-8} {"Race",-8} {"HP",-5} {"Damage",-7} {"Armor",-6} {"Cords",-7}");
-            Console.WriteLine($"{player.Name,-8} {player.CurrentHealth,-5} {player.BaseDamage,-7} {player.Armor,-6} [{player.YPos},{player.XPos}]");
-            DrawMap(player, arrayWithRooms);
-            ActivateRoom(player,arrayWithRooms);
-            MovePlayer(player, arrayWithRooms);
+            Console.WriteLine($"{playerList[0].Name,-8} {playerList[0].CurrentHealth,-5} {playerList[0].BaseDamage,-7} {playerList[0].Armor,-6} [{playerList[0].YPos},{playerList[0].XPos}]");
+            DrawMap(playerList[0], arrayWithRooms);
+            ActivateRoom(playerList,arrayWithRooms);
+            MovePlayer(playerList[0], arrayWithRooms);
 
         }
     }

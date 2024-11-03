@@ -18,7 +18,7 @@ public class Tile
         TileState = false;
     }
 
-    public virtual void RunTile(Character player)
+    public virtual void RunTile(List<Character> playerList)
     {
 
     }
