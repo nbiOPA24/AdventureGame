@@ -71,7 +71,7 @@ class MapHandler
         {
             Console.Clear();
             Console.WriteLine($"{"Name",-8} {"Race",-8} {"HP",-5} {"Damage",-7} {"Armor",-6} {"Cords",-7}");
-            Console.WriteLine($"{player.Name,-8} {player.Race,-8} {player.CurrentHealth,-5} {player.BaseDamage,-7} {player.Armor,-6} [{player.YPos},{player.XPos}]");
+            Console.WriteLine($"{player.Name,-8} {player.CurrentHealth,-5} {player.BaseDamage,-7} {player.Armor,-6} [{player.YPos},{player.XPos}]");
             DrawMap(player, arrayWithRooms);
             ActivateRoom(player,arrayWithRooms);
             MovePlayer(player, arrayWithRooms);

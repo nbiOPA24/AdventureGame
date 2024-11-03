@@ -23,7 +23,7 @@ class EnemyTile : RewardTile
         {
             if (!Success)
             {
-                string encounterMessage = $"\"Ah, it's you again! You weak and pitiful {player.Race}, fleeing from us last time. You should have stayed away, coward!\"";
+                string encounterMessage = $"\"Ah, it's you again! You weak and pitiful human, fleeing from us last time. You should have stayed away, coward!\"";
                 Success = CombatHandler.RunCombatScenario(CreateEnemies(),player,encounterMessage);
             }
             else
@@ -40,7 +40,6 @@ class EnemyTile : RewardTile
         for(int i = 0; i< NrOfEnemies ; i++)
         {
             string name="";
-            IRace iRace;
             switch(Race.ToUpper())
             {
                 case "GOBLIN":
@@ -63,9 +62,8 @@ class EnemyTile : RewardTile
                         name = "Goblin tamer";
                             break;
                     }
-                    iRace = new Goblin();
-                    ICombatHandler combatHandler = new GoblinShamanAI();
-                    Character e = new Character(name,15*(int)Difficulty,iRace,10+random.Next(1,4),5*random.Next(1,4),combatHandler,ConsoleColor.DarkGray);
+                    ICombatHandler combatHandler = new EnemySupportAI();
+                    Character e = new Character(name,15*(int)Difficulty,10+random.Next(1,4),5*random.Next(1,4),combatHandler,ConsoleColor.DarkGray);
                     returnList.Add(e);
                     break;
             }

@@ -44,9 +44,12 @@ public static  class CombatHandler
             }
             //ALL enemies take their turn
             EnemiesTurn(currentSession);
+            RemoveDeadEnemies(enemyList);
 
             //Resolve end of round stuff (statuseffectupdates etc.)
             EndOfRound(currentSession);
+            RemoveDeadEnemies(enemyList);
+            currentSession.CurrentRound++;
         }
         //Checks if player is alive after the Combat has finnished
         if(player.CurrentHealth > 0 )
@@ -136,7 +139,7 @@ public static  class CombatHandler
     {  
         if(self.AbleToAct) //if not frozen or otherwise hindered
         {
-            Ability chosenAbility = self.ICombatHandler.SelectAbility(self.ChosenAbilities);  //selects the ability to use
+            Ability chosenAbility = self.ICombatHandler.SelectAbility();  //selects the ability to use
             ExecuteAbilityOnTarget(self,chosenAbility,targetList,enemyColor); //handles targeting. who will it affect
         }
         else
@@ -247,7 +250,7 @@ public static  class CombatHandler
             //Console.ReadKey(true);
         }
         //Ability is 1 round closer to ready
-        foreach(Ability a in character.ChosenAbilities)
+        foreach(Ability a in character.Abilities)
         {
             if(a.CurrentCooldown < a.CoolDownTimer)
             {

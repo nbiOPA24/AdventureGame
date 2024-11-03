@@ -1,7 +1,14 @@
 
 public class PlayerCombatHandler : ICombatHandler
 {
-    public Ability SelectAbility(List<Ability> abilityList)
+    public CombatState CurrentCombatState {get;set;}
+    public List<Ability> AbilityList {get;set;}
+    public PlayerCombatHandler()
+    {
+        CurrentCombatState = CombatState.Offensive;
+        AbilityList = new();
+    }
+    public Ability SelectAbility()
     {
         //int chosenIndex = Utilities.PickIndexFromList(Utilities.ToStringList(abilityList),"What ability do you want to use?");
         //return abilityList[chosenIndex];
@@ -16,35 +23,35 @@ public class PlayerCombatHandler : ICombatHandler
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine("What ability do you want to use?");
             Console.ResetColor();
-            for(int i = 0; i< abilityList.Count; i++)
+            for(int i = 0; i< AbilityList.Count; i++)
             {
                 if(i == markedIndex)
                 {
                     Utilities.ConsoleWriteColor("*",ConsoleColor.Blue);
-                    if(abilityList[i].CurrentCooldown < abilityList[i].CoolDownTimer)
+                    if(AbilityList[i].CurrentCooldown < AbilityList[i].CoolDownTimer)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.Write(abilityList[i].Name);
-                        Console.Write($" ({abilityList[i].CoolDownTimer-abilityList[i].CurrentCooldown})");
+                        Console.Write(AbilityList[i].Name);
+                        Console.Write($" ({AbilityList[i].CoolDownTimer - AbilityList[i].CurrentCooldown})");
                     }
                     else
                     {
-                    Console.Write(abilityList[i].Name);
+                    Console.Write(AbilityList[i].Name);
                     }
                     Utilities.ConsoleWriteLineColor("*",ConsoleColor.Blue);
 
                 }
                 else
                 {
-                    if(abilityList[i].CurrentCooldown < abilityList[i].CoolDownTimer)
+                    if(AbilityList[i].CurrentCooldown < AbilityList[i].CoolDownTimer)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.Write(abilityList[i].Name);
-                        Console.WriteLine($" ({abilityList[i].CoolDownTimer-abilityList[i].CurrentCooldown})");
+                        Console.Write(AbilityList[i].Name);
+                        Console.WriteLine($" ({AbilityList[i].CoolDownTimer - AbilityList[i].CurrentCooldown})");
                     }
                     else
                     {
-                        Console.WriteLine(abilityList[i].Name);
+                        Console.WriteLine(AbilityList[i].Name);
                     }
                     Console.ResetColor();
                 }
@@ -62,15 +69,15 @@ public class PlayerCombatHandler : ICombatHandler
                     break;
                 case ConsoleKey.S:
                 case ConsoleKey.DownArrow:
-                    if(markedIndex < abilityList.Count -1 )
+                    if(markedIndex < AbilityList.Count -1 )
                     {
                         markedIndex++;  
                     }
                     break;
                 case ConsoleKey.Enter:
-                    if(abilityList[markedIndex].CurrentCooldown == abilityList[markedIndex].CoolDownTimer)
+                    if(AbilityList[markedIndex].CurrentCooldown == AbilityList[markedIndex].CoolDownTimer)
                     {
-                        returnAbility = abilityList[markedIndex];
+                        returnAbility = AbilityList[markedIndex];
                         stillChoosing = false;
                     }
                     break;

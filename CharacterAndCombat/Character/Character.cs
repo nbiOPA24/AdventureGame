@@ -9,12 +9,11 @@ public class Character
     public int Armor {get;set;}
     public int TempArmor {get;set;}
     public int Shield{get;set;}
-    public IRace Race {get;set;}
     public int XPos {get;set;}
     public int YPos {get;set;}
     public ConsoleColor NameColor {get;set;}
     public bool IsImmune {get;set;}
-    public List<Ability>  ChosenAbilities {get;set;}
+    public List<Ability>  Abilities {get;set;}
     public List<Ability> AllKnownAbilities {get;set;}
     public List<CombatEffect> CurrentStatusEffects {get;set;}
     public Inventory Inventory {get;set;}
@@ -22,21 +21,16 @@ public class Character
     public ICombatHandler ICombatHandler {get;set;}
     public int StartingHealth { get; }
 
-    public Character(string name,int startingHealth,IRace race,int baseDamage,int armor,ICombatHandler icombatHandler,ConsoleColor nameColor)
+    public Character(string name,int startingHealth,int baseDamage,int armor,ICombatHandler icombatHandler,ConsoleColor nameColor)
     {
         AbleToAct = true;
-        Race = race;
-        CurrentHealth = race.AdjustHealth(startingHealth);
-        BaseDamage = race.AdjustDamage(baseDamage);
+        CurrentHealth = startingHealth;
+        BaseDamage = baseDamage;
         Name = name;
         MaxHealth = CurrentHealth;
         Armor = armor;
-        //En lista på spelarens alla lärda abilities
-        AllKnownAbilities = new();
-        AllKnownAbilities = Race.GetAbilities();
         //En spelares användningsredo abilities. 4 stycken
-        ChosenAbilities = new();
-        SetInitialAbilities();  
+        Abilities = new(); 
         CurrentStatusEffects = new List<CombatEffect>();
         IsImmune = false;
         Inventory = new();
@@ -71,7 +65,6 @@ public class Character
     }
     public virtual void DisplayDamageTaken(int damage,int absorbed)
     {
-        
         Utilities.ConsoleWriteColor(Name,NameColor);
         Console.Write(" Takes ");
         string stringOfDamage = damage.ToString();
@@ -101,27 +94,33 @@ public class Character
     {
         switch(effect.Type)
         {
+            case eCombatEffect.ArmorBuff:
+                TempArmor = 0;
+                Utilities.ConsoleWriteColor(Name,NameColor);
+                Utilities.ConsoleWriteLineColor("s Armor",ConsoleColor.DarkYellow);
+                Console.Write($" is no longer enhanced");
+                break;
             case eCombatEffect.Freeze:
-            AbleToAct = true;
-            Utilities.ConsoleWriteColor(Name,NameColor);
-            Console.Write($" is no longer ");
-            Utilities.ConsoleWriteLineColor("Frozen",ConsoleColor.Blue);
+                AbleToAct = true;
+                Utilities.ConsoleWriteColor(Name,NameColor);
+                Console.Write($" is no longer ");
+                Utilities.ConsoleWriteLineColor("Frozen",ConsoleColor.Blue);
                 break;
             case eCombatEffect.Poison:
-            Utilities.ConsoleWriteColor(Name,NameColor);
-            Console.Write($" is no longer ");
-            Utilities.ConsoleWriteLineColor("Poisoned",ConsoleColor.DarkGreen);
+                Utilities.ConsoleWriteColor(Name,NameColor);
+                Console.Write($" is no longer ");
+                Utilities.ConsoleWriteLineColor("Poisoned",ConsoleColor.DarkGreen);
                 break;
             case eCombatEffect.Immune:
-            Utilities.ConsoleWriteColor(Name,NameColor);
-            Console.Write($" is no longer ");
-            Utilities.ConsoleWriteLineColor("Immune",ConsoleColor.DarkGreen);
-            IsImmune = false;
+                Utilities.ConsoleWriteColor(Name,NameColor);
+                Console.Write($" is no longer ");
+                Utilities.ConsoleWriteLineColor("Immune",ConsoleColor.DarkGreen);
+                IsImmune = false;
                 break;
             case eCombatEffect.HealingOverTime:
                 break;
             case eCombatEffect.Shield:
-            Shield = 0;
+                Shield = 0;
                 break;
         }
         //code for removing the effect
@@ -136,66 +135,12 @@ public class Character
     }
 
 #endregion
-#region setups
-    //Fills chosen abilities with abilities from "AllKnownAbilities"
-    public void SetInitialAbilities()
-    {
-        for (int i = 0; i < ChosenAbilities.Count ; i++)
-        {
-            if(i < AllKnownAbilities.Count)
-            {
-                ChosenAbilities[i] = AllKnownAbilities[i];
-            }
-             else
-            {
-                ChosenAbilities[i] = null; // Ensure any remaining slots are null
-            }      
-        }
-    }
-#endregion
 #region Abilityrelated methods
     //Allows the used to pick an ability and replace it with another from AllKnownAbilities
-    public void ReplaceChosenAbilities()
-    {
-        bool keepGoing = true;
-        while(keepGoing)
-        {
-            int chosenIndex = SelectAbilityIndex("What ability do you want to replace?");
-            int newAbilityIndex =PickFromAllKnownAbilities($"What ability would you like to use instead of {ChosenAbilities[chosenIndex].Name} ");
-            bool isKnown = false;
-            for(int i = 0; i< ChosenAbilities.Count ; i++)
-            {
-                if(ChosenAbilities[i] == AllKnownAbilities[newAbilityIndex])
-                {
-                    isKnown = true;
-                }   
-            }
-            if(!isKnown)
-            {
-                ChosenAbilities[chosenIndex] = AllKnownAbilities[newAbilityIndex];
-                keepGoing = false;
-            }else
-            {
-                Console.WriteLine("Already known. select something else");
-                Console.ReadKey(true);
-            }
-        }
-    }
-
-    public void DisplayChosenAbilities()
-    {
-        for(int i = 0 ; i < 4; i++)
-        {
-                if(ChosenAbilities[i] != null )
-                {
-                    Console.WriteLine($"[ {ChosenAbilities[i].Name ,-15} ]");
-                }
-        }
-    }   
 
     public int SelectAbilityIndex(string message)
     {
-        return  Utilities.PickIndexFromList(Utilities.ToStringList(ChosenAbilities),message);
+        return  Utilities.PickIndexFromList(Utilities.ToStringList(Abilities),message);
     }
     public int PickFromAllKnownAbilities(string message)
     {

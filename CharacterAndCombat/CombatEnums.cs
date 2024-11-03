@@ -8,6 +8,7 @@ public enum eCombatEffect
     HealingOverTime,
     Shield,
     Cleanse,
+    ArmorBuff,
 
 }
 public enum AbilityType
@@ -31,4 +32,12 @@ public enum TargetType
     Self,
     Friendly,
     Enemy
+}
+public enum EnemyType
+{
+    Supportive,
+    Bruiser,
+    Tank,
+    Caster,
+    Rogue,
 }

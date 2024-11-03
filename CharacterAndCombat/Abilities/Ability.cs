@@ -58,7 +58,8 @@ public class Ability
     }
     public Ability Clone()
     {
-        return new Ability(Name,Target,CoolDownTimer-1,Type); 
+        Ability clonedAbility = new Ability(Name,Target,CoolDownTimer-1,Type);
+        return clonedAbility;
     }
 
 }
