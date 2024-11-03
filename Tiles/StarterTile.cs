@@ -16,5 +16,4 @@ public class StarterTile : Tile
             Console.WriteLine("You've already been here. The journey awaits beyond, no need to linger.");
         }
     }
-
 }

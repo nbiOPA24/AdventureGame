@@ -37,23 +37,23 @@ class MapHandler
             Console.WriteLine();
         }
     }
-
+    // Movement i förhållande till en Arrays kanter och om Tile är Solid.
     public static void MovePlayer(Character player, Tile[,] arrayWithRooms)
     {
         ConsoleKeyInfo movement = Console.ReadKey(true);
-        if (movement.Key == ConsoleKey.UpArrow && player.YPos > 0 && arrayWithRooms[player.YPos - 1, player.XPos].TileIcon != "███")
+        if (movement.Key == ConsoleKey.UpArrow && player.YPos > 0 && !arrayWithRooms[player.YPos - 1, player.XPos].Solid)
         {
             player.YPos--;
         }
-        if (movement.Key == ConsoleKey.DownArrow && player.YPos < arrayWithRooms.GetLength(0)-1 && arrayWithRooms[player.YPos + 1, player.XPos].TileIcon != "███")
+        if (movement.Key == ConsoleKey.DownArrow && player.YPos < arrayWithRooms.GetLength(0)-1 && !arrayWithRooms[player.YPos + 1, player.XPos].Solid)
         {
             player.YPos++;
         }
-        if (movement.Key == ConsoleKey.LeftArrow && player.XPos > 0 && arrayWithRooms[player.YPos, player.XPos - 1].TileIcon != "███")
+        if (movement.Key == ConsoleKey.LeftArrow && player.XPos > 0 && !arrayWithRooms[player.YPos, player.XPos - 1].Solid)
         {
             player.XPos--;
         }
-        if (movement.Key == ConsoleKey.RightArrow && player.XPos < arrayWithRooms.GetLength(1)-1 && arrayWithRooms[player.YPos, player.XPos + 1].TileIcon != "███")
+        if (movement.Key == ConsoleKey.RightArrow && player.XPos < arrayWithRooms.GetLength(1)-1 && !arrayWithRooms[player.YPos, player.XPos + 1].Solid)
         {
             player.XPos++;
         }
@@ -74,6 +74,8 @@ class MapHandler
             Console.WriteLine($"{player.Name,-8} {player.Race,-8} {player.CurrentHealth,-5} {player.BaseDamage,-7} {player.Armor,-6} [{player.YPos},{player.XPos}]");
             DrawMap(player, arrayWithRooms);
             ActivateRoom(player,arrayWithRooms);
+           /* if (arrayWithRooms[player.XPos,player.YPos].TileIcon == " ≡ " )
+                continue; */
             MovePlayer(player, arrayWithRooms);
 
         }

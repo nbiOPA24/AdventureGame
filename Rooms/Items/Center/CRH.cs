@@ -14,12 +14,12 @@ public class CRH : Room
 
         Tile[,] crossRoomHard = new Tile [,]
         {
-            { o, o , o , o , e , o , o , o , o },
+            { o, o , o , o , o , o , e , o , o },
             { o, e , e , e , e , e , e , e , e },
-            { o, e , o , e , e , e , o , e , e },
-            { e, e , e , e , x , e , e , e , e },
-            { o, e , o , e , e , e , o , e , e },
-            { o, e , e , e , e , e , e , e , e },
+            { o, e , o , e , e , e , e , e , e },
+            { e, e , e , e , e , e , e , e , e },
+            { o, e , e , o , e , e , o , o , e },
+            { o, e , x , e , e , e , e , e , e },
             { o, e , e , e , e , e , e , e , e },
         };
         return crossRoomHard;

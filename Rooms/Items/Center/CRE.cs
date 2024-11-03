@@ -15,9 +15,9 @@ public class CRE : Room
         Tile[,] crossRoomEasy = new Tile [,]
         {
             { o, o , o , o , e , o , o , o , o },
-            { o, e , e , e , e , e , e , e , e },
-            { o, e , o , e , e , e , o , e , e },
-            { e, e , e , e , x , e , e , e , e },
+            { o, e , x , e , e , e , e , e , e },
+            { o, e , e , e , e , e , o , e , e },
+            { e, e , e , e , e , e , e , o , e },
             { o, e , o , e , e , e , o , e , e },
             { o, e , e , e , e , e , e , e , e },
             { o, e , e , e , e , e , e , e , e },

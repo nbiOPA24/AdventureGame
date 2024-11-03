@@ -1,9 +1,30 @@
 class MapFactory
 {
-    public static Tile[,][,] LayoutPredefinedRooms(List<Room> leftTopCorner, List<Room> rightTopCorner, List<Room> leftBottomCorner, List<Room> rightBottomCorner)
+    public static Tile[,][,] LayoutPredefinedRooms(int roomRows, int roomCols) // Metod för att slumpa placeringen av rummen på kartan, 
     {
-        return null; 
-        //To Be Continued...
+        
+        Random random = new Random();
+
+        Tile [,][,] map = new Tile[roomRows,roomCols][,];
+        
+        // Loopar igenom kartan och tilldelar ett rum för varje position. Valet av rum baseras på ett random värde.
+        for (int row = 0; row < map.GetLength(0); row++)
+        {
+            for (int col = 0; col < map.GetLength(1); col++)
+            {
+                int result = random.Next(1,5);
+                Tile[,] rm = result == 1 ? new CR().Room :
+                            result == 2 ? new CRE().Room :
+                            result == 3 ? new CRI().Room : 
+                                        new CRH().Room;
+                map[row,col] = rm;
+            }
+        }
+    
+        //Kolumnen längst till vänster slumpar vi en viss rad av och skriver över den position med starter rummet.
+        int starterRoomPlacement = random.Next(0,roomRows-1);
+        map[starterRoomPlacement,0] = new SR().Room;
+        return map; 
     }
 
     public static Tile[,] FlattenRoomArray(Tile [,][,] map)
