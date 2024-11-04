@@ -54,6 +54,18 @@ public class Ability
         Cleanse cleanse = new Cleanse(effects);
         CombatEffects.Add(cleanse);
     }
+    public void AddCleanseEffect(eCombatEffect effect)
+    {
+        List<eCombatEffect> effects = new()
+        {
+            effect
+        };
+        Cleanse cleanse  = new(effects);
+        
+        
+        CombatEffects.Add(cleanse);
+    }
+
     public Ability Clone()
     {
         Ability clonedAbility = new Ability(Name,Target,CoolDownTimer-1,Type);

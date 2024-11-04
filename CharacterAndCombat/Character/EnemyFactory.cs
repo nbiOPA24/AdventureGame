@@ -22,12 +22,15 @@ public static class EnemyFactory
                 Ability poisonDart = new Ability("Poison Dart",TargetType.Enemy,3,AbilityType.Offensive);
                 poisonDart.AddDamageEffect(10);
                 poisonDart.AddPoisonEffect(5,5);
-                character = new(name,25,5,10,ai,selfColor);
+                Ability cleansePoison = new Ability("Cleanse Poison",TargetType.Friendly,8,AbilityType.CleanseOther);
+                cleansePoison.AddCleanseEffect(eCombatEffect.Poison);
+                character = new(name,50,5,10,ai,selfColor);
                 character.Abilities.Add(guard);
                 character.Abilities.Add(healOther);
                 character.Abilities.Add(healSelf);
                 character.Abilities.Add(stickSlam);
                 character.Abilities.Add(poisonDart);
+                character.Abilities.Add(cleansePoison);
                 character.ICombatHandler.AbilityList = character.Abilities;
                 character.ICombatHandler.Self = character;
                 break;

@@ -27,7 +27,7 @@ public class PlayerCombatSelector : ICombatSelection
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine("What ability do you want to use?");
             Console.ResetColor();
-            for(int i = 0; i< AbilityList.Count; i++)
+            for(int i = 0; i < AbilityList.Count; i++)
             {
                 if(i == markedIndex)
                 {

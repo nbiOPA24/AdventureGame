@@ -60,12 +60,12 @@ public class EnemySupportAI : ICombatSelection
     public Character GetSupportiveTarget(List<Character> potentialTargets)
     {
         Character lowestHealthCharacter = CombatUtil.ReturnLowestHealthFriendlyCharacter(Self,FriendList);
-        double lowestHealthPercentage = lowestHealthCharacter.CurrentHealth/lowestHealthCharacter.MaxHealth;
-        Character dispellTarget = CombatUtil.ReturnBestDispellTarget(FriendList,AbilityList);
+        double lowestHealthPercentage = (double)lowestHealthCharacter.CurrentHealth/lowestHealthCharacter.MaxHealth;
+        Character dispellTarget = CombatUtil.ReturnBestDispellTarget(Self,FriendList,AbilityList);
         List<Ability> relevantAbilities;
         //These switchstatements decide what will be done in order, top got priority
         //Checks if a friendly target is below 50% health. if so chooses a healother type ability
-        if(lowestHealthPercentage <0.5)
+        if(lowestHealthPercentage <0.3)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingOther);
             if(relevantAbilities.Count != 0)
@@ -74,7 +74,7 @@ public class EnemySupportAI : ICombatSelection
             }
         }
         //If a target can be dispelled and the lowest health percenrage is above 80%
-        if(dispellTarget != null && lowestHealthPercentage > 0.8)
+        if(dispellTarget != null)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.CleanseOther);
             if(relevantAbilities.Count != 0)
@@ -83,7 +83,7 @@ public class EnemySupportAI : ICombatSelection
             }
         }
         //if someone is damaged at all
-        if(lowestHealthPercentage < 1)
+        if(lowestHealthPercentage < 0.6 && lowestHealthCharacter != Self)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingOther);
             if(relevantAbilities.Count != 0)
@@ -91,6 +91,11 @@ public class EnemySupportAI : ICombatSelection
                 return lowestHealthCharacter;
             }
         }
+        else
+        {
+            CurrentCombatState = CombatState.Offensive;
+            
+        } 
         return null; // should be unreachable
     }
 
@@ -98,7 +103,7 @@ public class EnemySupportAI : ICombatSelection
     {
         List<Ability> relevantAbilities;
         Random random = new Random();
-        if(Self.CurrentHealth/Self.MaxHealth < 1)
+        if((double)Self.CurrentHealth/Self.MaxHealth < 1)
         {
            relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingSelf);
            if(relevantAbilities.Count != 0)
@@ -132,13 +137,14 @@ public class EnemySupportAI : ICombatSelection
     public Ability ChooseSupportiveAbility()
     {
         Character lowestHealthCharacter = CombatUtil.ReturnLowestHealthFriendlyCharacter(Self,FriendList);
-        double lowestHealthPercentage = lowestHealthCharacter.CurrentHealth/lowestHealthCharacter.MaxHealth;
-        Character dispellTarget = CombatUtil.ReturnBestDispellTarget(FriendList,AbilityList);
+        double lowestHealthPercentage = (double)lowestHealthCharacter.CurrentHealth/lowestHealthCharacter.MaxHealth;
+        Character dispellTarget = CombatUtil.ReturnBestDispellTarget(Self,FriendList,AbilityList);
         List<Ability> relevantAbilities;
         Random random = new Random();
         //These switchstatements decide what will be done in order, top got priority
         //Checks if a friendly target is below 50% health. if so chooses a healother type ability
-        if(lowestHealthPercentage <0.5)
+        Console.WriteLine(lowestHealthPercentage);//REMOVE
+        if(lowestHealthPercentage <0.3)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingOther);
             if(relevantAbilities != null && relevantAbilities.Count != 0)
@@ -147,16 +153,18 @@ public class EnemySupportAI : ICombatSelection
             }
         }
         //If a target can be dispelled and the lowest health percenrage is above 80%
-        if(dispellTarget != null && lowestHealthPercentage > 0.8)
+        if(dispellTarget != null)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.CleanseOther);
             if(relevantAbilities != null && relevantAbilities.Count != 0)
             {
+                Console.WriteLine("returning dispell");//REMOVE
                 return relevantAbilities[random.Next(0,relevantAbilities.Count)];
+                
             }
         }
         //if someone is damaged at all
-        if(lowestHealthPercentage < 1)
+        if(lowestHealthPercentage < 0.6 && lowestHealthCharacter != Self)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingOther);
             if(relevantAbilities.Count != 0)
@@ -173,10 +181,10 @@ public class EnemySupportAI : ICombatSelection
         bool foundDefensive = false;
         foreach(Character c in FriendList)
         {
-            if(c.CurrentHealth/c.MaxHealth < 0.8 || CombatUtil.ReturnBestDispellTarget(FriendList,AbilityList) != null )
+            if((c != Self && (double)c.CurrentHealth/c.MaxHealth < 0.6 )|| CombatUtil.ReturnBestDispellTarget(Self,FriendList,AbilityList) != null )
                 foundSupportive = true; break;
         }
-        if(Self.CurrentHealth / Self.MaxHealth < 0.5) foundDefensive = true;
+        if((double)Self.CurrentHealth / Self.MaxHealth < 0.5) foundDefensive = true;
         
         CurrentCombatState = foundSupportive ? CombatState.Supportive:
                              foundDefensive ? CombatState.Defensive:

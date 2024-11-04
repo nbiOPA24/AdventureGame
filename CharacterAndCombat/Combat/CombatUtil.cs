@@ -36,9 +36,9 @@ public static class CombatUtil
         public static Character ReturnLowestHealthFriendlyCharacter(Character self,List<Character> friendList)
     {
             if (friendList == null || friendList.Count == 0)
-            return null; // Should not happen. combatloop only continues if the lists have characters in them
+            return self; // Should not happen. combatloop only continues if the lists have characters in them
 
-            Character returnCharacter = friendList[0];
+            Character returnCharacter = null;
             double lowestPercentage = 1;
             for(int i = 0 ; i< friendList.Count;i++)
             {
@@ -52,7 +52,8 @@ public static class CombatUtil
             return returnCharacter;
     }
     
-    public static Character ReturnBestDispellTarget(List<Character> friendList, List<Ability> abilityList)
+    public static Character 
+    ReturnBestDispellTarget(Character self,List<Character> friendList, List<Ability> abilityList)
     {
         List<Ability> relevantAbilities = ReturnUsableAbilitiesOfType(abilityList,AbilityType.CleanseOther);
         List<eCombatEffect> dispellableTypes = new();
@@ -80,7 +81,8 @@ public static class CombatUtil
                             if(e == eCombatEffect.Freeze)
                             {
                                 if(topPriorityDebuffTarget !=null 
-                                && topPriorityDebuffTarget.CurrentHealth/topPriorityDebuffTarget.MaxHealth > c.CurrentHealth/c.MaxHealth)
+                                && topPriorityDebuffTarget !=self
+                                && (double)topPriorityDebuffTarget.CurrentHealth/topPriorityDebuffTarget.MaxHealth > (double)c.CurrentHealth/c.MaxHealth)
                                 {
                                     topPriorityDebuffTarget = c;
                                     previousSeverity = 1;
@@ -96,7 +98,7 @@ public static class CombatUtil
                             if(e == eCombatEffect.Poison)
                             {
                                 if(topPriorityDebuffTarget !=null 
-                                && topPriorityDebuffTarget.CurrentHealth/topPriorityDebuffTarget.MaxHealth > c.CurrentHealth/c.MaxHealth)
+                                && (double)topPriorityDebuffTarget.CurrentHealth/topPriorityDebuffTarget.MaxHealth > (double)c.CurrentHealth/c.MaxHealth)
                                 {
                                     topPriorityDebuffTarget = c;
                                 }

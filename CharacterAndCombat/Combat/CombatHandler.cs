@@ -92,9 +92,9 @@ public static  class CombatHandler
             "Use item",
             "Flee"
         };   
-        int markedIndex = 0;
+        int markedIndex = 0 ;
         bool stillChoosing = true;
-        int returnValue = 0;
+        int returnValue = 0 ;
         while(stillChoosing)
         {
             Console.Clear();
@@ -145,6 +145,8 @@ public static  class CombatHandler
 
     public static void CharacterTurn(Character self,List<Character> enemyList,List<Character> friendList)
     {  
+
+        Console.WriteLine($"Test health%factor {(double)self.CurrentHealth/self.MaxHealth}");
         self.ICombatHandler.UpdateCombatState();
         Console.WriteLine(self.ICombatHandler.CurrentCombatState.ToString()); //TODO Remove this when game works as intended.
         if(self.AbleToAct) //if not frozen or otherwise hindered
@@ -305,6 +307,7 @@ public static  class CombatHandler
         {
             c.ICombatHandler.FriendList = friendList;
             c.ICombatHandler.EnemyList = enemyList;
+            c.ICombatHandler.AbilityList = c.Abilities;
         }
     }
     
