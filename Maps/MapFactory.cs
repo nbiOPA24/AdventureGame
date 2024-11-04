@@ -1,59 +1,39 @@
 class MapFactory
 {
-    public static Tile[,][,] LayoutPredefinedRooms(int roomRows, int roomCols) // Metod för att slumpa placeringen av rummen på kartan, 
+    public static Tile[,] FlattenRoomArray(int rows, int cols)
     {
-        
-        Random random = new Random();
+        Tile[,] countRoom = new CR().Room; //Skapar detta rum för att använda det till att beräkna storleken av rum.
 
-        Tile [,][,] map = new Tile[roomRows,roomCols][,];
-        
-        // Loopar igenom kartan och tilldelar ett rum för varje position. Valet av rum baseras på ett random värde.
-        for (int row = 0; row < map.GetLength(0); row++)
-        {
-            for (int col = 0; col < map.GetLength(1); col++)
-            {
-                int result = random.Next(1,5);
-                Tile[,] rm = result == 1 ? new CR().Room :
-                            result == 2 ? new CRE().Room :
-                            result == 3 ? new CRI().Room : 
-                                        new CRH().Room;
-                map[row,col] = rm;
-            }
-        }
-    
-        //Kolumnen längst till vänster slumpar vi en viss rad av och skriver över den position med starter rummet.
-        int starterRoomPlacement = random.Next(0,roomRows-1);
-        map[starterRoomPlacement,0] = new SR().Room;
-        return map; 
-    }
-
-    public static Tile[,] FlattenRoomArray(Tile [,][,] map)
-    {
         //Förutsatt att alla rooms har lika många rader och kolumner då detta ska bygga den nya mappen korrekt med arraystorlek.
-        int nrRowsInMap = map.GetLength(0) * map[0,0].GetLength(0); // Antal rader i en array med room element * antal rader i room.
-        int nrColsInMap = map.GetLength(1) * map[0,0].GetLength(1); // Antal kolumner i en array med room element * antal kolumner i room.
+        int nrRowsInRoom = countRoom.GetLength(0);
+        int nrColsInRoom = countRoom.GetLength(1);
+        int nrRowsInMap = rows * nrRowsInRoom; // Antal rader i en array med room element * antal rader i room.
+        int nrColsInMap = cols * nrColsInRoom; // Antal kolumner i en array med room element * antal kolumner i room.
 
         Tile[,] useMap = new Tile[nrRowsInMap+1,nrColsInMap+1]; //Lägger till en rad och en kolumn i nya mappen för att det ska bli enheligt vid utskrift pga hur Rooms är strukturerat 
 
-        for (int row = 0; row < map.GetLength(0); row++) //Lopar igenom varje rad i jagged 2d array
+        Random random = new();
+        int result = random.Next(0,rows);
+
+        for (int row = 0; row < rows; row++) //Lopar igenom varje rad i jagged 2d array
         {
-            for (int col = 0; col < map.GetLength(1); col++) // När vi är inne på rad i, så Loopar vi igenom varje kolumn i jagged 2d array
+            for (int col = 0; col < cols; col++) // När vi är inne på rad i, så Loopar vi igenom varje kolumn i jagged 2d array
             {
-                //Och i varje cell plats i och j, är det också en 2d array som vi ska gå igenom och skriva ut
-                int nrRowsInRoom = map[row,col].GetLength(0);
-                int nrColsInRoom = map[row,col].GetLength(1);
+                Tile[,] room = (row == result && col == 0) ? new SR().Room : new CR().Room;  // Tilldelar startrummet en plats.
+
                 for (int k = 0; k < nrRowsInRoom; k++) // på aktuell plats[i,j], så går vi igenom dess 2d arrays rader 
                 {
                     for (int l = 0; l < nrColsInRoom; l++) // och för varje rad så går vi igenom alla kolumner
                     {
                         int y = row * nrRowsInRoom + k;  // vi tar varje rad av Rum och multiplicerar det med antal rows i varje rum för och adderar aktuell rad i rummet för att få rätt y position.
                         int x = col * nrColsInRoom + l;
-                        //Första iterationen så kommer det stå map[0,0][0,0]. Det betyder att vi accessar den första tilen i de första rummet. Denna vill vi kopiera in till den nya mappen.
-                        useMap[y,x] = map[row,col][k,l];
+
+                        useMap[y,x] = room[k,l];
                     }
                 }
             }
         }
+
         for(int row = 0; row < useMap.GetLength(0); row++)
         {
             for (int col= 0; col < useMap.GetLength(1); col++)
