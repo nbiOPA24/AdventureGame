@@ -52,12 +52,14 @@ public static class CombatUtil
             return returnCharacter;
     }
     
-    public static Character 
-    ReturnBestDispellTarget(Character self,List<Character> friendList, List<Ability> abilityList)
+    public static Character ReturnBestDispellTarget(Character self,List<Character> friendList, List<Ability> abilityList)
     {
+        Console.WriteLine("ReturnBestDispellTarget called");
         List<Ability> relevantAbilities = ReturnUsableAbilitiesOfType(abilityList,AbilityType.CleanseOther);
         List<eCombatEffect> dispellableTypes = new();
         Character topPriorityCleanseTarget = null;
+        bool foundFrost = false;
+        bool foundPoison = false;
 
         foreach(Ability a in relevantAbilities)
         {
@@ -66,18 +68,22 @@ public static class CombatUtil
                 dispellableTypes.Add(e.Type);
             }
         }
-        
-        if(relevantAbilities.Count != 0)
+
+        if(relevantAbilities.Count > 0)
         {
             foreach(Character c in friendList)
             {
                 if(c.CharacterHasEffect(eCombatEffect.Freeze) && dispellableTypes.Contains(eCombatEffect.Freeze)&& c!= self)
                 {   
                     topPriorityCleanseTarget = c;
+                    Console.WriteLine("frost chosen as best dispell");
+
                 } 
-                else if(c.CharacterHasEffect(eCombatEffect.Poison) && dispellableTypes.Contains(eCombatEffect.Poison))
+                else if(c.CharacterHasEffect(eCombatEffect.Poison) && dispellableTypes.Contains(eCombatEffect.Poison)&& c!= self && !foundFrost)
                 {     
+                    Console.WriteLine("du är här");
                     topPriorityCleanseTarget = c;
+                    Console.WriteLine("poison chosen as best dispell");
                 }
             }
         }

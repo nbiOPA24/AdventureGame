@@ -8,17 +8,21 @@ public class Cleanse : CombatEffect
 
     public override void ApplyEffect(Character character)
     {   
+        bool foundEffect = false;
         for(int i = 0 ; i< character.CurrentStatusEffects.Count;i++)
         {
+            
             foreach(eCombatEffect effect in TypesToCleanse)
             {
                 if(character.CurrentStatusEffects[i].Type == effect)
                 {
                     character.ClearEffect(character.CurrentStatusEffects[i]);
+                    foundEffect = true;
                 }
             }
+            
         }
-       
+        if(!foundEffect) Console.WriteLine("But had no effect");
         
     }
     public override CombatEffect CloneEffect()

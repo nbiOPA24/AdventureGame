@@ -142,7 +142,7 @@ public class EnemySupportAI : ICombatSelection
         List<Ability> relevantAbilities;
         Random random = new Random();
         //These switchstatements decide what will be done in order, top got priority
-        //Checks if a friendly target is below 50% health. if so chooses a healother type ability
+        //Checks if a friendly target is below 30% health. if so chooses a healother type ability
         Console.WriteLine(lowestHealthPercentage);//REMOVE
         if(lowestHealthPercentage <0.3 && lowestHealthCharacter != Self)
         {
@@ -181,7 +181,7 @@ public class EnemySupportAI : ICombatSelection
         bool foundDefensive = false;
         foreach(Character c in FriendList)
         {
-            if((c != Self && (double)c.CurrentHealth/c.MaxHealth < 0.6 )|| CombatUtil.ReturnBestDispellTarget(Self,FriendList,AbilityList) != null )
+            if((c != Self && (double)c.CurrentHealth/c.MaxHealth < 0.3 )|| CombatUtil.ReturnBestDispellTarget(Self,FriendList,AbilityList) != null )
                 foundSupportive = true; break;
         }
         if((double)Self.CurrentHealth / Self.MaxHealth < 0.5) foundDefensive = true;
