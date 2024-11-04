@@ -65,7 +65,7 @@ public class EnemySupportAI : ICombatSelection
         List<Ability> relevantAbilities;
         //These switchstatements decide what will be done in order, top got priority
         //Checks if a friendly target is below 50% health. if so chooses a healother type ability
-        if(lowestHealthPercentage <0.3)
+        if(lowestHealthPercentage <0.3 && lowestHealthCharacter != Self)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingOther);
             if(relevantAbilities.Count != 0)
@@ -144,7 +144,7 @@ public class EnemySupportAI : ICombatSelection
         //These switchstatements decide what will be done in order, top got priority
         //Checks if a friendly target is below 50% health. if so chooses a healother type ability
         Console.WriteLine(lowestHealthPercentage);//REMOVE
-        if(lowestHealthPercentage <0.3)
+        if(lowestHealthPercentage <0.3 && lowestHealthCharacter != Self)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingOther);
             if(relevantAbilities != null && relevantAbilities.Count != 0)
@@ -152,7 +152,7 @@ public class EnemySupportAI : ICombatSelection
                 return relevantAbilities[random.Next(0,relevantAbilities.Count)];
             }
         }
-        //If a target can be dispelled and the lowest health percenrage is above 80%
+        //if anyone has an applicable debuff that can be cleansed 
         if(dispellTarget != null)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.CleanseOther);
@@ -163,7 +163,7 @@ public class EnemySupportAI : ICombatSelection
                 
             }
         }
-        //if someone is damaged at all
+        //if someone else is below 60% health
         if(lowestHealthPercentage < 0.6 && lowestHealthCharacter != Self)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingOther);

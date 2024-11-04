@@ -88,7 +88,7 @@ public static  class CombatHandler
     {
         List<string> combatOptions = new()
         {
-            "Attack",
+            "Act",
             "Use item",
             "Flee"
         };   

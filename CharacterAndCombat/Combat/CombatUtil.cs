@@ -57,8 +57,7 @@ public static class CombatUtil
     {
         List<Ability> relevantAbilities = ReturnUsableAbilitiesOfType(abilityList,AbilityType.CleanseOther);
         List<eCombatEffect> dispellableTypes = new();
-        Character topPriorityDebuffTarget = null;
-        int previousSeverity = 0;
+        Character topPriorityCleanseTarget = null;
 
         foreach(Ability a in relevantAbilities)
         {
@@ -72,44 +71,17 @@ public static class CombatUtil
         {
             foreach(Character c in friendList)
             {
-                foreach(CombatEffect effect in c.CurrentStatusEffects)
-                {
-                    if(effect.Type == eCombatEffect.Freeze)
-                    {
-                        foreach(eCombatEffect e in dispellableTypes)
-                        {
-                            if(e == eCombatEffect.Freeze)
-                            {
-                                if(topPriorityDebuffTarget !=null 
-                                && topPriorityDebuffTarget !=self
-                                && (double)topPriorityDebuffTarget.CurrentHealth/topPriorityDebuffTarget.MaxHealth > (double)c.CurrentHealth/c.MaxHealth)
-                                {
-                                    topPriorityDebuffTarget = c;
-                                    previousSeverity = 1;
-                                }
-                            }
-                            
-                        }
-                    } 
-                    else if(effect.Type == eCombatEffect.Poison && previousSeverity <1)
-                    {
-                        foreach(eCombatEffect e in dispellableTypes)
-                        {
-                            if(e == eCombatEffect.Poison)
-                            {
-                                if(topPriorityDebuffTarget !=null 
-                                && (double)topPriorityDebuffTarget.CurrentHealth/topPriorityDebuffTarget.MaxHealth > (double)c.CurrentHealth/c.MaxHealth)
-                                {
-                                    topPriorityDebuffTarget = c;
-                                }
-                            }
-                            
-                        }
-                    } 
+                if(c.CharacterHasEffect(eCombatEffect.Freeze) && dispellableTypes.Contains(eCombatEffect.Freeze)&& c!= self)
+                {   
+                    topPriorityCleanseTarget = c;
+                } 
+                else if(c.CharacterHasEffect(eCombatEffect.Poison) && dispellableTypes.Contains(eCombatEffect.Poison))
+                {     
+                    topPriorityCleanseTarget = c;
                 }
             }
         }
-        return topPriorityDebuffTarget;
+        return topPriorityCleanseTarget;
     }
     #endregion
 }

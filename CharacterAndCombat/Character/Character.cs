@@ -89,6 +89,17 @@ public class Character
 #endregion
 #region Statuseffects
 
+    public bool CharacterHasEffect(eCombatEffect eCombatEffect)
+    {
+        foreach(CombatEffect ce in CurrentStatusEffects)
+        {
+            if(eCombatEffect == ce.Type)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public virtual void ClearEffect(CombatEffect effect)
     {
@@ -107,6 +118,13 @@ public class Character
                 Utilities.ConsoleWriteLineColor("Frozen",ConsoleColor.Blue);
                 break;
             case eCombatEffect.Poison:
+                for(int i = 0; i< CurrentStatusEffects.Count; i++)
+                {
+                    if(CurrentStatusEffects[i] == effect)
+                    {
+                        CurrentStatusEffects.Remove(CurrentStatusEffects[i]);
+                    }
+                }
                 Utilities.ConsoleWriteColor(Name,NameColor);
                 Console.Write($" is no longer ");
                 Utilities.ConsoleWriteLineColor("Poisoned",ConsoleColor.DarkGreen);
@@ -147,7 +165,7 @@ public class Character
         return Utilities.PickIndexFromList(Utilities.ToStringList(AllKnownAbilities),message);
     }
 #endregion
-    //handles the statuseffects currently affecting the player removes them once they reach 0 rounds remaining
+
 
 
 

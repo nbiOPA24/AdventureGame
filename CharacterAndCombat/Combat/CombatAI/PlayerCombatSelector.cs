@@ -133,7 +133,14 @@ public class PlayerCombatSelector : ICombatSelection
                     if (markedIndex < potentialTargets.Count - 1) markedIndex++;
                     break;
                 case ConsoleKey.Enter:
-                    stillChoosing = false;
+                    if(potentialTargets[markedIndex] != self)
+                    {
+                        stillChoosing = false;
+                    }
+                    else
+                    {
+                        Utilities.ConsoleWriteLineColor("You cant target yourself",ConsoleColor.Red);
+                    }
                     break;
             }
         }
