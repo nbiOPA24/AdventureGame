@@ -34,10 +34,10 @@ public class Program
                     
                     case 0:
                         Character playerName = CreateCharacter();
-                        Tile [,] gameMap = MainRoom.GenerateRoom();
+                        /* Tile [,] gameMap = MainRoom.GenerateRoom();
                         playerName = MapHandler.PlayerStartPos(playerName, gameMap);
                         GreetingNewPlayerMessage(playerName);
-                        MapHandler.RunEntireMap(playerName, gameMap);
+                        MapHandler.RunEntireMap(playerName, gameMap); */
                         break;
                     case 1:
                         break;

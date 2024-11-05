@@ -41,22 +41,32 @@ class MapHandler
     public static void MovePlayer(Character player, Tile[,] arrayWithRooms)
     {
         ConsoleKeyInfo movement = Console.ReadKey(true);
-        if (movement.Key == ConsoleKey.UpArrow && player.YPos > 0 && !arrayWithRooms[player.YPos - 1, player.XPos].Solid)
+        if (movement.Key == ConsoleKey.UpArrow)
         {
-            player.YPos--;
+            if(!arrayWithRooms[player.YPos - 1, player.XPos].Solid)
+            {
+                player.YPos--;
+            }
+            else
+            {
+                arrayWithRooms[player.YPos - 1, player.XPos].RunSolidBlock(player);
+            }
         }
-        if (movement.Key == ConsoleKey.DownArrow && player.YPos < arrayWithRooms.GetLength(0)-1 && !arrayWithRooms[player.YPos + 1, player.XPos].Solid)
+        if (movement.Key == ConsoleKey.DownArrow && !arrayWithRooms[player.YPos + 1, player.XPos].Solid)
         {
             player.YPos++;
         }
-        if (movement.Key == ConsoleKey.LeftArrow && player.XPos > 0 && !arrayWithRooms[player.YPos, player.XPos - 1].Solid)
+        if (movement.Key == ConsoleKey.LeftArrow && !arrayWithRooms[player.YPos, player.XPos - 1].Solid)
         {
             player.XPos--;
         }
-        if (movement.Key == ConsoleKey.RightArrow && player.XPos < arrayWithRooms.GetLength(1)-1 && !arrayWithRooms[player.YPos, player.XPos + 1].Solid)
+        if (movement.Key == ConsoleKey.RightArrow && !arrayWithRooms[player.YPos, player.XPos + 1].Solid)
         {
             player.XPos++;
         }
+        if (new List<ConsoleKey>() {ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.LeftArrow, ConsoleKey.RightArrow}.Contains(movement.Key)) {
+
+        } 
     }
 
     public static void ActivateRoom(Character player, Tile[,] arrayWithRooms)
@@ -64,19 +74,36 @@ class MapHandler
         arrayWithRooms[player.YPos,player.XPos].RunTile(player);
     }
 
-    public static void RunEntireMap(Character player, Tile[,] arrayWithRooms)
+   /*  public static void RunEntireMap(Character player, Tile[,] arrayWithRooms)
     {
-        //Console.CursorVisible = false;
+        player = PlayerStartPos(player, arrayWithRooms);
         while (player.CurrentHealth > 0)
         {
             Console.Clear();
-            Console.WriteLine($"{"Name",-8} {"Race",-8} {"HP",-5} {"Damage",-7} {"Armor",-6} {"Cords",-7}");
-            Console.WriteLine($"{player.Name,-8} {player.Race,-8} {player.CurrentHealth,-5} {player.BaseDamage,-7} {player.Armor,-6} [{player.YPos},{player.XPos}]");
+            Console.WriteLine($"{"Name",-8} {"Race",-8} {"HP",-5} {"Damage",-7} {"Armor",-6} {"Cords",-7} {"Keys"}");
+            Console.WriteLine($"{player.Name,-8} {player.Race,-8} {player.CurrentHealth,-5} {player.BaseDamage,-7} {player.Armor,-6} [{player.YPos},{player.XPos} {player.Inventory.Items.Count}]");
             DrawMap(player, arrayWithRooms);
             ActivateRoom(player,arrayWithRooms);
-           /* if (arrayWithRooms[player.XPos,player.YPos].TileIcon == " ≡ " )
-                continue; */
+           
             MovePlayer(player, arrayWithRooms);
+
+        }
+    } */
+
+    public static void RunEntireMap(Character player, int rows, int cols)
+    {
+        Tile[,] map = MapFactory.FlattenRoomArray(rows, cols);
+
+        player = PlayerStartPos(player, map);
+        
+        while (player.CurrentHealth > 0)
+        {
+            Console.Clear();
+            Console.WriteLine($"{"Name",-8} {"Race",-8} {"HP",-5} {"Damage",-7} {"Armor",-6} {"Cords",-7} {"Keys"}");
+            Console.WriteLine($"{player.Name,-8} {player.Race,-8} {player.CurrentHealth,-5} {player.BaseDamage,-7} {player.Armor,-6} [{player.YPos},{player.XPos + "]", -7} {player.Inventory.Items.Count}");
+            DrawMap(player, map);       // Ritar ut kartan i en forloop och skriver över med en spelarikon där spelarens y och x pos är.
+            ActivateRoom(player,map);   // Kör den aktuella tile som spelaren står på med RunTile().
+            MovePlayer(player, map);    // Skapar möjlighet för spelaren att göra förflyttning.
 
         }
     }

@@ -25,6 +25,11 @@ public class Tile
     {
 
     }
+
+    public virtual void RunSolidBlock(Character player)
+    {
+
+    }
 }
 
 
