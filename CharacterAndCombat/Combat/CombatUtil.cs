@@ -38,7 +38,7 @@ public static class CombatUtil
             if (friendList == null || friendList.Count == 0)
             return self; // Should not happen. combatloop only continues if the lists have characters in them
 
-            Character returnCharacter = null;
+            Character returnCharacter = self;
             double lowestPercentage = 1;
             for(int i = 0 ; i< friendList.Count;i++)
             {
@@ -54,36 +54,41 @@ public static class CombatUtil
     
     public static Character ReturnBestDispellTarget(Character self,List<Character> friendList, List<Ability> abilityList)
     {
-        Console.WriteLine("ReturnBestDispellTarget called");
         List<Ability> relevantAbilities = ReturnUsableAbilitiesOfType(abilityList,AbilityType.CleanseOther);
-        List<eCombatEffect> dispellableTypes = new();
+        List<eCombatEffect> cleanseTypes = new();
         Character topPriorityCleanseTarget = null;
         bool foundFrost = false;
         bool foundPoison = false;
 
         foreach(Ability a in relevantAbilities)
         {
-            foreach(CombatEffect e in a.CombatEffects)
+            foreach(Cleanse c in a.CombatEffects)
             {
-                dispellableTypes.Add(e.Type);
+                foreach(eCombatEffect e in c.TypesToCleanse)
+                {
+                    cleanseTypes.Add(e);
+                }
             }
+        }
+        //LOG
+        foreach(eCombatEffect e in cleanseTypes)
+        {
+            Console.WriteLine(e);
         }
 
         if(relevantAbilities.Count > 0)
         {
             foreach(Character c in friendList)
             {
-                if(c.CharacterHasEffect(eCombatEffect.Freeze) && dispellableTypes.Contains(eCombatEffect.Freeze)&& c!= self)
+                if(c.CharacterHasEffect(eCombatEffect.Freeze) && cleanseTypes.Contains(eCombatEffect.Freeze)&& c!= self)
                 {   
                     topPriorityCleanseTarget = c;
-                    Console.WriteLine("frost chosen as best dispell");
+                    foundFrost = true;
 
                 } 
-                else if(c.CharacterHasEffect(eCombatEffect.Poison) && dispellableTypes.Contains(eCombatEffect.Poison)&& c!= self && !foundFrost)
+                else if(c.CharacterHasEffect(eCombatEffect.Poison) && cleanseTypes.Contains(eCombatEffect.Poison)&& c!= self && !foundFrost)
                 {     
-                    Console.WriteLine("du är här");
                     topPriorityCleanseTarget = c;
-                    Console.WriteLine("poison chosen as best dispell");
                 }
             }
         }

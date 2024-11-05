@@ -94,7 +94,6 @@ public class PlayerCombatSelector : ICombatSelection
     {
         int markedIndex = 0;
         bool stillChoosing = true;
-
         while (stillChoosing)
         {
             Console.Clear();

@@ -1,6 +1,6 @@
 public class Cleanse : CombatEffect
 {
-    List<eCombatEffect> TypesToCleanse {get;set;}
+    public List<eCombatEffect> TypesToCleanse {get;set;}
     public Cleanse(List<eCombatEffect> typesToCleanse) : base(1,1,eCombatEffect.Cleanse)
     {
         TypesToCleanse = typesToCleanse;

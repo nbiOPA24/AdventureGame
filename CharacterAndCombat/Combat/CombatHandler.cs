@@ -178,9 +178,22 @@ public static  class CombatHandler
                 UseAbilityOn(self,a,self.NameColor);
                 break;
             case TargetType.Friendly: //if a friendly target spell
-                Character chosenFriend = self.ICombatHandler.ChooseTarget(self,TargetType.Friendly,FriendlyTargetList);
-                UseAbilityOn(self,chosenFriend,a,self.NameColor,self.NameColor); //Casts Ability on friend
-                Console.ReadKey(true);
+                bool foundOther = false;
+                foreach(Character c in FriendlyTargetList)
+                {
+                    if(c != self)
+                    {
+                        foundOther = true;
+                    }
+                }
+                if(foundOther)
+                {
+                    Character chosenFriend = self.ICombatHandler.ChooseTarget(self,TargetType.Friendly,FriendlyTargetList);
+                    UseAbilityOn(self,chosenFriend,a,self.NameColor,self.NameColor); //Casts Ability on friend
+                    Console.ReadKey(true);
+                }
+                else
+                Console.WriteLine("There is no suitable target for that ability");
                 break;
                 
             case TargetType.Enemy: //if an enemy target spell

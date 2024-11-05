@@ -135,10 +135,19 @@ public class EnemySupportAI : ICombatSelection
     }
 
     public Ability ChooseSupportiveAbility()
-    {
+    {  
         Character lowestHealthCharacter = CombatUtil.ReturnLowestHealthFriendlyCharacter(Self,FriendList);
+        if (lowestHealthCharacter == null)
+        {
+            Console.WriteLine("lowestHealthCharacter is null");
+        }
         double lowestHealthPercentage = (double)lowestHealthCharacter.CurrentHealth/lowestHealthCharacter.MaxHealth;
         Character dispellTarget = CombatUtil.ReturnBestDispellTarget(Self,FriendList,AbilityList);
+        if (dispellTarget == null)
+        {
+            Console.WriteLine("dispellTarget is null");
+        }
+
         List<Ability> relevantAbilities;
         Random random = new Random();
         //These switchstatements decide what will be done in order, top got priority
@@ -158,7 +167,7 @@ public class EnemySupportAI : ICombatSelection
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.CleanseOther);
             if(relevantAbilities != null && relevantAbilities.Count != 0)
             {
-                Console.WriteLine("returning dispell");//REMOVE
+                Console.WriteLine("returning dispell");//LOG
                 return relevantAbilities[random.Next(0,relevantAbilities.Count)];
                 
             }
@@ -179,10 +188,15 @@ public class EnemySupportAI : ICombatSelection
     {
         bool foundSupportive = false;
         bool foundDefensive = false;
+        Character dispellTarget = CombatUtil.ReturnBestDispellTarget(Self,FriendList,AbilityList);
+        Console.WriteLine("UpdateCombatstate after returnbestdispelltarget:"+dispellTarget);//LOG
         foreach(Character c in FriendList)
         {
-            if((c != Self && (double)c.CurrentHealth/c.MaxHealth < 0.3 )|| CombatUtil.ReturnBestDispellTarget(Self,FriendList,AbilityList) != null )
-                foundSupportive = true; break;
+            if((c != Self && (double)c.CurrentHealth/c.MaxHealth < 0.3 )|| dispellTarget != null )
+            {
+                foundSupportive = true;
+                break;
+            }
         }
         if((double)Self.CurrentHealth / Self.MaxHealth < 0.5) foundDefensive = true;
         
