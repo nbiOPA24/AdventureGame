@@ -19,7 +19,8 @@ public enum AbilityType
     HealingOther,
     CleanseSelf,
     CleanseOther,
-    Offensive
+    Offensive,
+    OffensiveStrong
 }
 public enum CombatState
 {

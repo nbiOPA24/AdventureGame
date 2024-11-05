@@ -1,4 +1,5 @@
 using System.Dynamic;
+using System.Security.Cryptography.X509Certificates;
 
 public class Character
 {
@@ -19,9 +20,10 @@ public class Character
     public Inventory Inventory {get;set;}
     public bool AbleToAct {get;set;}
     public ICombatSelection ICombatHandler {get;set;}
-    public int StartingHealth { get; }
+    public int StartingHealth { get;set; }
+    public int Intelligence {get;set;}
 
-    public Character(string name,int startingHealth,int baseDamage,int armor,ICombatSelection icombatHandler,ConsoleColor nameColor)
+    public Character(string name,int startingHealth,int baseDamage,int armor,ICombatSelection icombatHandler,ConsoleColor nameColor,int intelligence)
     {
         AbleToAct = true;
         CurrentHealth = startingHealth;
@@ -38,6 +40,8 @@ public class Character
         Shield = 0;
         NameColor = nameColor;
         TempArmor = 0;
+        Intelligence = intelligence;
+        
 
     }
 

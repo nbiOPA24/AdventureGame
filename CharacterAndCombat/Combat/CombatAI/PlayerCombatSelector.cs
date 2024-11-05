@@ -6,11 +6,13 @@ public class PlayerCombatSelector : ICombatSelection
     public List<Character> FriendList { get;set; }
     public List<Character> EnemyList { get; set; }
     public Character Self {get;set;}
+    public Random RandomNumber { get; set; }
 
     public PlayerCombatSelector()
     {
         CurrentCombatState = CombatState.Offensive;
         AbilityList = new();
+        RandomNumber = new Random();
     }
     public Ability SelectAbility()
     {
@@ -175,5 +177,8 @@ public class PlayerCombatSelector : ICombatSelection
         throw new NotImplementedException();
     }
 
-
+    public void TransitionToNextState()
+    {
+        throw new NotImplementedException();
+    }
 }

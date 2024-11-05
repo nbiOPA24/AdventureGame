@@ -2,15 +2,22 @@ public static class EnemyFactory
 {
 
 
-
-    public static Character GenerateEnemy(string inputName,EnemyType enemyType ,ConsoleColor selfColor)
+    /// <summary>
+    /// Intelligence should be a number between 1-100
+    /// </summary>
+    /// <param name="inputName"></param>
+    /// <param name="enemyType"></param>
+    /// <param name="selfColor"></param>
+    /// <param name="intelligence"></param>
+    /// <returns></returns>
+    public static Character GenerateEnemy(string inputName,EnemyType enemyType ,ConsoleColor selfColor,int intelligence)
     {
         string name = inputName;
         Character character = null;;
         switch(enemyType)
         {
             case EnemyType.Supportive:
-                ICombatSelection ai = new EnemySupportAI();
+                ICombatSelection ai = new NPCSupportAI();
                 Ability guard = new Ability("Guard",TargetType.Self,0,AbilityType.DefensiveSelf);
                 guard.AddArmorBuffEffect(5,3);
                 Ability healSelf = new Ability("Heal Self",TargetType.Self,2,AbilityType.HealingSelf);
@@ -24,7 +31,7 @@ public static class EnemyFactory
                 poisonDart.AddPoisonEffect(5,5);
                 Ability cleansePoison = new Ability("Cleanse Poison",TargetType.Friendly,8,AbilityType.CleanseOther);
                 cleansePoison.AddCleanseEffect(eCombatEffect.Poison);
-                character = new(name,50,5,10,ai,selfColor);
+                character = new(name,50,5,10,ai,selfColor,intelligence);
                 character.Abilities.Add(guard);
                 character.Abilities.Add(healOther);
                 character.Abilities.Add(healSelf);

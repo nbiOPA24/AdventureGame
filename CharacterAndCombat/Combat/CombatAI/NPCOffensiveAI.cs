@@ -1,59 +1,74 @@
 
-using System.ComponentModel;
-
-public class EnemySupportAI : ICombatSelection
+public class NPCCasterAI : ICombatSelection
 {
     public CombatState CurrentCombatState {get;set;}
     public List<Ability> AbilityList {get;set;}
     public List<Character> FriendList {get;set;}
     public List<Character> EnemyList {get;set;}
     public Character Self {get;set;}
-    public EnemySupportAI()
+    public Random RandomNumber {get;set;}
+    public NPCCasterAI()
     {
         CurrentCombatState = CombatState.Offensive;
-        AbilityList = new();
-        FriendList = new();
-        EnemyList = new();
+        AbilityList = new List<Ability>();
+        FriendList = new List<Character>();
+        EnemyList = new List<Character>();
+        RandomNumber = new Random();
     }
     public Ability SelectAbility()
-{
-    switch (CurrentCombatState)
     {
-        case CombatState.Offensive:
-            Ability offensiveAbility = ChooseOffensiveAbility();
-            if (offensiveAbility != null) return offensiveAbility;
-            CurrentCombatState = CombatState.Defensive;
-            return SelectAbility(); //Try again with new state
+        Ability ability = null;
 
-        case CombatState.Defensive:
-            Ability defensiveAbility = ChooseDefensiveAbility();
-            if (defensiveAbility != null) return defensiveAbility;
-            CurrentCombatState = CombatState.Supportive;
-            return SelectAbility(); //Try again with new state
-
-        case CombatState.Supportive:
-            Ability supportiveAbility = ChooseSupportiveAbility();
-            if (supportiveAbility != null) return supportiveAbility;
-            CurrentCombatState = CombatState.Default;
-            return SelectAbility(); //Try again with new state
-
-        case CombatState.Default:
-            Ability smack = new("Smack", TargetType.Enemy, 0, AbilityType.Offensive);
-            smack.AddDamageEffect(5);
-            return smack;
-    }
-    
-    return null; // Should never reach here because each case returns an ability
-}
-
-    
-    public Character ChooseTarget(Character self,TargetType targetType,List<Character> potentialTargets)
-    {   Random random = new Random();
-        switch(targetType)
+        switch (CurrentCombatState)
         {
-            case TargetType.Self: return self;
-            case TargetType.Enemy: return potentialTargets[random.Next(0,potentialTargets.Count)];             
-            case TargetType.Friendly: return GetSupportiveTarget(FriendList);
+            case CombatState.Offensive:
+                ability = ChooseOffensiveAbility();
+                break;
+            case CombatState.Defensive:
+                ability = ChooseDefensiveAbility();
+                break;
+            case CombatState.Supportive:
+                ability = ChooseSupportiveAbility();
+                break;
+            case CombatState.Default:
+                ability = new Ability("Mana bolt", TargetType.Enemy, 0, AbilityType.Offensive);
+                ability.AddDamageEffect(5);
+                return ability;
+        }
+
+        if (ability != null)
+            return ability;
+
+        TransitionToNextState();
+        return SelectAbility();
+    }
+
+    
+    public Character ChooseTarget(Character self, TargetType targetType, List<Character> potentialTargets)
+    {
+        if (targetType == TargetType.Enemy)
+        {
+            // Roll based on intelligence: high intelligence favors lowest health targets
+            int roll = RandomNumber.Next(1, 101);
+            
+            if (roll <= Self.Intelligence) // If the roll is lower than the casters intelligence it will target the lowest health enemy character
+            {
+                // Prioritize lowest health target
+                return CombatUtil.ReturnLowestHealthCharacter(potentialTargets);
+            }
+            else
+            {
+                // Choose a random target if the intelligence check fails
+                return potentialTargets[RandomNumber.Next(0, potentialTargets.Count)];
+            }
+        }
+        else if (targetType == TargetType.Self)
+        {
+            return self;
+        }
+        else if (targetType == TargetType.Friendly)
+        {
+            return GetSupportiveTarget(FriendList);
         }
         return null; // should be unreachable
     }
@@ -63,8 +78,8 @@ public class EnemySupportAI : ICombatSelection
         double lowestHealthPercentage = (double)lowestHealthCharacter.CurrentHealth/lowestHealthCharacter.MaxHealth;
         Character dispellTarget = CombatUtil.ReturnBestDispellTarget(Self,FriendList,AbilityList);
         List<Ability> relevantAbilities;
-        //These switchstatements decide what will be done in order, top got priority
-        //Checks if a friendly target is below 50% health. if so chooses a healother type ability
+
+        //Priority 1: Heal if a friends health is bellow 30%
         if(lowestHealthPercentage <0.3 && lowestHealthCharacter != Self)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingOther);
@@ -73,7 +88,7 @@ public class EnemySupportAI : ICombatSelection
                 return lowestHealthCharacter;
             }
         }
-        //If a target can be dispelled and the lowest health percenrage is above 80%
+        //Priority 2: Cleanse a friend if they have a debuff you can cleanse
         if(dispellTarget != null)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.CleanseOther);
@@ -82,7 +97,7 @@ public class EnemySupportAI : ICombatSelection
                 return dispellTarget;
             }
         }
-        //if someone is damaged at all
+        //Priority 3: Heal someone below 60% 
         if(lowestHealthPercentage < 0.6 && lowestHealthCharacter != Self)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingOther);
@@ -91,6 +106,7 @@ public class EnemySupportAI : ICombatSelection
                 return lowestHealthCharacter;
             }
         }
+        //Default sets combatstate to offensive
         else
         {
             CurrentCombatState = CombatState.Offensive;
@@ -102,13 +118,12 @@ public class EnemySupportAI : ICombatSelection
     public Ability ChooseDefensiveAbility()
     {
         List<Ability> relevantAbilities;
-        Random random = new Random();
         if((double)Self.CurrentHealth/Self.MaxHealth < 1)
         {
            relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingSelf);
            if(relevantAbilities.Count != 0)
            {
-                return relevantAbilities[random.Next(0,relevantAbilities.Count)]; 
+                return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)]; 
            }
            
         }
@@ -117,7 +132,7 @@ public class EnemySupportAI : ICombatSelection
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.DefensiveSelf);
             if(relevantAbilities.Count != 0)
             {
-                return relevantAbilities[random.Next(0,relevantAbilities.Count)]; 
+                return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)]; 
             }
 
         } 
@@ -125,11 +140,16 @@ public class EnemySupportAI : ICombatSelection
     }
     public Ability ChooseOffensiveAbility()
     {
-        List<Ability> relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.Offensive);
-        Random random = new Random();
+        List<Ability> relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.OffensiveStrong);
+
         if(relevantAbilities.Count > 0)
         {
-           return relevantAbilities[random.Next(0,relevantAbilities.Count)]; 
+            return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)];
+        }
+        relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.Offensive);
+        if(relevantAbilities.Count > 0)
+        {
+            return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)];
         }
         else return null;
     }
@@ -137,28 +157,18 @@ public class EnemySupportAI : ICombatSelection
     public Ability ChooseSupportiveAbility()
     {  
         Character lowestHealthCharacter = CombatUtil.ReturnLowestHealthFriendlyCharacter(Self,FriendList);
-        if (lowestHealthCharacter == null)
-        {
-            Console.WriteLine("lowestHealthCharacter is null");
-        }
         double lowestHealthPercentage = (double)lowestHealthCharacter.CurrentHealth/lowestHealthCharacter.MaxHealth;
         Character dispellTarget = CombatUtil.ReturnBestDispellTarget(Self,FriendList,AbilityList);
-        if (dispellTarget == null)
-        {
-            Console.WriteLine("dispellTarget is null");
-        }
 
         List<Ability> relevantAbilities;
-        Random random = new Random();
         //These switchstatements decide what will be done in order, top got priority
         //Checks if a friendly target is below 30% health. if so chooses a healother type ability
-        Console.WriteLine(lowestHealthPercentage);//REMOVE
         if(lowestHealthPercentage <0.3 && lowestHealthCharacter != Self)
         {
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingOther);
             if(relevantAbilities != null && relevantAbilities.Count != 0)
             {
-                return relevantAbilities[random.Next(0,relevantAbilities.Count)];
+                return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)];
             }
         }
         //if anyone has an applicable debuff that can be cleansed 
@@ -167,8 +177,7 @@ public class EnemySupportAI : ICombatSelection
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.CleanseOther);
             if(relevantAbilities != null && relevantAbilities.Count != 0)
             {
-                Console.WriteLine("returning dispell");//LOG
-                return relevantAbilities[random.Next(0,relevantAbilities.Count)];
+                return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)];
                 
             }
         }
@@ -178,7 +187,7 @@ public class EnemySupportAI : ICombatSelection
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingOther);
             if(relevantAbilities.Count != 0)
             {
-                return relevantAbilities[random.Next(0,relevantAbilities.Count)];
+                return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)];
             }
         }
         
@@ -189,10 +198,10 @@ public class EnemySupportAI : ICombatSelection
         bool foundSupportive = false;
         bool foundDefensive = false;
         Character dispellTarget = CombatUtil.ReturnBestDispellTarget(Self,FriendList,AbilityList);
-        Console.WriteLine("UpdateCombatstate after returnbestdispelltarget:"+dispellTarget);//LOG
+        List<Ability> healingSpells = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,AbilityType.HealingOther);
         foreach(Character c in FriendList)
         {
-            if((c != Self && (double)c.CurrentHealth/c.MaxHealth < 0.3 )|| dispellTarget != null )
+            if((c != Self && (double)c.CurrentHealth/c.MaxHealth < 0.3  && healingSpells.Count != 0 )|| dispellTarget != null )
             {
                 foundSupportive = true;
                 break;
@@ -204,4 +213,17 @@ public class EnemySupportAI : ICombatSelection
                              foundDefensive ? CombatState.Defensive:
                              CombatState.Offensive;                        
     }
+    public void TransitionToNextState()
+    {
+        if (CurrentCombatState == CombatState.Offensive)
+            CurrentCombatState = CombatState.Defensive;
+        else if (CurrentCombatState == CombatState.Defensive)
+            CurrentCombatState = CombatState.Supportive;
+        else if (CurrentCombatState == CombatState.Supportive)
+            CurrentCombatState = CombatState.Default;
+        else
+            CurrentCombatState = CombatState.Offensive;
+    }
+
+
 }

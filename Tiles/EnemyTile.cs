@@ -62,7 +62,7 @@ class EnemyTile : RewardTile
                         name = "Goblin tamer";
                             break;
                     }
-                    ICombatSelection combatHandler = new EnemySupportAI();
+                    ICombatSelection combatHandler = new NPCSupportAI();
                     Character e = new Character(name,15*(int)Difficulty,10+random.Next(1,4),5*random.Next(1,4),combatHandler,ConsoleColor.DarkGray);
                     returnList.Add(e);
                     break;

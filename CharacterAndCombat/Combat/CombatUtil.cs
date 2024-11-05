@@ -70,12 +70,6 @@ public static class CombatUtil
                 }
             }
         }
-        //LOG
-        foreach(eCombatEffect e in cleanseTypes)
-        {
-            Console.WriteLine(e);
-        }
-
         if(relevantAbilities.Count > 0)
         {
             foreach(Character c in friendList)
