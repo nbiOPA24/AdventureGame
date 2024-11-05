@@ -47,6 +47,10 @@ public class Character
 
 
     #region Taking damage
+    public void TakeTrueDamage(int damage)
+    {
+        CurrentHealth = CurrentHealth - damage >  0 ? CurrentHealth -damage: 0;
+    }
     public void TakeDamage(int damage)
     {
         if(IsImmune == true)
@@ -132,6 +136,19 @@ public class Character
                 Utilities.ConsoleWriteColor(Name,NameColor);
                 Console.Write($" is no longer ");
                 Utilities.ConsoleWriteLineColor("Poisoned",ConsoleColor.DarkGreen);
+                break;
+            case eCombatEffect.Burn: // Add this case for Burn effect
+                for (int i = 0; i < CurrentStatusEffects.Count; i++)
+                {
+                    if (CurrentStatusEffects[i] == effect)
+                    {
+                        CurrentStatusEffects.Remove(CurrentStatusEffects[i]);
+                        break;
+                    }
+                }
+                Utilities.ConsoleWriteColor(Name, NameColor);
+                Console.Write(" is no longer ");
+                Utilities.ConsoleWriteLineColor("Burning", ConsoleColor.Red);
                 break;
             case eCombatEffect.Immune:
                 Utilities.ConsoleWriteColor(Name,NameColor);

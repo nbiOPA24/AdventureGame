@@ -64,7 +64,7 @@ public class Program
         Utilities.CharByChar("Please enter a player name: ", 8, ConsoleColor.DarkBlue);
         string name = Utilities.ValidateString();
 
-        Ability HellBeam = new Ability("HellBeam",TargetType.Enemy,1,AbilityType.Offensive);
+        Ability HellBeam = new Ability("HellBeam",eTargetType.Enemy,1,eAbilityType.Offensive);
         HellBeam.AddDamageEffect(10);
         Character player;
 
@@ -76,21 +76,21 @@ public class Program
             if (difficultyChoiceIndex == 0)
             {
                 //EASY
-                player = new Character(name, 250, 40, 20,playerCombatInterface,ConsoleColor.Cyan);
+                player = new Character(name, 250, 40, 20,playerCombatInterface,ConsoleColor.Cyan,1);
                 player.Abilities.Add(HellBeam);
                 return player;
             }
             else if (difficultyChoiceIndex == 1)
             {
                 //MEDIUM
-                player = new Character(name, 150, 30, 10,playerCombatInterface,ConsoleColor.Cyan);
+                player = new Character(name, 150, 30, 10,playerCombatInterface,ConsoleColor.Cyan,1);
                 player.Abilities.Add(HellBeam);
                 return player;
             }
             else if (difficultyChoiceIndex == 2)
             {
                 //HARD
-                player = new Character(name, 80, 15, 4,playerCombatInterface,ConsoleColor.Cyan);
+                player = new Character(name, 80, 15, 4,playerCombatInterface,ConsoleColor.Cyan,1);
                 player.Abilities.Add(HellBeam);
                 return player;
             }

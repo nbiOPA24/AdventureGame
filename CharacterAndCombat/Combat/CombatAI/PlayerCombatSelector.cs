@@ -1,7 +1,7 @@
 
 public class PlayerCombatSelector : ICombatSelection
 {
-    public CombatState CurrentCombatState {get;set;}
+    public eCombatState CurrentCombatState {get;set;}
     public List<Ability> AbilityList {get;set;}
     public List<Character> FriendList { get;set; }
     public List<Character> EnemyList { get; set; }
@@ -10,7 +10,7 @@ public class PlayerCombatSelector : ICombatSelection
 
     public PlayerCombatSelector()
     {
-        CurrentCombatState = CombatState.Offensive;
+        CurrentCombatState = eCombatState.Offensive;
         AbilityList = new();
         RandomNumber = new Random();
     }
@@ -92,7 +92,7 @@ public class PlayerCombatSelector : ICombatSelection
         }
         return returnAbility;
     }
-    public Character ChooseTarget(Character self,TargetType targetType,List<Character> potentialTargets)
+    public Character ChooseTarget(Character self,eTargetType targetType,List<Character> potentialTargets)
     {
         int markedIndex = 0;
         bool stillChoosing = true;

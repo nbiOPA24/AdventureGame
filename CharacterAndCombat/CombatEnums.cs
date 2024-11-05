@@ -9,9 +9,10 @@ public enum eCombatEffect
     Shield,
     Cleanse,
     ArmorBuff,
+    Burn,
 
 }
-public enum AbilityType
+public enum eAbilityType
 {
     DefensiveSelf,
     DefensiveOther,
@@ -22,24 +23,28 @@ public enum AbilityType
     Offensive,
     OffensiveStrong
 }
-public enum CombatState
+public enum eCombatState
 {
     Offensive,
     Defensive,
     Supportive,
     Default,
 }
-public enum TargetType
+public enum eTargetType
 {
     Self,
     Friendly,
     Enemy
 }
-public enum EnemyType
+public enum eEnemyType
 {
     Supportive,
     Bruiser,
     Tank,
     Caster,
     Rogue,
+}
+public enum eEnemyFamily
+{
+    Goblin,
 }

@@ -146,9 +146,7 @@ public static  class CombatHandler
     public static void CharacterTurn(Character self,List<Character> enemyList,List<Character> friendList)
     {  
 
-        Console.WriteLine($"Test health%factor {(double)self.CurrentHealth/self.MaxHealth}");
         self.ICombatHandler.UpdateCombatState();
-        Console.WriteLine(self.ICombatHandler.CurrentCombatState.ToString()); //TODO Remove this when game works as intended.
         if(self.AbleToAct) //if not frozen or otherwise hindered
         {
             Ability chosenAbility = self.ICombatHandler.SelectAbility();  //selects the ability to use
@@ -174,10 +172,10 @@ public static  class CombatHandler
     {
         switch(a.Target)
         {
-            case TargetType.Self: //if a selfcast spell
+            case eTargetType.Self: //if a selfcast spell
                 UseAbilityOn(self,a,self.NameColor);
                 break;
-            case TargetType.Friendly: //if a friendly target spell
+            case eTargetType.Friendly: //if a friendly target spell
                 bool foundOther = false;
                 foreach(Character c in FriendlyTargetList)
                 {
@@ -188,7 +186,7 @@ public static  class CombatHandler
                 }
                 if(foundOther)
                 {
-                    Character chosenFriend = self.ICombatHandler.ChooseTarget(self,TargetType.Friendly,FriendlyTargetList);
+                    Character chosenFriend = self.ICombatHandler.ChooseTarget(self,eTargetType.Friendly,FriendlyTargetList);
                     UseAbilityOn(self,chosenFriend,a,self.NameColor,self.NameColor); //Casts Ability on friend
                     Console.ReadKey(true);
                 }
@@ -196,8 +194,8 @@ public static  class CombatHandler
                 Console.WriteLine("There is no suitable target for that ability");
                 break;
                 
-            case TargetType.Enemy: //if an enemy target spell
-                Character chosenEnemy = self.ICombatHandler.ChooseTarget(self,TargetType.Enemy,EnemyTargetList);
+            case eTargetType.Enemy: //if an enemy target spell
+                Character chosenEnemy = self.ICombatHandler.ChooseTarget(self,eTargetType.Enemy,EnemyTargetList);
                 UseAbilityOn(self,chosenEnemy,a,self.NameColor,chosenEnemy.NameColor); //Deals damage to the enemy object
                 Console.ReadKey(true);
                 break;
@@ -212,7 +210,7 @@ public static  class CombatHandler
     public static void UseAbilityOn(Character self,Character target ,Ability a,ConsoleColor colorSelf,ConsoleColor colorTarget)
     {
         //if target != self  displays the target else only writes that its being used
-        if(a.Target != TargetType.Self)
+        if(a.Target != eTargetType.Self)
         {
             Utilities.ConsoleWriteColor(self.Name,colorSelf);
             Utilities.CharByChar($" Uses {a.Name} ",8);
@@ -286,7 +284,6 @@ public static  class CombatHandler
                 if(character.CurrentStatusEffects[i].Duration == 0)
                 {
                     character.ClearEffect(character.CurrentStatusEffects[i]);
-                    character.CurrentStatusEffects.RemoveAt(i);
                 }
             }
             //Console.ReadKey(true);

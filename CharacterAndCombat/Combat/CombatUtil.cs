@@ -1,7 +1,7 @@
 public static class CombatUtil
     {
         #region Ability list return
-            public static List<Ability> ReturnUsableAbilitiesOfType(List<Ability> abilityList, AbilityType type)
+            public static List<Ability> ReturnUsableAbilitiesOfType(List<Ability> abilityList, eAbilityType type)
         {
             List<Ability> returnList = new List<Ability>();
             for(int i = 0 ; i <abilityList.Count;i++)
@@ -54,7 +54,7 @@ public static class CombatUtil
     
     public static Character ReturnBestDispellTarget(Character self,List<Character> friendList, List<Ability> abilityList)
     {
-        List<Ability> relevantAbilities = ReturnUsableAbilitiesOfType(abilityList,AbilityType.CleanseOther);
+        List<Ability> relevantAbilities = ReturnUsableAbilitiesOfType(abilityList,eAbilityType.CleanseOther);
         List<eCombatEffect> cleanseTypes = new();
         Character topPriorityCleanseTarget = null;
         bool foundFrost = false;
@@ -81,6 +81,11 @@ public static class CombatUtil
 
                 } 
                 else if(c.CharacterHasEffect(eCombatEffect.Poison) && cleanseTypes.Contains(eCombatEffect.Poison)&& c!= self && !foundFrost)
+                {     
+                    topPriorityCleanseTarget = c;
+                    foundPoison = true;
+                }
+                else if(c.CharacterHasEffect(eCombatEffect.Burn) && cleanseTypes.Contains(eCombatEffect.Burn)&& c!= self && !foundPoison && !foundFrost)
                 {     
                     topPriorityCleanseTarget = c;
                 }

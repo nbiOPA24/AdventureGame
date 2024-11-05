@@ -2,13 +2,13 @@ public class Ability
 {
     public string Name {get;set;}
     public List<CombatEffect> CombatEffects {get;set;}
-    public TargetType Target {get;set;}
-    public AbilityType Type {get;set;}
+    public eTargetType Target {get;set;}
+    public eAbilityType Type {get;set;}
     public int CoolDownTimer {get;set;}
     public int CurrentCooldown {get;set;}
 
     
-    public Ability(string name,TargetType target,int cooldown,AbilityType type)
+    public Ability(string name,eTargetType target,int cooldown,eAbilityType type)
     {
         Name = name;
         CombatEffects = new();
@@ -29,6 +29,12 @@ public class Ability
         Poison poison = new(duration,magnitude);
         CombatEffects.Add(poison);
     }
+    public void AddBurnEffect(int duration, int magnitude)
+    {
+        Burn burn = new(duration, magnitude);
+        CombatEffects.Add(burn);
+    }
+
     public void AddImmuneEffect(int duration)
     {
         Immune immune = new(duration);
