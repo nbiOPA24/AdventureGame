@@ -3,8 +3,9 @@ public class ItemRewardTile : Tile
     public ItemRewardTile() : base("Item Reward tile", " ★ ")
     {
     }
-    public override void RunTile(Character player)
+    public override void RunTile(List<Character> playerList)
     {
+        Character player = playerList[0];
         if (TileState == false)
         {
             Random random = new();

@@ -4,8 +4,9 @@ public class DoorTile : Tile
     {
         Solid = true;
     }
-    public override void RunSolidTile(Character player)
+    public override void RunSolidTile(List<Character> playerList)
     {
+        Character player = playerList[0];
         if (TileState == false)
         {
             bool hasKey = false;

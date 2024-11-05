@@ -26,7 +26,7 @@ public class Tile
 
     }
 
-    public virtual void RunSolidTile(Character player)
+    public virtual void RunSolidTile(List<Character> playerList)
     {
 
     }

@@ -7,22 +7,25 @@ class EnemyTile : RewardTile
     public EnemyTile(string tileName, int reward, int nrOfEnemies) : base(tileName, " ☠ ", reward)
     {
         NrOfEnemies = nrOfEnemies;
+        Solid = true;
     }
 
-    public override void RunTile(List<Character> playerList)
+    public override void RunSolidTile(List<Character> playerList)
     {
+        
         if (TileState == false) // Never entered the tile before!
         {
             string encounterMessage = $"As you step into the enemy lair, {NrOfEnemies} fierce foes appear, blocking your path!";
-            Success = CombatHandler.RunCombatScenario(CreateEnemies(),playerList,encounterMessage);
+            Success = CombatHandler.RunCombatScenario(NPCFactory.GenerateNPCs(ConsoleColor.DarkRed,50,eEnemyFamily.Goblin,NrOfEnemies),playerList,encounterMessage);
             TileState = true;
+
         }
         else // Entered the tile before
         {
             if (!Success)
             {
                 string encounterMessage = $"\"Ah, it's you again! You weak and pitiful human, fleeing from us last time. You should have stayed away, coward!\"";
-                Success = CombatHandler.RunCombatScenario(CreateEnemies(),playerList,encounterMessage);
+                Success = CombatHandler.RunCombatScenario(NPCFactory.GenerateNPCs(ConsoleColor.DarkRed,50,eEnemyFamily.Goblin,NrOfEnemies),playerList,encounterMessage);
             }
             else
             {

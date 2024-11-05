@@ -60,7 +60,7 @@ public class CR : Room
             { o, e , e , e , e , e , e , e , e }
         };
 
-            Tile[,] crossRoomFive = new Tile[,]
+        Tile[,] crossRoomFive = new Tile[,]
         {
             { o, o , o , o , o , e , o , o , o },
             { o, e , e , e , o , e , e , e , e },
@@ -71,7 +71,7 @@ public class CR : Room
             { o, e , e , e , e , e , e , e , e }
         };
 
-                Tile[,] crossRoomSix = new Tile[,]
+        Tile[,] crossRoomSix = new Tile[,]
         {
             { o, o , o , o , o , e , o , o , o },
             { o, e , e , e , o , e , e , e , e },
