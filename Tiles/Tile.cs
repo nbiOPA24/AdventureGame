@@ -26,7 +26,7 @@ public class Tile
 
     }
 
-    public virtual void RunSolidBlock(Character player)
+    public virtual void RunSolidTile(Character player)
     {
 
     }

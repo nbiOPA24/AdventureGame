@@ -4,11 +4,9 @@ class EnemyTile : RewardTile
     public DifficultyLevel Difficulty {get; set;}
     public string Race {get; set;}
     
-    public EnemyTile(string tileName, int reward, int nrOfEnemies, DifficultyLevel difficulty, string race) : base(tileName, " ☠ ", reward)
+    public EnemyTile(string tileName, int reward, int nrOfEnemies) : base(tileName, " ☠ ", reward)
     {
         NrOfEnemies = nrOfEnemies;
-        Difficulty = difficulty;
-        Race = race;
     }
 
     public override void RunTile(Character player)

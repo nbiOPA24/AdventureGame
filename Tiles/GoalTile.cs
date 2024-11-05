@@ -7,13 +7,21 @@ public class GoalTile : Tile
     {
         if (TileState == false)
         {
-            Console.WriteLine("Congratulations, adventurer! You've reached your goal! Take a moment to celebrate your victory. [✓]");
-            TileState = true;
-            // Avsluta spelet? Return to mainMenu med en Thread.Sleep?
-        }
-        else
-        {
-            Console.WriteLine("You've already reached the goal. The adventure is complete, but you can always revisit for nostalgia.");
+            Console.Clear();
+
+            // DND ending text
+            string dndEndingText = @"After a long and perilous journey, you have finally reached your goal.
+    Treasures beyond your wildest dreams lie before you.
+    But the adventure is not over yet...
+    New realms await exploration, and legends are waiting to be forged.
+
+    Thank you for playing!";
+
+            // Display the text character by character
+            Utilities.CharByChar(dndEndingText, 15, ConsoleColor.DarkGreen);
+            Console.WriteLine("RETURNING TO MAIN MENU????????????????");
+            Thread.Sleep(1000);
+            Environment.Exit(0);
         }
     }
 }

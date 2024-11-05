@@ -1,6 +1,6 @@
 class MapFactory
 {
-    public static Tile[,] FlattenRoomArray(int rows, int cols)
+    public static Tile[,] GenerateMap(int rows, int cols)
     {
         Tile[,] countRoom = new CR().Room; //Skapar detta rum för att använda det till att beräkna storleken av rum.
 
@@ -13,13 +13,20 @@ class MapFactory
         Tile[,] useMap = new Tile[nrRowsInMap+1,nrColsInMap+1]; //Lägger till en rad och en kolumn i nya mappen för att det ska bli enheligt vid utskrift pga hur Rooms är strukturerat 
 
         Random random = new();
-        int result = random.Next(0,rows);
+        int startPlacement = random.Next(0,rows);
+        int goalPlacement = random.Next(0,rows);
+
 
         for (int row = 0; row < rows; row++) //Lopar igenom varje rad i jagged 2d array
         {
             for (int col = 0; col < cols; col++) // När vi är inne på rad i, så Loopar vi igenom varje kolumn i jagged 2d array
             {
-                Tile[,] room = (row == result && col == 0) ? new SR().Room : new CR().Room;  // Tilldelar startrummet en plats.
+                Tile[,] room = (row == startPlacement && col == 0) ? new SR().Room : new CR().Room;  // Tilldelar startrummet en plats.
+
+                if (row == goalPlacement && col == cols-1)
+                {
+                    room = new GR().Room;
+                } 
 
                 for (int k = 0; k < nrRowsInRoom; k++) // på aktuell plats[i,j], så går vi igenom dess 2d arrays rader 
                 {

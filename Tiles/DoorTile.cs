@@ -4,7 +4,7 @@ public class DoorTile : Tile
     {
         Solid = true;
     }
-    public override void RunSolidBlock(Character player)
+    public override void RunSolidTile(Character player)
     {
         if (TileState == false)
         {
@@ -25,13 +25,11 @@ public class DoorTile : Tile
                 {
                     Solid = false;   
                     Console.WriteLine("The door opens...");
-                    foreach(Item item in player.Inventory.Items)
+                    for (int i = 0; i < player.Inventory.Items.Count; i++)
                     {
-                        if(item.Name.Contains("key"))
+                        if(player.Inventory.Items[i].Name.ToLower().Contains("key"))
                         {
-                            Console.WriteLine($"{item.Name} gets used and removed");
-                            player.Inventory.Items.Remove(item);
-                            Thread.Sleep(1500);
+                            player.Inventory.Items.RemoveAt(i);
                         }
                     }
                     TileState = true;
@@ -40,12 +38,7 @@ public class DoorTile : Tile
             else
             {
                 Console.WriteLine("Sorry, The door i locked!");
-                Thread.Sleep(1500);
             }
-        }
-        else
-        {
-            Console.WriteLine("The door is open!");
         }
     }
 }
