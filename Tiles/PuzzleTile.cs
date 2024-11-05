@@ -9,7 +9,7 @@ class PuzzleTile : RewardTile
         SecretAnswer = secretAnswer;
     }
 
-    public override void RunTile(Character player)
+    public override void RunTile(List<Character> playerList)
     {
         if (TileState == false)
         {
@@ -19,14 +19,14 @@ class PuzzleTile : RewardTile
 
             if (string.Equals(reply, SecretAnswer, StringComparison.OrdinalIgnoreCase))
             {
-                player.CurrentHealth += Reward;
+                playerList[0].CurrentHealth += Reward;
                 Console.WriteLine($"Congratulations, you succeeded! You gain {Reward} health.");
                 Success = true;
             }
             else
             {
                 Console.WriteLine($"Sorry, that's incorrect. The correct answer is: {SecretAnswer}. You loose {Reward} health");
-                player.CurrentHealth -= Reward;
+                playerList[0].CurrentHealth -= Reward;
                 Success = false;
             }
 

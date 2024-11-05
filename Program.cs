@@ -60,12 +60,7 @@ public class Program
         Utilities.CharByChar("Please enter a player name: ", 8, ConsoleColor.DarkBlue);
         string name = Utilities.ValidateString();
 
-        Utilities.CharByChar("Please Choose a race", 8);
-        List<string> raceType = new() {"Human", "Dwarf", "Elf"};
-        int raceTypeIndex = Utilities.PickIndexFromList(raceType, "Please Choose your race!");
-        List<IRace> races = new() {new Human(), new Dwarf(), new Elf()};
-        IRace race = races[raceTypeIndex];
-        Ability HellBeam = new Ability("HellBeam",TargetType.Enemy,1);
+        Ability HellBeam = new Ability("HellBeam",eTargetType.Enemy,1,eAbilityType.Offensive);
         HellBeam.AddDamageEffect(10);
         Character player;
 
@@ -73,26 +68,26 @@ public class Program
         int difficultyChoiceIndex = Utilities.PickIndexFromList(gameDifficulty, "Please Choose a difficulty!");
         try
         {
-            ICombatHandler playerCombatInterface = new PlayerCombatHandler();
+            ICombatSelection playerCombatInterface = new PlayerCombatSelector();
             if (difficultyChoiceIndex == 0)
             {
                 //EASY
-                player = new Character(name, 250, race, 40, 20,playerCombatInterface,ConsoleColor.Cyan);
-                player.ChosenAbilities.Add(HellBeam);
+                player = new Character(name, 250, 40, 20,playerCombatInterface,ConsoleColor.Cyan,1);
+                player.Abilities.Add(HellBeam);
                 return player;
             }
             else if (difficultyChoiceIndex == 1)
             {
                 //MEDIUM
-                player = new Character(name, 150, race, 30, 10,playerCombatInterface,ConsoleColor.Cyan);
-                player.ChosenAbilities.Add(HellBeam);
+                player = new Character(name, 150, 30, 10,playerCombatInterface,ConsoleColor.Cyan,1);
+                player.Abilities.Add(HellBeam);
                 return player;
             }
             else if (difficultyChoiceIndex == 2)
             {
                 //HARD
-                player = new Character(name, 80, race, 15, 4,playerCombatInterface,ConsoleColor.Cyan);
-                player.ChosenAbilities.Add(HellBeam);
+                player = new Character(name, 80, 15, 4,playerCombatInterface,ConsoleColor.Cyan,1);
+                player.Abilities.Add(HellBeam);
                 return player;
             }
             
@@ -111,7 +106,7 @@ public class Program
     {
         Console.Clear();
         string greetMessage = @$"
-Darkness surrounds you, {player.Name}, the {player.Race}.
+Darkness surrounds you, {player.Name}, the Human.
 In the distance, you hear the echoes of forgotten battles...
 The dungeon awaits, and with every step, danger looms closer.
 Will you survive, or will you join the souls lost in these cursed halls?

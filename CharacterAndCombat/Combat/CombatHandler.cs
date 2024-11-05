@@ -8,17 +8,20 @@ public static  class CombatHandler
     /// </summary>
     /// <param name="enemyList"></param>
     /// <returns></returns>
-    public static bool RunCombatScenario(List<Character> enemyList,Character player,string message)
+    public static bool RunCombatScenario(List<Character> enemyList,List<Character> playerList,string message)
     {
         //Displays entering message and waits for keypress
         Console.Clear();
         Utilities.CharByCharLine(message,5,ConsoleColor.DarkGreen,true);
         Console.ReadKey(true);
         //Initializing CombatSession object carrying playerlist enemylist and such
-        CombatSession currentSession = new(player,enemyList);
+        CombatSession currentSession = new(playerList,enemyList);
+        InitialiseCombatSelectors(playerList,enemyList);
+        InitialiseCombatSelectors(enemyList,playerList);
+        
 
         //Round start
-        while(player.CurrentHealth > 0 && enemyList.Count > 0 && currentSession.StillInCombat )
+        while(playerList[0].CurrentHealth > 0 && enemyList.Count > 0 && currentSession.StillInCombat )
         {
             Console.WriteLine($"currentRound : {currentSession.CurrentRound}");
             Console.ReadKey(true);
@@ -29,9 +32,12 @@ public static  class CombatHandler
             {
                 case 0:          
                     //handles the using of an ability and the target of said ability
-                    CharacterTurn(player,enemyList,ConsoleColor.DarkRed);
-                    RemoveDeadEnemies(enemyList);
-                    
+                    foreach(Character c in playerList)
+                    {
+                        CharacterTurn(c,currentSession.EnemyList,currentSession.PlayerList);
+                        RemoveDeadCharacters(enemyList,playerList);
+                    }
+                    if(enemyList.Count == 0) return true;
                     break;
                 case 1:
                     //TODO create items and inventory first
@@ -44,12 +50,17 @@ public static  class CombatHandler
             }
             //ALL enemies take their turn
             EnemiesTurn(currentSession);
+            RemoveDeadCharacters(enemyList,playerList);
+            if(enemyList.Count == 0) return true;
 
             //Resolve end of round stuff (statuseffectupdates etc.)
             EndOfRound(currentSession);
+            RemoveDeadCharacters(enemyList,playerList);
+            if(enemyList.Count == 0) return true;
+            currentSession.CurrentRound++;
         }
         //Checks if player is alive after the Combat has finnished
-        if(player.CurrentHealth > 0 )
+        if(playerList[0].CurrentHealth > 0 )
         {
             if(enemyList.Count <= 0)
             {
@@ -77,13 +88,13 @@ public static  class CombatHandler
     {
         List<string> combatOptions = new()
         {
-            "Attack",
+            "Act",
             "Use item",
             "Flee"
         };   
-        int markedIndex = 0;
+        int markedIndex = 0 ;
         bool stillChoosing = true;
-        int returnValue = 0;
+        int returnValue = 0 ;
         while(stillChoosing)
         {
             Console.Clear();
@@ -132,12 +143,14 @@ public static  class CombatHandler
         return returnValue;
     }
 
-    public static void CharacterTurn(Character self,List<Character> targetList,ConsoleColor enemyColor)
+    public static void CharacterTurn(Character self,List<Character> enemyList,List<Character> friendList)
     {  
+
+        self.ICombatHandler.UpdateCombatState();
         if(self.AbleToAct) //if not frozen or otherwise hindered
         {
-            Ability chosenAbility = self.ICombatHandler.SelectAbility(self.ChosenAbilities);  //selects the ability to use
-            ExecuteAbilityOnTarget(self,chosenAbility,targetList,enemyColor); //handles targeting. who will it affect
+            Ability chosenAbility = self.ICombatHandler.SelectAbility();  //selects the ability to use
+            ExecuteAbilityOnTarget(self,chosenAbility,enemyList,friendList); //handles targeting. who will it affect
         }
         else
         {
@@ -150,23 +163,40 @@ public static  class CombatHandler
     {
         foreach(Character e in session.EnemyList)
         {
-            CharacterTurn(e,session.PlayerList,ConsoleColor.Cyan);
+
+            CharacterTurn(e,session.PlayerList,session.EnemyList);
         }
     }
   
-    public static void ExecuteAbilityOnTarget(Character self,Ability a,List<Character> characterList,ConsoleColor colorTarget)
+    public static void ExecuteAbilityOnTarget(Character self,Ability a,List<Character> EnemyTargetList,List<Character> FriendlyTargetList)
     {
         switch(a.Target)
         {
-            case TargetType.Self: //if a selfcast spell
+            case eTargetType.Self: //if a selfcast spell
                 UseAbilityOn(self,a,self.NameColor);
                 break;
-            case TargetType.Friendly: //if a friendly target spell
+            case eTargetType.Friendly: //if a friendly target spell
+                bool foundOther = false;
+                foreach(Character c in FriendlyTargetList)
+                {
+                    if(c != self)
+                    {
+                        foundOther = true;
+                    }
+                }
+                if(foundOther)
+                {
+                    Character chosenFriend = self.ICombatHandler.ChooseTarget(self,eTargetType.Friendly,FriendlyTargetList);
+                    UseAbilityOn(self,chosenFriend,a,self.NameColor,self.NameColor); //Casts Ability on friend
+                    Console.ReadKey(true);
+                }
+                else
+                Console.WriteLine("There is no suitable target for that ability");
                 break;
                 
-            case TargetType.Enemy: //if an enemy target spell
-                Character chosenEnemy = self.ICombatHandler.ChooseEnemyTarget(characterList);
-                UseAbilityOn(self,chosenEnemy,a,self.NameColor,colorTarget); //Deals damage to the enemy object
+            case eTargetType.Enemy: //if an enemy target spell
+                Character chosenEnemy = self.ICombatHandler.ChooseTarget(self,eTargetType.Enemy,EnemyTargetList);
+                UseAbilityOn(self,chosenEnemy,a,self.NameColor,chosenEnemy.NameColor); //Deals damage to the enemy object
                 Console.ReadKey(true);
                 break;
             default:
@@ -180,7 +210,7 @@ public static  class CombatHandler
     public static void UseAbilityOn(Character self,Character target ,Ability a,ConsoleColor colorSelf,ConsoleColor colorTarget)
     {
         //if target != self  displays the target else only writes that its being used
-        if(a.Target != TargetType.Self)
+        if(a.Target != eTargetType.Self)
         {
             Utilities.ConsoleWriteColor(self.Name,colorSelf);
             Utilities.CharByChar($" Uses {a.Name} ",8);
@@ -203,15 +233,28 @@ public static  class CombatHandler
             s.ApplyEffect(self);
         } 
     }
-    public static void RemoveDeadEnemies(List<Character> enemyList)
+    public static void RemoveDeadCharacters(List<Character> enemyList,List<Character> playerList)
     {
-        for(int i = 0 ; i < enemyList.Count ; i++)
+        if(playerList[0].CurrentHealth > 0)
         {
-            if(enemyList[i].CurrentHealth <= 0)
+            for(int i = 0 ; i < enemyList.Count ; i++)
             {
-                enemyList.Remove(enemyList[i]);
+                if(enemyList[i].CurrentHealth <= 0)
+                {
+                    enemyList.Remove(enemyList[i]);
+                }
+            }
+            for(int i = 0 ; i < playerList.Count ; i++)
+            {
+                if(playerList[i].CurrentHealth <= 0)
+                {
+                    playerList.Remove(playerList[i]);
+                }
             }
         }
+        else
+        playerList[0].CurrentHealth = 0;
+        
     }
     public static void AfterTurn(Character character)
     {
@@ -241,13 +284,12 @@ public static  class CombatHandler
                 if(character.CurrentStatusEffects[i].Duration == 0)
                 {
                     character.ClearEffect(character.CurrentStatusEffects[i]);
-                    character.CurrentStatusEffects.RemoveAt(i);
                 }
             }
             //Console.ReadKey(true);
         }
         //Ability is 1 round closer to ready
-        foreach(Ability a in character.ChosenAbilities)
+        foreach(Ability a in character.Abilities)
         {
             if(a.CurrentCooldown < a.CoolDownTimer)
             {
@@ -262,8 +304,21 @@ public static  class CombatHandler
         {
             AfterRound(session.EnemyList[i]);
         }
-        AfterRound(session.Player);
+        foreach(Character c in session.PlayerList)
+        {
+            AfterRound(c);
+        }
+        
         Console.ReadKey(true);
+    }
+    public static void InitialiseCombatSelectors(List<Character> friendList,List<Character> enemyList)
+    {
+        foreach(Character c in friendList)
+        {
+            c.ICombatHandler.FriendList = friendList;
+            c.ICombatHandler.EnemyList = enemyList;
+            c.ICombatHandler.AbilityList = c.Abilities;
+        }
     }
     
     #region Displaying things
@@ -275,7 +330,7 @@ public static  class CombatHandler
         {
             Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
             Console.Write($"{c.Name,-15}");
-            Utilities.ConsoleWriteColor($"[{c.CurrentHealth-3}/{c.MaxHealth,3}]",ConsoleColor.Red);
+            Utilities.ConsoleWriteColor($"[{c.CurrentHealth,-3}/{c.MaxHealth,3}]",ConsoleColor.Red);
             Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
             PrintAllEffectIcons(c);
             Console.WriteLine();
@@ -290,7 +345,7 @@ public static  class CombatHandler
         {
             Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
             Console.Write($"{c.Name,-15}");
-            Utilities.ConsoleWriteColor($"[{c.CurrentHealth-3}/{c.MaxHealth,3}]",ConsoleColor.Green);
+            Utilities.ConsoleWriteColor($"[{c.CurrentHealth,-3}/{c.MaxHealth,3}]",ConsoleColor.Green);
             Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
             PrintAllEffectIcons(c);
             Console.WriteLine();

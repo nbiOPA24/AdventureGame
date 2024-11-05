@@ -1,6 +1,6 @@
 public class Cleanse : CombatEffect
 {
-    List<eCombatEffect> TypesToCleanse {get;set;}
+    public List<eCombatEffect> TypesToCleanse {get;set;}
     public Cleanse(List<eCombatEffect> typesToCleanse) : base(1,1,eCombatEffect.Cleanse)
     {
         TypesToCleanse = typesToCleanse;
@@ -8,19 +8,25 @@ public class Cleanse : CombatEffect
 
     public override void ApplyEffect(Character character)
     {   
-
-        character.IsImmune = true;
+        bool foundEffect = false;
+        for(int i = 0 ; i< character.CurrentStatusEffects.Count;i++)
+        {
+            
+            foreach(eCombatEffect effect in TypesToCleanse)
+            {
+                if(character.CurrentStatusEffects[i].Type == effect)
+                {
+                    character.ClearEffect(character.CurrentStatusEffects[i]);
+                    foundEffect = true;
+                }
+            }
+            
+        }
+        if(!foundEffect) Console.WriteLine("But had no effect");
         
     }
-    public override void PrintApplication(Character character)
-    {
-        Console.Write($"{character.Name} is ");
-        Utilities.ConsoleWriteColor("Immune",ConsoleColor.DarkMagenta);
-        Console.WriteLine($" for {Duration} rounds");
-    }
-
     public override CombatEffect CloneEffect()
     {
-        return new Immune(Duration);
+        return new Cleanse(TypesToCleanse);
     }
 }

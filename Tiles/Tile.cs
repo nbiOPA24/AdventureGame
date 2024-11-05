@@ -21,7 +21,7 @@ public class Tile
         Solid = false;
     }
 
-    public virtual void RunTile(Character player)
+    public virtual void RunTile(List<Character> playerList)
     {
 
     }

@@ -93,13 +93,16 @@ public class CombatEffect
         switch(Type)
         {
             case eCombatEffect.Freeze:
-            Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.Blue);
+                Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.Blue);
                 break;
             case eCombatEffect.Poison:
-            Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.DarkGreen);
+                Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.DarkGreen);
+                break;
+            case eCombatEffect.Burn:
+                Utilities.ConsoleWriteColor($"({Duration})", ConsoleColor.Red); // Add this line for burn
                 break;
             case eCombatEffect.Immune:
-            Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.Magenta);
+                Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.Magenta);
                 break;
             case eCombatEffect.HealingOverTime:
                 break;

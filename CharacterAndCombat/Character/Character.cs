@@ -1,4 +1,5 @@
 using System.Dynamic;
+using System.Security.Cryptography.X509Certificates;
 
 public class Character
 {
@@ -7,45 +8,49 @@ public class Character
     public int MaxHealth {get;set;}
     public int BaseDamage {get;set;}
     public int Armor {get;set;}
+    public int TempArmor {get;set;}
     public int Shield{get;set;}
-    public IRace Race {get;set;}
     public int XPos {get;set;}
     public int YPos {get;set;}
     public ConsoleColor NameColor {get;set;}
     public bool IsImmune {get;set;}
-    public List<Ability>  ChosenAbilities {get;set;}
+    public List<Ability>  Abilities {get;set;}
     public List<Ability> AllKnownAbilities {get;set;}
     public List<CombatEffect> CurrentStatusEffects {get;set;}
     public Inventory Inventory {get;set;}
     public bool AbleToAct {get;set;}
-    public ICombatHandler ICombatHandler {get;set;}
-    public int StartingHealth { get; }
+    public ICombatSelection ICombatHandler {get;set;}
+    public int StartingHealth { get;set; }
+    public int Intelligence {get;set;}
 
-    public Character(string name,int startingHealth,IRace race,int baseDamage,int armor,ICombatHandler icombatHandler,ConsoleColor nameColor)
+    public Character(string name,int startingHealth,int baseDamage,int armor,ICombatSelection icombatHandler,ConsoleColor nameColor,int intelligence)
     {
         AbleToAct = true;
-        Race = race;
-        CurrentHealth = race.AdjustHealth(startingHealth);
-        BaseDamage = race.AdjustDamage(baseDamage);
+        CurrentHealth = startingHealth;
+        BaseDamage = baseDamage;
         Name = name;
         MaxHealth = CurrentHealth;
         Armor = armor;
-        //En lista på spelarens alla lärda abilities
-        AllKnownAbilities = new();
-        AllKnownAbilities = Race.GetAbilities();
         //En spelares användningsredo abilities. 4 stycken
-        ChosenAbilities = new();
-        SetInitialAbilities();  
+        Abilities = new(); 
         CurrentStatusEffects = new List<CombatEffect>();
         IsImmune = false;
         Inventory = new();
         ICombatHandler = icombatHandler;
         Shield = 0;
         NameColor = nameColor;
+        TempArmor = 0;
+        Intelligence = intelligence;
+        
+
     }
 
 
     #region Taking damage
+    public void TakeTrueDamage(int damage)
+    {
+        CurrentHealth = CurrentHealth - damage >  0 ? CurrentHealth -damage: 0;
+    }
     public void TakeDamage(int damage)
     {
         if(IsImmune == true)
@@ -68,7 +73,6 @@ public class Character
     }
     public virtual void DisplayDamageTaken(int damage,int absorbed)
     {
-        
         Utilities.ConsoleWriteColor(Name,NameColor);
         Console.Write(" Takes ");
         string stringOfDamage = damage.ToString();
@@ -80,7 +84,8 @@ public class Character
     }
     public int ReduceDamageByArmor(int unmitigatedDamage)
     {
-        double percentageReduction =  (double)Armor/(Armor+25);
+        int totalArmor = Armor+TempArmor;
+        double percentageReduction =  (double)totalArmor/(totalArmor+50);
         int trueDamage = (int)(unmitigatedDamage*(1-percentageReduction));
         return trueDamage;
     }
@@ -92,32 +97,69 @@ public class Character
 #endregion
 #region Statuseffects
 
+    public bool CharacterHasEffect(eCombatEffect eCombatEffect)
+    {
+        foreach(CombatEffect ce in CurrentStatusEffects)
+        {
+            if(eCombatEffect == ce.Type)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public virtual void ClearEffect(CombatEffect effect)
     {
         switch(effect.Type)
         {
+            case eCombatEffect.ArmorBuff:
+                TempArmor = 0;
+                Utilities.ConsoleWriteColor(Name,NameColor);
+                Utilities.ConsoleWriteLineColor("s Armor",ConsoleColor.DarkYellow);
+                Console.Write($" is no longer enhanced");
+                break;
             case eCombatEffect.Freeze:
-            AbleToAct = true;
-            Utilities.ConsoleWriteColor(Name,NameColor);
-            Console.Write($" is no longer ");
-            Utilities.ConsoleWriteLineColor("Frozen",ConsoleColor.Blue);
+                AbleToAct = true;
+                Utilities.ConsoleWriteColor(Name,NameColor);
+                Console.Write($" is no longer ");
+                Utilities.ConsoleWriteLineColor("Frozen",ConsoleColor.Blue);
                 break;
             case eCombatEffect.Poison:
-            Utilities.ConsoleWriteColor(Name,NameColor);
-            Console.Write($" is no longer ");
-            Utilities.ConsoleWriteLineColor("Poisoned",ConsoleColor.DarkGreen);
+                for(int i = 0; i< CurrentStatusEffects.Count; i++)
+                {
+                    if(CurrentStatusEffects[i] == effect)
+                    {
+                        CurrentStatusEffects.Remove(CurrentStatusEffects[i]);
+                    }
+                }
+                Utilities.ConsoleWriteColor(Name,NameColor);
+                Console.Write($" is no longer ");
+                Utilities.ConsoleWriteLineColor("Poisoned",ConsoleColor.DarkGreen);
+                break;
+            case eCombatEffect.Burn: // Add this case for Burn effect
+                for (int i = 0; i < CurrentStatusEffects.Count; i++)
+                {
+                    if (CurrentStatusEffects[i] == effect)
+                    {
+                        CurrentStatusEffects.Remove(CurrentStatusEffects[i]);
+                        break;
+                    }
+                }
+                Utilities.ConsoleWriteColor(Name, NameColor);
+                Console.Write(" is no longer ");
+                Utilities.ConsoleWriteLineColor("Burning", ConsoleColor.Red);
                 break;
             case eCombatEffect.Immune:
-            Utilities.ConsoleWriteColor(Name,NameColor);
-            Console.Write($" is no longer ");
-            Utilities.ConsoleWriteLineColor("Immune",ConsoleColor.DarkGreen);
-            IsImmune = false;
+                Utilities.ConsoleWriteColor(Name,NameColor);
+                Console.Write($" is no longer ");
+                Utilities.ConsoleWriteLineColor("Immune",ConsoleColor.DarkGreen);
+                IsImmune = false;
                 break;
             case eCombatEffect.HealingOverTime:
                 break;
             case eCombatEffect.Shield:
-            Shield = 0;
+                Shield = 0;
                 break;
         }
         //code for removing the effect
@@ -132,73 +174,19 @@ public class Character
     }
 
 #endregion
-#region setups
-    //Fills chosen abilities with abilities from "AllKnownAbilities"
-    public void SetInitialAbilities()
-    {
-        for (int i = 0; i < ChosenAbilities.Count ; i++)
-        {
-            if(i < AllKnownAbilities.Count)
-            {
-                ChosenAbilities[i] = AllKnownAbilities[i];
-            }
-             else
-            {
-                ChosenAbilities[i] = null; // Ensure any remaining slots are null
-            }      
-        }
-    }
-#endregion
 #region Abilityrelated methods
     //Allows the used to pick an ability and replace it with another from AllKnownAbilities
-    public void ReplaceChosenAbilities()
-    {
-        bool keepGoing = true;
-        while(keepGoing)
-        {
-            int chosenIndex = SelectAbilityIndex("What ability do you want to replace?");
-            int newAbilityIndex =PickFromAllKnownAbilities($"What ability would you like to use instead of {ChosenAbilities[chosenIndex].Name} ");
-            bool isKnown = false;
-            for(int i = 0; i< ChosenAbilities.Count ; i++)
-            {
-                if(ChosenAbilities[i] == AllKnownAbilities[newAbilityIndex])
-                {
-                    isKnown = true;
-                }   
-            }
-            if(!isKnown)
-            {
-                ChosenAbilities[chosenIndex] = AllKnownAbilities[newAbilityIndex];
-                keepGoing = false;
-            }else
-            {
-                Console.WriteLine("Already known. select something else");
-                Console.ReadKey(true);
-            }
-        }
-    }
-
-    public void DisplayChosenAbilities()
-    {
-        for(int i = 0 ; i < 4; i++)
-        {
-                if(ChosenAbilities[i] != null )
-                {
-                    Console.WriteLine($"[ {ChosenAbilities[i].Name ,-15} ]");
-                }
-        }
-    }   
 
     public int SelectAbilityIndex(string message)
     {
-        return  Utilities.PickIndexFromList(Utilities.ToStringList(ChosenAbilities),message);
+        return  Utilities.PickIndexFromList(Utilities.ToStringList(Abilities),message);
     }
     public int PickFromAllKnownAbilities(string message)
     {
         return Utilities.PickIndexFromList(Utilities.ToStringList(AllKnownAbilities),message);
     }
 #endregion
-    //handles the statuseffects currently affecting the player removes them once they reach 0 rounds remaining
+
 
 
 

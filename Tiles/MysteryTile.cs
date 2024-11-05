@@ -5,7 +5,7 @@ class MysteryTile : RewardTile
     {
     }
 
-    public override void RunTile(Character player)
+    public override void RunTile(List<Character> playerList)
     {
         if (TileState == false)
         {
@@ -14,22 +14,22 @@ class MysteryTile : RewardTile
             if (rndNr < 6000)
             {
                 int hp = 10;
-                HandleReward("common", random, hp, player);
+                HandleReward("common", random, hp, playerList[0]);
             }
             else if (rndNr < 8000)
             {
                 int hp = 20;
-                HandleReward("uncommon", random, hp, player);
+                HandleReward("uncommon", random, hp, playerList[0]);
             }
             else if (rndNr < 9500)
             {
                 int hp = 30;
-                HandleReward("rare", random, hp, player);
+                HandleReward("rare", random, hp, playerList[0]);
             }
             else
             {
                 int hp = 50;
-                HandleReward("very rare", random, hp, player);
+                HandleReward("very rare", random, hp, playerList[0]);
             }
             TileState = true;
         }
