@@ -5,10 +5,10 @@ public class ArmorBuff : CombatEffect
         
     }
 
-    public override void ApplyEffect(Character character)
+    public override void ApplyEffect(Character self,Character target)
     {
-        base.ApplyEffect(character);
-        character.TempArmor = Magnitude;
+        base.ApplyEffect(self,target);
+        target.TempArmor = Magnitude;
     }
     public override void PrintApplication(Character character)
     {

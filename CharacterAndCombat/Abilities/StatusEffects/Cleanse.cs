@@ -6,17 +6,17 @@ public class Cleanse : CombatEffect
         TypesToCleanse = typesToCleanse;
     }
 
-    public override void ApplyEffect(Character character)
+    public override void ApplyEffect(Character self,Character target)
     {   
         bool foundEffect = false;
-        for(int i = 0 ; i< character.CurrentStatusEffects.Count;i++)
+        for(int i = 0 ; i< target.CurrentStatusEffects.Count;i++)
         {
             
             foreach(eCombatEffect effect in TypesToCleanse)
             {
-                if(character.CurrentStatusEffects[i].Type == effect)
+                if(target.CurrentStatusEffects[i].Type == effect)
                 {
-                    character.ClearEffect(character.CurrentStatusEffects[i]);
+                    target.ClearEffect(target.CurrentStatusEffects[i]);
                     foundEffect = true;
                 }
             }

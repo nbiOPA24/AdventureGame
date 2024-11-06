@@ -5,11 +5,11 @@ public class Immune : CombatEffect
     
     }
 
-    public override void ApplyEffect(Character character)
+    public override void ApplyEffect(Character self,Character target)
     {   
-        character.ClearAllEffects();
-        base.ApplyEffect(character);
-        character.IsImmune = true;
+        target.ClearAllEffects();
+        base.ApplyEffect(self,target);
+        target.IsImmune = true;
         
     }
     public override void PrintApplication(Character character)

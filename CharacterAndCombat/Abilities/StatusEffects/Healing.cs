@@ -4,23 +4,23 @@ public class Healing : CombatEffect
     {
     }
 
-    public override void ApplyEffect(Character character)
+    public override void ApplyEffect(Character self,Character target)
     {
-        if (character.CurrentHealth < character.MaxHealth) // Only apply if healing is needed
+        if (target.CurrentHealth < target.MaxHealth) // Only apply if healing is needed
         {
-            Console.Write($"{character.Name} heals ");
+            Console.Write($"{target.Name} heals ");
             Utilities.ConsoleWriteColor($"{Magnitude} health", ConsoleColor.Green);
             Console.WriteLine(" from the healing effect.");
 
             // Apply healing directly to character's health, ensuring it doesn't exceed MaxHealth
-            character.CurrentHealth = character.CurrentHealth + Magnitude > character.MaxHealth 
-                                    ? character.MaxHealth 
-                                    : character.CurrentHealth + Magnitude;
+            target.CurrentHealth = target.CurrentHealth + Magnitude > target.MaxHealth 
+                                    ? target.MaxHealth 
+                                    : target.CurrentHealth + Magnitude;
 
         }
         else
         {
-            Console.WriteLine($"{character.Name} is already at maximum health and does not need healing.");
+            Console.WriteLine($"{target.Name} is already at maximum health and does not need healing.");
         }
     }
     public override CombatEffect CloneEffect()

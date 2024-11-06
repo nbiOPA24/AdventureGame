@@ -220,7 +220,7 @@ public static  class CombatHandler
 
         foreach(CombatEffect s in a.CombatEffects)
         {
-            s.ApplyEffect(target);
+            s.ApplyEffect(self,target);
         }   
     } 
     //Ability used on self
@@ -230,7 +230,7 @@ public static  class CombatHandler
         Utilities.CharByCharLine($" Uses {a.Name} ",8);
         foreach(CombatEffect s in a.CombatEffects)
         {
-            s.ApplyEffect(self);
+            s.ApplyEffect(self,self);
         } 
     }
     public static void RemoveDeadCharacters(List<Character> enemyList,List<Character> playerList)
@@ -324,33 +324,33 @@ public static  class CombatHandler
     #region Displaying things
     public static void DisplayEnemyList(List<Character> listToDisplay)
     {   
-        Console.WriteLine($"{"Name",-15}{"Health",-15}");
-        Utilities.ConsoleWriteLineColor(",,,,,,,,,,,,,,,,,,,,,,,,,",ConsoleColor.DarkGray);
+        Console.WriteLine($"{"Name",-22}{"Health",-15}");
+        Utilities.ConsoleWriteLineColor(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",ConsoleColor.DarkGray);
         foreach(Character c in listToDisplay)
         {
             Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
-            Console.Write($"{c.Name,-15}");
+            Console.Write($"{c.Name,-22}");
             Utilities.ConsoleWriteColor($"[{c.CurrentHealth,-3}/{c.MaxHealth,3}]",ConsoleColor.Red);
             Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
             PrintAllEffectIcons(c);
             Console.WriteLine();
             
         }
-        Utilities.ConsoleWriteLineColor("*************************",ConsoleColor.DarkGray);
+        Utilities.ConsoleWriteLineColor("********************************",ConsoleColor.DarkGray);
     }
     public static void DisplayPlayerList(List<Character> listToDisplay)
     {   
-        Utilities.ConsoleWriteLineColor(",,,,,,,,,,,,,,,,,,,,,,,,,",ConsoleColor.DarkGray);
+        Utilities.ConsoleWriteLineColor(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",ConsoleColor.DarkGray);
         foreach(Character c in listToDisplay)
         {
             Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
-            Console.Write($"{c.Name,-15}");
+            Console.Write($"{c.Name,-22}");
             Utilities.ConsoleWriteColor($"[{c.CurrentHealth,-3}/{c.MaxHealth,3}]",ConsoleColor.Green);
             Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
             PrintAllEffectIcons(c);
             Console.WriteLine();
         }
-        Utilities.ConsoleWriteLineColor("*************************",ConsoleColor.DarkGray);
+        Utilities.ConsoleWriteLineColor("********************************",ConsoleColor.DarkGray);
     }
 
     public static void PrintAllEffectIcons(Character character)

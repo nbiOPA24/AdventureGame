@@ -4,16 +4,16 @@ public class Damage : CombatEffect
     {
     }
 
-    public override void ApplyEffect(Character character)
+    public override void ApplyEffect(Character self,Character target)
     {
-        if (!character.IsImmune) // Check if the character isn't immune
+        if (!target.IsImmune) // Check if the character isn't immune
         {
             // Character resolves the damage taken
-            character.TakeDamage(Magnitude);
+            target.TakeDamage(Magnitude);
         }
         else
         {
-            Console.WriteLine($"{character.Name} is immune and takes no damage.");
+            Console.WriteLine($"{target.Name} is immune and takes no damage.");
         }
     }
 

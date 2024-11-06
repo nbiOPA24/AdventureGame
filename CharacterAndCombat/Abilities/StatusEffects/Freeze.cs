@@ -5,10 +5,10 @@ public class Freeze : CombatEffect
 
     }
 
-    public override void ApplyEffect(Character character)
+    public override void ApplyEffect(Character self,Character target)
     {
-        base.ApplyEffect(character);
-        character.AbleToAct = false;
+        base.ApplyEffect(self,target);
+        target.AbleToAct = false;
     }
     public override void PrintApplication(Character character)
     {

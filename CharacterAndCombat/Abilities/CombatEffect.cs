@@ -14,22 +14,22 @@ public class CombatEffect
         FirstRound = true;
     }
     //Checks if the effect already is contained in the list of current ailments if not applies it
-    public virtual  void ApplyEffect(Character character)
+    public virtual  void ApplyEffect(Character self,Character target)
     {
-        if(character.IsImmune == true)
+        if(target.IsImmune == true)
         {
-        Console.WriteLine($"{character.Name} is Immune and unaffected by {Type}");
+        Console.WriteLine($"{target.Name} is Immune and unaffected by {Type}");
         }
         else
         {
             bool alreadyContains = false;
             bool foundStronger = false;
             int foundIndex = 0;
-            for(int i = 0; i < character.CurrentStatusEffects.Count; i++)
+            for(int i = 0; i < target.CurrentStatusEffects.Count; i++)
             {
-                if(character.CurrentStatusEffects[i].Type == Type) //checking if the type already is contained in the list.
+                if(target.CurrentStatusEffects[i].Type == Type) //checking if the type already is contained in the list.
                 {
-                    if(character.CurrentStatusEffects[i].Magnitude*character.CurrentStatusEffects[i].Duration >= Magnitude*Duration) //if the full damage over time is higher on already contained effect
+                    if(target.CurrentStatusEffects[i].Magnitude*target.CurrentStatusEffects[i].Duration >= Magnitude*Duration) //if the full damage over time is higher on already contained effect
                     {
                         alreadyContains = true; // says its already contained and wont be added
                     }
@@ -45,14 +45,14 @@ public class CombatEffect
             {
                 if(foundStronger) //if effect*duration is stronger in the new effect the old version is overwritten
                 {
-                    character.CurrentStatusEffects[foundIndex] = CloneEffect();  
-                    PrintApplication(character);  
+                    target.CurrentStatusEffects[foundIndex] = CloneEffect();  
+                    PrintApplication(target);  
 
                 }
                 else
                 {
-                    character.CurrentStatusEffects.Add(CloneEffect());
-                    PrintApplication(character);
+                    target.CurrentStatusEffects.Add(CloneEffect());
+                    PrintApplication(target);
                 }
             }
 

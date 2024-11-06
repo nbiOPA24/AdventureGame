@@ -5,9 +5,9 @@ public class Poison : CombatEffect
 
     }
 
-    public override void ApplyEffect(Character character)
+    public override void ApplyEffect(Character self,Character target)
     {
-        base.ApplyEffect(character);
+        base.ApplyEffect(self,target);
 
     }
     public override void PrintApplication(Character character)
