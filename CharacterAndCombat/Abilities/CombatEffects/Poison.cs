@@ -1,13 +1,13 @@
 public class Poison : CombatEffect
 {
-    public Poison(int duration,int magnitude) : base(duration,magnitude,eCombatEffect.Poison)
+    public Poison(int duration,int magnitude,bool areaEffect) : base(duration,magnitude,eCombatEffect.Poison,areaEffect)
     {
 
     }
 
-    public override void ApplyEffect(Character self,Character target)
+    public override void ApplyEffect(Character self,Character target,List<Character> targetTeam)
     {
-        base.ApplyEffect(self,target);
+        base.ApplyEffect(self,target,targetTeam);
 
     }
     public override void PrintApplication(Character character)
@@ -34,6 +34,6 @@ public class Poison : CombatEffect
     }
     public override CombatEffect CloneEffect()
     {
-        return new Poison(Duration,Magnitude);
+        return new Poison(Duration,Magnitude,AreaEffect);
     }
 }

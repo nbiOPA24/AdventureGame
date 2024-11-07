@@ -25,7 +25,7 @@ public class ItemRewardTile : Tile
     {
         player.Inventory.Items.Add(new WeaponItem("Sword", "Just a sword", 5, WeaponType.Sword, 5, Rarity.Common));
         Console.WriteLine("Congratulations you got a sword to you invetory! You also get 10 extra basedamage!");
-        player.BaseDamage +=10;
+        player.Power +=10;
     }
 
     private void Nothing(Character player)

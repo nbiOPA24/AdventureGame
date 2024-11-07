@@ -1,14 +1,23 @@
 public class ArmorBuff : CombatEffect
 {
-    public ArmorBuff(int duration,int magnitude) : base(duration,magnitude,eCombatEffect.ArmorBuff)
+    public ArmorBuff(int duration,int magnitude,bool areaEffect) : base(duration,magnitude,eCombatEffect.ArmorBuff,areaEffect)
     {
         
     }
 
-    public override void ApplyEffect(Character self,Character target)
+    public override void ApplyEffect(Character self,Character target,List<Character> targetTeam)
     {
-        base.ApplyEffect(self,target);
-        target.TempArmor = Magnitude;
+        base.ApplyEffect(self,target,targetTeam);
+        List<Character> affectedCharacters = new();
+        if(AreaEffect)
+        {
+            affectedCharacters = targetTeam;
+        }
+        else affectedCharacters.Add(target);
+        foreach(Character c in affectedCharacters)
+        {
+            c.TempArmor = Magnitude;
+        }
     }
     public override void PrintApplication(Character character)
     {
@@ -36,6 +45,6 @@ public class ArmorBuff : CombatEffect
     }
     public override CombatEffect CloneEffect()
     {
-        return new ArmorBuff(Duration,Magnitude);
+        return new ArmorBuff(Duration,Magnitude,AreaEffect);
     }
 }

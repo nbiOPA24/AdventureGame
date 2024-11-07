@@ -33,45 +33,6 @@ class EnemyTile : RewardTile
             }                
         }
     }
-
-    public List<Character> CreateEnemies()
-    {
-        Random random = new Random();
-        List<Character> returnList = new();
-        for(int i = 0; i< NrOfEnemies ; i++)
-        {
-            string name="";
-            switch(Race.ToUpper())
-            {
-                case "GOBLIN":
-                    
-                    switch(random.Next(1,5))
-                    {
-                        case 1:
-                        name = "Goblin fighter";
-                            break;
-                        case 2:
-                        name = "Goblin warlord";
-                            break;
-                        case 3: 
-                        name = "Goblin shaman";
-                            break;
-                        case 4:
-                        name = "Goblin scout";
-                            break;
-                        case 5:
-                        name = "Goblin tamer";
-                            break;
-                    }
-                    ICombatSelection combatHandler = new NPCSupportAI();
-                    Character e = new Character(name,15*(int)Difficulty,10+random.Next(1,4),5*random.Next(1,4),combatHandler,ConsoleColor.DarkGray,50);
-                    returnList.Add(e);
-                    break;
-            }
-        }
-        return returnList;
-    }
-
 }
 
 public enum DifficultyLevel

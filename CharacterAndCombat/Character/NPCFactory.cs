@@ -33,7 +33,7 @@ public static class NPCFactory
         switch(family)
         {
             case eEnemyFamily.Goblin:
-            character = GenerateGoblin(enemyType,selfColor,intelligence);
+            character = GenerateGoblin(enemyType,ConsoleColor.DarkGreen,intelligence);
                 break;
 
         }
@@ -60,29 +60,29 @@ public static class NPCFactory
 
                 //Increases Armor
                 Ability naturesArmor= new Ability("Nature's Armor",eTargetType.Self,0,eAbilityType.DefensiveSelf);
-                naturesArmor.AddArmorBuffEffect(10,3);
+                naturesArmor.AddArmorBuffEffect(10,3,false);
                 //Heals self
                 Ability healSelf = new Ability("Heal Self",eTargetType.Self,3,eAbilityType.HealingSelf);
-                healSelf.AddHealingEffect(10);
+                healSelf.AddHealingEffect(10,false);
                 //Heals partymember
                 Ability healOther = new Ability("Heal Other",eTargetType.Friendly,3,eAbilityType.HealingOther);
-                healOther.AddHealingEffect(15);
+                healOther.AddHealingEffect(15,false);
                 //Basic attack
                 Ability stickSlam = new Ability("Stick Slam",eTargetType.Enemy,0,eAbilityType.Offensive);
-                stickSlam.AddDamageEffect(15);
+                stickSlam.AddDamageEffect(15,false);
                 //Regular damage + poison application
                 Ability poisonDart = new Ability("Poison Dart",eTargetType.Enemy,3,eAbilityType.Offensive);
-                poisonDart.AddDamageEffect(10);
-                poisonDart.AddPoisonEffect(5,5);
+                poisonDart.AddDamageEffect(10,false);
+                poisonDart.AddPoisonEffect(5,5,false);
                 //Removes Poison from friendly target
                 Ability PurifyPoison = new Ability("Purify Poison",eTargetType.Friendly,5,eAbilityType.CleanseOther);
-                PurifyPoison.AddCleanseEffect(eCombatEffect.Poison);
+                PurifyPoison.AddCleanseEffect(eCombatEffect.Poison,false);
                 //Removes Burn from friendly target
                 Ability waterBucket = new Ability("Water Bucket",eTargetType.Friendly,5,eAbilityType.CleanseOther);
-                waterBucket.AddCleanseEffect(eCombatEffect.Burn);
+                waterBucket.AddCleanseEffect(eCombatEffect.Burn,false);
 
                 //Creates the NPC
-                character = new("Goblin Shaman",50,5,10,ai,selfColor,intelligence);
+                character = new("Goblin Shaman",50,5,10,ai,intelligence,selfColor);
                 //Adds each ability to the NPC
                 character.Abilities.Add(naturesArmor);   //Defensive self increases Armor
                 character.Abilities.Add(healOther);      //HealOther heals target 
@@ -100,29 +100,29 @@ public static class NPCFactory
                 
                 // Defensive Ability: Fire Shield increases armor temporarily
                 Ability fireShield = new Ability("Fire Shield", eTargetType.Self, 3, eAbilityType.DefensiveSelf);
-                fireShield.AddArmorBuffEffect(8, 3);
+                fireShield.AddArmorBuffEffect(8, 3,false);
 
                 // Healing Ability: Minor self-healing ability
                 Ability rejuvenate = new Ability("Rejuvenate", eTargetType.Self, 4, eAbilityType.HealingSelf);
-                rejuvenate.AddHealingEffect(8);
+                rejuvenate.AddHealingEffect(8,false);
 
                 // Offensive Ability: Fireball with strong fire damage
                 Ability fireball = new Ability("Fireball", eTargetType.Enemy, 0, eAbilityType.Offensive);
-                fireball.AddDamageEffect(20);
+                fireball.AddDamageEffect(20,false);
 
                 // Offensive Ability: Flame Burst adds fire-based DoT effect (burn)
                 Ability flameBurst = new Ability("Flame Burst", eTargetType.Enemy, 3, eAbilityType.Offensive);
-                flameBurst.AddDamageEffect(12);
-                flameBurst.AddBurnEffect(4, 4); // Deals burn damage for 4 rounds
+                flameBurst.AddDamageEffect(12,false);
+                flameBurst.AddBurnEffect(4, 4,false); // Deals burn damage for 4 rounds
                 //OffensiveStrong Ability 
                 Ability pyroBlast = new Ability("PyroBlast",eTargetType.Enemy,5,eAbilityType.OffensiveStrong);
 
                 // Cleansing Ability: Flame Purge cleanses burn on allies
                 Ability flamePurge = new Ability("Flame Purge", eTargetType.Friendly, 5, eAbilityType.CleanseOther);
-                flamePurge.AddCleanseEffect(eCombatEffect.Burn);
+                flamePurge.AddCleanseEffect(eCombatEffect.Burn,false);
 
                 // Creates the NPC
-                character = new Character("Goblin Pyromancer", 45, 4, 12, ai, selfColor, intelligence);
+                character = new Character("Goblin Pyromancer", 45, 4, 12, ai, intelligence,selfColor);
                 
                 // Adds each ability to the NPC
                 character.Abilities.Add(fireShield);       // Defensive self ability that increases Armor
@@ -140,27 +140,27 @@ public static class NPCFactory
                 
                 // Defensive Ability: Iron Skin increases armor temporarily
                 Ability ironSkin = new Ability("Iron Skin", eTargetType.Self, 4, eAbilityType.DefensiveSelf);
-                ironSkin.AddArmorBuffEffect(10, 3); // Provides a strong temporary armor boost for 3 rounds
+                ironSkin.AddArmorBuffEffect(10, 3,false); // Provides a strong temporary armor boost for 3 rounds
 
                 // Offensive Ability: Power Strike with high physical damage
                 Ability powerStrike = new Ability("Strike", eTargetType.Enemy, 0, eAbilityType.Offensive);
-                powerStrike.AddDamageEffect(18); // High-damage single-target attack
+                powerStrike.AddDamageEffect(18,false); // High-damage single-target attack
 
                 // Offensive Ability: Cleave hits multiple enemies with moderate damage
                 Ability brutalStrike = new Ability("Brutal Strike", eTargetType.Enemy, 3, eAbilityType.OffensiveStrong);
-                brutalStrike.AddDamageEffect(25); // Moderate AoE damage for melee attacks
+                brutalStrike.AddDamageEffect(25,false); // Moderate AoE damage for melee attacks
 
                 // OffensiveStrong Ability: Berserk Rage with high damage but also self-damage
                 Ability berserkRage = new Ability("Vampiric Strike", eTargetType.Enemy, 5, eAbilityType.OffensiveStrong);
-                berserkRage.AddDamageEffect(12); // Very high single-target damage
+                berserkRage.AddDamageEffect(12,false); // Very high single-target damage
              
 
                 // Supportive Ability: Battle Cry boosts attack damage temporarily
                 Ability battleCry = new Ability("Battle Cry", eTargetType.Friendly, 6, eAbilityType.DefensiveOther);
-                battleCry.AddArmorBuffEffect(8, 3); // Increases damage for 3 rounds
+                battleCry.AddArmorBuffEffect(8, 3,false); // Increases damage for 3 rounds
 
                 // Creates the NPC
-                character = new Character("Goblin Berserker", 60, 8, 10, ai, selfColor, intelligence); // Adjusted stats for a tankier DPS
+                character = new Character("Goblin Berserker", 60, 8, 10, ai,  intelligence,selfColor); // Adjusted stats for a tankier DPS
 
                 // Adds each ability to the NPC
                 character.Abilities.Add(ironSkin);       // Defensive self ability that increases Armor

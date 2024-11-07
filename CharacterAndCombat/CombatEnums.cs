@@ -18,10 +18,12 @@ public enum eAbilityType
     DefensiveOther,
     HealingSelf,
     HealingOther,
+    HealingAny,
     CleanseSelf,
     CleanseOther,
     Offensive,
-    OffensiveStrong
+    OffensiveStrong,
+    OffensiveAOE
 }
 public enum eCombatState
 {
@@ -34,6 +36,7 @@ public enum eTargetType
 {
     Self,
     Friendly,
+    AnyFriend,
     Enemy
 }
 public enum eEnemyType

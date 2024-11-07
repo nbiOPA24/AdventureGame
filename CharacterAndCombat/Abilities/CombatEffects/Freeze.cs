@@ -1,14 +1,23 @@
 public class Freeze : CombatEffect
 {
-    public Freeze(int duration) : base(duration,1,eCombatEffect.Freeze)
+    public Freeze(int duration,bool areaEffect) : base(duration,1,eCombatEffect.Freeze,areaEffect)
     {
 
     }
 
-    public override void ApplyEffect(Character self,Character target)
+    public override void ApplyEffect(Character self,Character target,List<Character> targetTeam)
     {
-        base.ApplyEffect(self,target);
-        target.AbleToAct = false;
+        base.ApplyEffect(self,target,targetTeam);
+        List<Character> affectedCharacters = new();
+        if(AreaEffect)
+        {
+            affectedCharacters = targetTeam;
+        }
+        else affectedCharacters.Add(target);
+        foreach(Character c in affectedCharacters)
+        {
+            c.AbleToAct = false;
+        }
     }
     public override void PrintApplication(Character character)
     {
@@ -42,7 +51,7 @@ public class Freeze : CombatEffect
     }
     public override CombatEffect CloneEffect()
     {
-        return new Freeze(Duration);
+        return new Freeze(Duration,AreaEffect);
     }
 
 }

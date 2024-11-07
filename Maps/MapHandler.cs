@@ -105,7 +105,7 @@ class MapHandler
         {
             Console.Clear();
             Console.WriteLine($"{"Name",-8} {"HP",-5} {"Damage",-7} {"Armor",-6} {"Cords",-7} {"Inventory Items"}");
-            Console.WriteLine($"{player.Name,-8} {player.CurrentHealth,-5} {player.BaseDamage,-7} {player.Armor,-6} [{player.YPos},{player.XPos + "]", -7} {player.Inventory.Items.Count}");
+            Console.WriteLine($"{player.Name,-8} {player.CurrentHealth,-5} {player.Power,-7} {player.Armor,-6} [{player.YPos},{player.XPos + "]", -7} {player.Inventory.Items.Count}");
             
             DrawMap(player, map);       // Ritar ut kartan i en forloop och skriver över med en spelarikon där spelarens y och x pos är.
 

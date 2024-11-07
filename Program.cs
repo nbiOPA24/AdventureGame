@@ -59,14 +59,14 @@ public class Program
         Utilities.CharByChar("Please enter a player name: ", 8, ConsoleColor.DarkBlue);
         string name = Utilities.ValidateString();
         ICombatSelection playerCombatInterface = new PlayerCombatSelector();
-        Character player = new Character(name,120,15,10,playerCombatInterface,ConsoleColor.Cyan,1);
+        Character player = new Character(name,120,25,22);
 
         Ability attack = new Ability("Attack",eTargetType.Enemy,0,eAbilityType.Offensive);
-        attack.AddDamageEffect(15);
+        attack.AddDamageEffect(15,false);
         Ability healOther = new("Heal other",eTargetType.Friendly,3,eAbilityType.HealingOther);
-        healOther.AddHealingEffect(10);
+        healOther.AddHealingEffect(10,false);
         Ability ignite = new("Venomous Ignite",eTargetType.Enemy,0,eAbilityType.Offensive);
-        ignite.AddBurnEffect(1,1);
+        ignite.AddBurnEffect(1,1,false);
         //ignite.AddPoisonEffect(1,1);
         player.Abilities.Add(attack);
         player.Abilities.Add(healOther);

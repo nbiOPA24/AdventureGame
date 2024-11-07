@@ -70,7 +70,7 @@ public static class CombatUtil
                 }
             }
         }
-        if(relevantAbilities.Count > 0)
+        if(!relevantAbilities.Any())
         {
             foreach(Character c in friendList)
             {

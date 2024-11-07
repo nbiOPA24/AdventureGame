@@ -1,6 +1,7 @@
 public class Ability
 {
     public string Name {get;set;}
+    public string Description {get;set;}
     public List<CombatEffect> CombatEffects {get;set;}
     public eTargetType Target {get;set;}
     public eAbilityType Type {get;set;}
@@ -16,57 +17,64 @@ public class Ability
         CoolDownTimer = cooldown+1;
         CurrentCooldown = cooldown+1;
         Type = type;
+        Description = "Add description";
 
     }
 
-    public void AddFreezeEffect(int duration)
+    public void AddFreezeEffect(int duration,bool areaEffect)
     {
-        Freeze freeze = new(duration);
+        Freeze freeze = new(duration,areaEffect);
         CombatEffects.Add(freeze);
     }
-    public void AddPoisonEffect(int duration,int magnitude)
+    public void AddPoisonEffect(int duration,int magnitude,bool areaEffect)
     {
-        Poison poison = new(duration,magnitude);
+        Poison poison = new(duration,magnitude,areaEffect);
         CombatEffects.Add(poison);
     }
-    public void AddBurnEffect(int duration, int magnitude)
+    public void AddBurnEffect(int duration, int magnitude,bool areaEffect)
     {
-        Burn burn = new(duration, magnitude);
+        Burn burn = new(duration, magnitude,areaEffect);
         CombatEffects.Add(burn);
     }
 
-    public void AddImmuneEffect(int duration)
+    public void AddImmuneEffect(int duration,bool areaEffect)
     {
-        Immune immune = new(duration);
+        Immune immune = new(duration,areaEffect);
         CombatEffects.Add(immune);
     }
-    public void AddDamageEffect(int magnitude)
+    public void AddDamageEffect(int magnitude,bool areaEffect)
     {
-        Damage damage = new(magnitude);
+        Damage damage = new(magnitude,areaEffect);
         CombatEffects.Add(damage);
     }
-    public void AddHealingEffect(int magnitude)
+    
+    public void AddHealingEffect(int magnitude,bool areaEffect)
     {
-        Healing healing = new(magnitude);
+        Healing healing = new(magnitude,areaEffect);
         CombatEffects.Add(healing);
     }
-    public void AddArmorBuffEffect(int magnitude,int duration)
+    public void AddHealingOverTimeEffect(int magnitude, int duration,bool areaEffect)
     {
-        ArmorBuff armorbuff = new(duration,magnitude);
+        HealingOverTime healOverTime = new HealingOverTime(duration, magnitude,areaEffect);
+        CombatEffects.Add(healOverTime);
+    }
+    public void AddArmorBuffEffect(int magnitude,int duration,bool areaEffect)
+    {
+        ArmorBuff armorbuff = new(duration,magnitude,areaEffect);
         CombatEffects.Add(armorbuff);
     }
-    public void AddCleanseEffect(List<eCombatEffect> effects)
+    public void AddCleanseEffect(List<eCombatEffect> effects,bool areaEffect)
     {
-        Cleanse cleanse = new Cleanse(effects);
+        Cleanse cleanse = new Cleanse(effects,areaEffect);
         CombatEffects.Add(cleanse);
     }
-    public void AddCleanseEffect(eCombatEffect effect)
+    public void AddCleanseEffect(eCombatEffect effect,bool areaEffect)
     {
         List<eCombatEffect> effects = new()
         {
             effect
         };
-        Cleanse cleanse  = new(effects);
+        Cleanse cleanse  = new(effects,areaEffect);
         
         
         CombatEffects.Add(cleanse);

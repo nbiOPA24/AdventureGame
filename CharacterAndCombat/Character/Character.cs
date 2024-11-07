@@ -6,7 +6,7 @@ public class Character
     public string Name {get;set;}
     public int CurrentHealth {get;set;}
     public int MaxHealth {get;set;}
-    public int BaseDamage {get;set;}
+    public int Power {get;set;}
     public int Armor {get;set;}
     public int TempArmor {get;set;}
     public int Shield{get;set;}
@@ -15,19 +15,23 @@ public class Character
     public ConsoleColor NameColor {get;set;}
     public bool IsImmune {get;set;}
     public List<Ability>  Abilities {get;set;}
-    public List<Ability> AllKnownAbilities {get;set;}
     public List<CombatEffect> CurrentStatusEffects {get;set;}
     public Inventory Inventory {get;set;}
     public bool AbleToAct {get;set;}
     public ICombatSelection ICombatHandler {get;set;}
     public int StartingHealth { get;set; }
     public int Intelligence {get;set;}
+    public int V1 { get; }
+    public int V2 { get; }
+    public int V3 { get; }
+    public PlayerCombatSelector PlayerCombatSelector { get; }
+    public ConsoleColor Cyan { get; }
 
-    public Character(string name,int startingHealth,int baseDamage,int armor,ICombatSelection icombatHandler,ConsoleColor nameColor,int intelligence)
+    public Character(string name,int startingHealth,int power,int armor,ICombatSelection icombatHandler,int intelligence,ConsoleColor selfColor)
     {
         AbleToAct = true;
         CurrentHealth = startingHealth;
-        BaseDamage = baseDamage;
+        Power = power;
         Name = name;
         MaxHealth = CurrentHealth;
         Armor = armor;
@@ -38,9 +42,31 @@ public class Character
         Inventory = new();
         ICombatHandler = icombatHandler;
         Shield = 0;
-        NameColor = nameColor;
+        NameColor = selfColor;
         TempArmor = 0;
         Intelligence = intelligence;
+        
+
+    }
+    // Constructor for players only
+    public Character(string name,int startingHealth,int power,int armor)
+    {
+        AbleToAct = true;
+        CurrentHealth = startingHealth;
+        Power = power;
+        Name = name;
+        MaxHealth = CurrentHealth;
+        Armor = armor;
+        //En spelares användningsredo abilities. 4 stycken
+        Abilities = new(); 
+        CurrentStatusEffects = new List<CombatEffect>();
+        IsImmune = false;
+        Inventory = new();
+        ICombatHandler = new PlayerCombatSelector();
+        Shield = 0;
+        NameColor = ConsoleColor.Cyan;
+        TempArmor = 0;
+        Intelligence = 1;
         
 
     }
@@ -156,10 +182,21 @@ public class Character
                 Utilities.ConsoleWriteLineColor("Immune",ConsoleColor.DarkGreen);
                 IsImmune = false;
                 break;
-            case eCombatEffect.HealingOverTime:
-                break;
             case eCombatEffect.Shield:
                 Shield = 0;
+                break;
+            case eCombatEffect.HealingOverTime:
+                for (int i = 0; i < CurrentStatusEffects.Count; i++)
+                {
+                    if (CurrentStatusEffects[i] == effect)
+                    {
+                        CurrentStatusEffects.Remove(CurrentStatusEffects[i]);
+                        break;
+                    }
+                }
+                Utilities.ConsoleWriteColor(Name, NameColor);
+                Console.Write(" is no longer affected by ");
+                Utilities.ConsoleWriteLineColor("Healing Over Time", ConsoleColor.Green);
                 break;
         }
         //code for removing the effect
@@ -180,10 +217,6 @@ public class Character
     public int SelectAbilityIndex(string message)
     {
         return  Utilities.PickIndexFromList(Utilities.ToStringList(Abilities),message);
-    }
-    public int PickFromAllKnownAbilities(string message)
-    {
-        return Utilities.PickIndexFromList(Utilities.ToStringList(AllKnownAbilities),message);
     }
 #endregion
 

@@ -14,7 +14,7 @@ public class PlayerCombatSelector : ICombatSelection
         AbilityList = new();
         RandomNumber = new Random();
     }
-    public Ability SelectAbility()
+    public Ability SelectAbility(List<Character> playerList,List<Character> enemyList)
     {
         //int chosenIndex = Utilities.PickIndexFromList(Utilities.ToStringList(abilityList),"What ability do you want to use?");
         //return abilityList[chosenIndex];
@@ -22,10 +22,12 @@ public class PlayerCombatSelector : ICombatSelection
         bool stillChoosing = true;
         Ability returnAbility = null;
         
-        
+
         while(stillChoosing)
         {
             Console.Clear();
+            CombatHandler.DisplayCharacterList(playerList);
+            CombatHandler.DisplayCharacterList(enemyList);
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine("What ability do you want to use?");
             Console.ResetColor();
@@ -37,12 +39,14 @@ public class PlayerCombatSelector : ICombatSelection
                     if(AbilityList[i].CurrentCooldown < AbilityList[i].CoolDownTimer)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.Write(AbilityList[i].Name);
+                        Console.Write($"[{AbilityList[i].Name+"]",-20}");
                         Console.Write($" ({AbilityList[i].CoolDownTimer - AbilityList[i].CurrentCooldown})");
+                        Console.Write(AbilityList[i].Description);
                     }
                     else
                     {
-                    Console.Write(AbilityList[i].Name);
+                    Console.Write($"[{AbilityList[i].Name+"]",-20}");
+                    Console.Write(AbilityList[i].Description);
                     }
                     Utilities.ConsoleWriteLineColor("*",ConsoleColor.Blue);
 
@@ -52,12 +56,14 @@ public class PlayerCombatSelector : ICombatSelection
                     if(AbilityList[i].CurrentCooldown < AbilityList[i].CoolDownTimer)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.Write(AbilityList[i].Name);
-                        Console.WriteLine($" ({AbilityList[i].CoolDownTimer - AbilityList[i].CurrentCooldown})");
+                        Console.Write($"[{AbilityList[i].Name+"]",-20}");
+                        Console.Write($" ({AbilityList[i].CoolDownTimer - AbilityList[i].CurrentCooldown})");
+                        Console.WriteLine(AbilityList[i].Description);
                     }
                     else
                     {
-                        Console.WriteLine(AbilityList[i].Name);
+                        Console.Write($"[{AbilityList[i].Name+"]",-20}");
+                        Console.WriteLine(AbilityList[i].Description);
                     }
                     Console.ResetColor();
                 }
@@ -87,18 +93,23 @@ public class PlayerCombatSelector : ICombatSelection
                         stillChoosing = false;
                     }
                     break;
+                case ConsoleKey.Escape:
+                case ConsoleKey.Backspace:
+                    return null;
             }
             Console.Clear();
         }
         return returnAbility;
     }
-    public Character ChooseTarget(Character self,eTargetType targetType,List<Character> potentialTargets)
+    public Character ChooseTarget(Ability a,Character self,eTargetType targetType,List<Character> potentialTargets,List<Character> playerList,List<Character> enemyList)
     {
         int markedIndex = 0;
         bool stillChoosing = true;
         while (stillChoosing)
         {
             Console.Clear();
+            CombatHandler.DisplayCharacterList(enemyList);
+            CombatHandler.DisplayCharacterList(playerList);
             Console.WriteLine("Who do you want to target?");
             
             for (int i = 0; i < potentialTargets.Count; i++)
@@ -134,7 +145,7 @@ public class PlayerCombatSelector : ICombatSelection
                     if (markedIndex < potentialTargets.Count - 1) markedIndex++;
                     break;
                 case ConsoleKey.Enter:
-                    if(potentialTargets[markedIndex] != self)
+                    if(potentialTargets[markedIndex] != self || a.Target == eTargetType.AnyFriend)
                     {
                         stillChoosing = false;
                     }
@@ -178,6 +189,11 @@ public class PlayerCombatSelector : ICombatSelection
     }
 
     public void TransitionToNextState()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Ability SelectAbility()
     {
         throw new NotImplementedException();
     }

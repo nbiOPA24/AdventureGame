@@ -34,7 +34,7 @@ public class NPCSupportAI : ICombatSelection
                 break;
             case eCombatState.Default:
                 ability = new Ability("Smack", eTargetType.Enemy, 0, eAbilityType.Offensive);
-                ability.AddDamageEffect(5);
+                ability.AddDamageEffect(5,false);
                 return ability;
         }
 
@@ -46,7 +46,7 @@ public class NPCSupportAI : ICombatSelection
     }
 
         
-    public Character ChooseTarget(Character self,eTargetType targetType,List<Character> potentialTargets)
+    public Character ChooseTarget(Ability a,Character self,eTargetType targetType,List<Character> potentialTargets,List<Character> playerList,List<Character> enemyList)
     {   
         switch(targetType)
         {
@@ -201,5 +201,33 @@ public class NPCSupportAI : ICombatSelection
             CurrentCombatState = eCombatState.Default;
         else
             CurrentCombatState = eCombatState.Offensive;
+    }
+
+    public Ability SelectAbility(List<Character> playerList, List<Character> enemyList)
+    {
+        Ability ability = null;
+
+        switch (CurrentCombatState)
+        {
+            case eCombatState.Offensive:
+                ability = ChooseOffensiveAbility();
+                break;
+            case eCombatState.Defensive:
+                ability = ChooseDefensiveAbility();
+                break;
+            case eCombatState.Supportive:
+                ability = ChooseSupportiveAbility();
+                break;
+            case eCombatState.Default:
+                ability = new Ability("Smack", eTargetType.Enemy, 0, eAbilityType.Offensive);
+                ability.AddDamageEffect(5,false);
+                return ability;
+        }
+
+        if (ability != null)
+            return ability;
+
+        TransitionToNextState();
+        return SelectAbility();
     }
 }

@@ -23,7 +23,6 @@ public static  class CombatHandler
         //Round start
         while(playerList[0].CurrentHealth > 0 && enemyList.Count > 0 && currentSession.StillInCombat )
         {
-            Console.WriteLine($"currentRound : {currentSession.CurrentRound}");
             Console.ReadKey(true);
             //player takes a Turn 
             //returns index choice if player wants to attack == 0, use item == 1, attempt to flee  == 2
@@ -98,8 +97,8 @@ public static  class CombatHandler
         while(stillChoosing)
         {
             Console.Clear();
-            DisplayEnemyList(session.EnemyList);
-            DisplayPlayerList(session.PlayerList);
+            DisplayCharacterList(session.EnemyList);
+            DisplayCharacterList(session.PlayerList);
             for(int i = 0; i< combatOptions.Count; i++)
             {
                 if(i == markedIndex)
@@ -147,9 +146,16 @@ public static  class CombatHandler
     {  
 
         self.ICombatHandler.UpdateCombatState();
+
+       
         if(self.AbleToAct) //if not frozen or otherwise hindered
-        {
-            Ability chosenAbility = self.ICombatHandler.SelectAbility();  //selects the ability to use
+        {  
+            Ability chosenAbility = self.ICombatHandler.SelectAbility(enemyList,friendList);  //selects the ability to use
+
+            if(chosenAbility == null) return;
+            Utilities.ConsoleWriteColor("--------------",ConsoleColor.DarkYellow);
+            Utilities.ConsoleWriteColor(self.Name,self.NameColor);
+            Utilities.ConsoleWriteLineColor("--------------",ConsoleColor.DarkYellow);
             ExecuteAbilityOnTarget(self,chosenAbility,enemyList,friendList); //handles targeting. who will it affect
         }
         else
@@ -157,8 +163,10 @@ public static  class CombatHandler
             Utilities.ConsoleWriteColor(self.Name,self.NameColor);
             Console.WriteLine($" is hindered and not able to act");
         } 
-        AfterTurn(self); 
+        AfterTurn(self);  
     }
+    
+
     public static void EnemiesTurn(CombatSession session)
     {
         foreach(Character e in session.EnemyList)
@@ -173,7 +181,7 @@ public static  class CombatHandler
         switch(a.Target)
         {
             case eTargetType.Self: //if a selfcast spell
-                UseAbilityOn(self,a,self.NameColor);
+                UseAbilityOn(self,a,self.NameColor,FriendlyTargetList);
                 break;
             case eTargetType.Friendly: //if a friendly target spell
                 bool foundOther = false;
@@ -186,17 +194,21 @@ public static  class CombatHandler
                 }
                 if(foundOther)
                 {
-                    Character chosenFriend = self.ICombatHandler.ChooseTarget(self,eTargetType.Friendly,FriendlyTargetList);
-                    UseAbilityOn(self,chosenFriend,a,self.NameColor,self.NameColor); //Casts Ability on friend
+                    Character chosenFriend = self.ICombatHandler.ChooseTarget(a,self,eTargetType.Friendly,FriendlyTargetList,FriendlyTargetList,EnemyTargetList);
+                    UseAbilityOn(self,chosenFriend,a,self.NameColor,self.NameColor,FriendlyTargetList); //Casts Ability on friend
                     Console.ReadKey(true);
                 }
                 else
                 Console.WriteLine("There is no suitable target for that ability");
                 break;
-                
+            case eTargetType.AnyFriend:
+                    Character chosenAnyFriend = self.ICombatHandler.ChooseTarget(a,self,eTargetType.AnyFriend,FriendlyTargetList,FriendlyTargetList,EnemyTargetList);
+                    UseAbilityOn(self,chosenAnyFriend,a,self.NameColor,self.NameColor,FriendlyTargetList); //Casts Ability on friend
+                    Console.ReadKey(true);
+                break;
             case eTargetType.Enemy: //if an enemy target spell
-                Character chosenEnemy = self.ICombatHandler.ChooseTarget(self,eTargetType.Enemy,EnemyTargetList);
-                UseAbilityOn(self,chosenEnemy,a,self.NameColor,chosenEnemy.NameColor); //Deals damage to the enemy object
+                Character chosenEnemy = self.ICombatHandler.ChooseTarget(a,self,eTargetType.Enemy,EnemyTargetList,FriendlyTargetList,EnemyTargetList);
+                UseAbilityOn(self,chosenEnemy,a,self.NameColor,chosenEnemy.NameColor,EnemyTargetList); //Deals damage to the enemy object
                 Console.ReadKey(true);
                 break;
             default:
@@ -207,7 +219,7 @@ public static  class CombatHandler
         a.CurrentCooldown = 0;
     }
     //uses ability on a target
-    public static void UseAbilityOn(Character self,Character target ,Ability a,ConsoleColor colorSelf,ConsoleColor colorTarget)
+    public static void UseAbilityOn(Character self,Character target ,Ability a,ConsoleColor colorSelf,ConsoleColor colorTarget,List<Character> targetParty)
     {
         //if target != self  displays the target else only writes that its being used
         if(a.Target != eTargetType.Self)
@@ -220,17 +232,17 @@ public static  class CombatHandler
 
         foreach(CombatEffect s in a.CombatEffects)
         {
-            s.ApplyEffect(self,target);
+            s.ApplyEffect(self,target,targetParty);
         }   
     } 
     //Ability used on self
-    public static void UseAbilityOn(Character self,Ability a,ConsoleColor color)
+    public static void UseAbilityOn(Character self,Ability a,ConsoleColor color,List<Character> targetParty)
     {
         Utilities.ConsoleWriteColor(self.Name,color);
         Utilities.CharByCharLine($" Uses {a.Name} ",8);
         foreach(CombatEffect s in a.CombatEffects)
         {
-            s.ApplyEffect(self,self);
+            s.ApplyEffect(self,self,targetParty);
         } 
     }
     public static void RemoveDeadCharacters(List<Character> enemyList,List<Character> playerList)
@@ -318,39 +330,25 @@ public static  class CombatHandler
             c.ICombatHandler.FriendList = friendList;
             c.ICombatHandler.EnemyList = enemyList;
             c.ICombatHandler.AbilityList = c.Abilities;
+            c.ICombatHandler.Self = c;
         }
     }
     
     #region Displaying things
-    public static void DisplayEnemyList(List<Character> listToDisplay)
+    public static void DisplayCharacterList(List<Character> listToDisplay)
     {   
-        Console.WriteLine($"{"Name",-22}{"Health",-15}");
-        Utilities.ConsoleWriteLineColor(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",ConsoleColor.DarkGray);
+        Utilities.ConsoleWriteLineColor(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",ConsoleColor.DarkGray);
         foreach(Character c in listToDisplay)
         {
             Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
-            Console.Write($"{c.Name,-22}");
+            Utilities.ConsoleWriteColor($"{c.Name,-25}",c.NameColor);
             Utilities.ConsoleWriteColor($"[{c.CurrentHealth,-3}/{c.MaxHealth,3}]",ConsoleColor.Red);
             Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
             PrintAllEffectIcons(c);
             Console.WriteLine();
             
         }
-        Utilities.ConsoleWriteLineColor("********************************",ConsoleColor.DarkGray);
-    }
-    public static void DisplayPlayerList(List<Character> listToDisplay)
-    {   
-        Utilities.ConsoleWriteLineColor(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",ConsoleColor.DarkGray);
-        foreach(Character c in listToDisplay)
-        {
-            Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
-            Console.Write($"{c.Name,-22}");
-            Utilities.ConsoleWriteColor($"[{c.CurrentHealth,-3}/{c.MaxHealth,3}]",ConsoleColor.Green);
-            Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
-            PrintAllEffectIcons(c);
-            Console.WriteLine();
-        }
-        Utilities.ConsoleWriteLineColor("********************************",ConsoleColor.DarkGray);
+        Utilities.ConsoleWriteLineColor("************************************",ConsoleColor.DarkGray);
     }
 
     public static void PrintAllEffectIcons(Character character)

@@ -7,7 +7,8 @@ public interface ICombatSelection
     public Random RandomNumber {get;set;}
     public Character Self{get;set;}
     Ability SelectAbility();
-    Character ChooseTarget(Character self,eTargetType targetType,List<Character> potentialTargets);
+    Ability SelectAbility(List<Character> playerList,List<Character> enemyList);
+    Character ChooseTarget(Ability a,Character self,eTargetType targetType,List<Character> potentialTargets,List<Character> playerList,List<Character> enemyList);
     Character GetSupportiveTarget(List<Character> potentialTargets);
     void UpdateCombatState();
     Ability ChooseOffensiveAbility();

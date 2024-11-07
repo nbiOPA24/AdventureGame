@@ -1,15 +1,24 @@
 public class Immune : CombatEffect
 {
-    public Immune(int duration) : base(duration,1,eCombatEffect.Immune)
+    public Immune(int duration,bool areaEffect) : base(duration,1,eCombatEffect.Immune,areaEffect)
     {
     
     }
 
-    public override void ApplyEffect(Character self,Character target)
+    public override void ApplyEffect(Character self,Character target,List<Character> targetTeam)
     {   
-        target.ClearAllEffects();
-        base.ApplyEffect(self,target);
-        target.IsImmune = true;
+        base.ApplyEffect(self,target,targetTeam);
+        List<Character> affectedCharacters = new();
+        if(AreaEffect)
+        {
+            affectedCharacters = targetTeam;
+        }
+        else affectedCharacters.Add(target);
+        foreach(Character c in affectedCharacters)
+        {
+            c.ClearAllEffects();
+            c.IsImmune = true;
+        }
         
     }
     public override void PrintApplication(Character character)
@@ -47,6 +56,6 @@ public class Immune : CombatEffect
     }
     public override CombatEffect CloneEffect()
     {
-        return new Immune(Duration);
+        return new Immune(Duration,AreaEffect);
     }
 }

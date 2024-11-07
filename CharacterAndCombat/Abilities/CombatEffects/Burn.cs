@@ -1,12 +1,12 @@
 public class Burn : CombatEffect
 {
-    public Burn(int duration, int magnitude) : base(duration, magnitude, eCombatEffect.Burn)
+    public Burn(int duration, int magnitude,bool areaEffect) : base(duration, magnitude, eCombatEffect.Burn,areaEffect)
     {
     }
 
-    public override void ApplyEffect(Character self,Character target)
+    public override void ApplyEffect(Character self,Character target,List<Character> targetTeam)
     {
-        base.ApplyEffect(self,target); // Reuse the base logic for applying effects
+        base.ApplyEffect(self,target,targetTeam); // Reuse the base logic for applying effects
     }
 
     public override void PrintApplication(Character character)
@@ -32,6 +32,6 @@ public class Burn : CombatEffect
 
     public override CombatEffect CloneEffect()
     {
-        return new Burn(Duration, Magnitude);
+        return new Burn(Duration, Magnitude,AreaEffect);
     }
 }
