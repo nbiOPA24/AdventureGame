@@ -15,7 +15,7 @@ public class Program
                 return;
             case 2: //Realistic experience
                 Console.Clear();
-                PlayBackgroundMusic();
+                //PlayBackgroundMusic();
                 Utilities.CharByChar("Welcome to the adventure game!", 8, ConsoleColor.DarkBlue); Console.WriteLine();
                 Utilities.CharByChar("1. Start new game", 8, ConsoleColor.DarkBlue); Console.WriteLine();
                 Utilities.CharByChar("2. Load game", 8, ConsoleColor.DarkBlue);
@@ -36,6 +36,7 @@ public class Program
                         Character playerName = CreateCharacter();
                         List<Character> playerList = new List<Character>();
                         playerList.Add(playerName);
+                        GreetingNewPlayerMessage(playerName);    
                         MapHandler.RunEntireMap(playerList,3,6);
                         break;
                     case 1:
@@ -76,12 +77,6 @@ public class Program
         return player;
     }
             
-
-        
-
-
-    
-
     static void GreetingNewPlayerMessage(Character player)
     {
         Console.Clear();

@@ -1,23 +1,21 @@
 public class Tile
 {
-    public string TileName {get;set;}
-    public bool TileState {get;set;} 
-    public string TileIcon {get; set;}
+    public string Name {get;set;}
+    public bool IsVisited {get;set;} 
+    public string Icon {get; set;}
     public bool Solid {get;set;}
-
     public Tile(string tileName, string tileIcon)
     {
-        TileName = tileName;
-        TileIcon = tileIcon;
-        TileState = false;
+        Name = tileName;
+        Icon = tileIcon;
+        IsVisited = false;
         Solid = false;
     }
-
     public Tile()
     {
-        TileName = "Empty Tile";
-        TileIcon = "   ";
-        TileState = false;
+        Name = "Empty Tile";
+        Icon = "   ";
+        IsVisited = false;
         Solid = false;
     }
 

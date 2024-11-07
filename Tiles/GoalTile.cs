@@ -6,7 +6,7 @@ public class GoalTile : Tile
     public override void RunTile(List<Character> playerList)
     {
         
-        if (TileState == false)
+        if (IsVisited == false)
         {
             Console.Clear();
 

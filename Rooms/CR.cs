@@ -1,4 +1,4 @@
-public class CR : Room
+public class CR : Room  
 {
     public Tile [,] Room {get;set;}
 
@@ -16,11 +16,12 @@ public class CR : Room
         Tile m = new MysteryTile(20);
         Tile r = new ItemRewardTile();
 
+
         Tile[,] crossRoom = new Tile[,]
         {
             { o, o , o , o , e , o , o , o , o },
             { o, e , e , e , e , e , e , e , e },
-            { o, e , o , e , e , e , o , e , e },
+            { o, e , e , e , e , e , o , e , e },
             { e, e , e , x , e , e , e , e , e },
             { o, e , o , e , e , e , e , e , e },
             { o, e , e , e , e , e , o , e , e },
