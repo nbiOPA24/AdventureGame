@@ -18,7 +18,7 @@ public class Damage : CombatEffect
             {
                 UpdateMagnitude(self.Power);
                 // Character resolves the damage taken
-                target.TakeDamage(Magnitude);
+                c.TakeDamage(Magnitude);
             }
             else
             {

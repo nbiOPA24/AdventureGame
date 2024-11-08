@@ -11,7 +11,7 @@ class PuzzleTile : RewardTile
 
     public override void RunTile(List<Character> playerList)
     {
-        if (TileState == false)
+        if (IsVisited == false)
         {
             Console.WriteLine("You enter a room filled with mystery. To proceed, you must solve the puzzle that lies before you. Think carefully, adventurer, for the path forward depends on your wits.");
             Console.WriteLine(Question);
@@ -30,7 +30,7 @@ class PuzzleTile : RewardTile
                 Success = false;
             }
 
-            TileState = true;
+            IsVisited = true;
         }
         else
         {

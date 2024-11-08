@@ -15,7 +15,7 @@ public class Program
                 return;
             case 2: //Realistic experience
                 Console.Clear();
-                PlayBackgroundMusic();
+                //PlayBackgroundMusic();
                 Utilities.CharByChar("Welcome to the adventure game!", 8, ConsoleColor.DarkBlue); Console.WriteLine();
                 Utilities.CharByChar("1. Start new game", 8, ConsoleColor.DarkBlue); Console.WriteLine();
                 Utilities.CharByChar("2. Load game", 8, ConsoleColor.DarkBlue);
@@ -33,9 +33,11 @@ public class Program
                     // Start new game, creating a character.
                     
                     case 0:
-                        Character playerName = CreateCharacter();
-                        List<Character> playerList = new List<Character>();
-                        playerList.Add(playerName);
+                        List<Character> playerList = PlayerFactory.GenerateParty();
+                        Ability ability = new("Hej", eTargetType.Enemy, 0, eAbilityType.OffensiveStrong);
+                        ability.AddDamageEffect(999, true);
+                        playerList[1].Abilities.Add(ability);
+                        GreetingNewPlayersMessage(playerList);    
                         MapHandler.RunEntireMap(playerList,3,6);
                         break;
                     case 1:
@@ -52,41 +54,12 @@ public class Program
         SoundPlayer player = new SoundPlayer("Music.wav"); // Uppdatera med WAV-filen
         player.PlayLooping(); // Spelar musiken i en loop
     }
-
-    static Character CreateCharacter()
-    {
-        //string name,int startingHealth,IRace race,int baseDamage,int armor
-        Utilities.CharByChar("Please enter a player name: ", 8, ConsoleColor.DarkBlue);
-        string name = Utilities.ValidateString();
-        ICombatSelection playerCombatInterface = new PlayerCombatSelector();
-        Character player = new Character(name,120,25,22);
-
-        Ability attack = new Ability("Attack",eTargetType.Enemy,0,eAbilityType.Offensive);
-        attack.AddDamageEffect(15,false);
-        Ability healOther = new("Heal other",eTargetType.Friendly,3,eAbilityType.HealingOther);
-        healOther.AddHealingEffect(10,false);
-        Ability ignite = new("Venomous Ignite",eTargetType.Enemy,0,eAbilityType.Offensive);
-        ignite.AddBurnEffect(1,1,false);
-        //ignite.AddPoisonEffect(1,1);
-        player.Abilities.Add(attack);
-        player.Abilities.Add(healOther);
-        player.Abilities.Add(ignite);
-        player.ICombatHandler.AbilityList = player.Abilities;
-        player.ICombatHandler.Self = player;
-        return player;
-    }
             
-
-        
-
-
-    
-
-    static void GreetingNewPlayerMessage(Character player)
+    static void GreetingNewPlayersMessage(List<Character> playerList)
     {
         Console.Clear();
         string greetMessage = @$"
-Darkness surrounds you, {player.Name}, the Human.
+Darkness surrounds you, {playerList[0].Name}, {playerList[1].Name}, {playerList[2].Name}, {playerList[3].Name}, 
 In the distance, you hear the echoes of forgotten battles...
 The dungeon awaits, and with every step, danger looms closer.
 Will you survive, or will you join the souls lost in these cursed halls?

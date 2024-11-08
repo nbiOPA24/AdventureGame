@@ -12,6 +12,7 @@ public class SR : Room
         Tile o = new ObstacleTile();
         Tile d = new DoorTile();
         Tile m = new MysteryTile(10);
+        Tile g = new MiniGame();
 
 
         Tile[,] starterRoom = new Tile [,]
@@ -20,7 +21,7 @@ public class SR : Room
             { o, e , e , e , e , e , e , e , e },
             { o, e , e , e , e , e , e , e , e },
             { o, s , e , e , m , e , e , e , e },    
-            { o, e , e , e , e , e , e , e , e },   
+            { o, e , e , e , g , e , e , e , e },   
             { o, e , e , e , e , e , e , e , e },
             { o, e , e , e , e , e , e , e , e }
 

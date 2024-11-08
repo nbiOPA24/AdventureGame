@@ -6,7 +6,7 @@ public class ItemRewardTile : Tile
     public override void RunTile(List<Character> playerList)
     {
         Character player = playerList[0];
-        if (TileState == false)
+        if (IsVisited == false)
         {
             Random random = new();
             int result = random.Next(0,2);

@@ -6,10 +6,10 @@ public class StarterTile : Tile
 
     public override void RunTile(List<Character> playerList)
     {
-        if (TileState == false)
+        if (IsVisited == false)
         {
             Console.WriteLine("Welcome, adventurer! This is where your journey begins. Take a deep breath and step boldly into the unknown. Good luck!");
-            TileState = true;
+            IsVisited = true;
         }
         else
         {

@@ -6,7 +6,7 @@ class MapHandler
         {
             for(int j = 0; j < mapArray.GetLength(1); j++)
             {
-                if (mapArray[i,j].TileName == "Start")
+                if (mapArray[i,j].Name == "Start")
                 {
                     player.YPos = i;
                     player.XPos = j;
@@ -31,7 +31,7 @@ class MapHandler
 
                 else
                 {
-                    Console.Write(mapArray[i,j].TileIcon);   
+                    Console.Write(mapArray[i,j].Icon);   
                 }
             }
             Console.WriteLine();
@@ -88,7 +88,6 @@ class MapHandler
             {
                 mapArray[player.YPos, player.XPos + 1].RunSolidTile(playerList);
                 MovePlayer(playerList, mapArray);
-
             }
         }
     }
@@ -104,14 +103,17 @@ class MapHandler
         while (player.CurrentHealth > 0)
         {
             Console.Clear();
-            Console.WriteLine($"{"Name",-8} {"HP",-5} {"Damage",-7} {"Armor",-6} {"Cords",-7} {"Inventory Items"}");
-            Console.WriteLine($"{player.Name,-8} {player.CurrentHealth,-5} {player.Power,-7} {player.Armor,-6} [{player.YPos},{player.XPos + "]", -7} {player.Inventory.Items.Count}");
+            Console.WriteLine($"{"Name",-8} {"HP",-5} {"Max HP", -5} {"Power",-7} {"Armor",-6} {"Cords",-7} {"Inventory Items"}");
+            Console.WriteLine($"{player.Name,-8} {player.CurrentHealth,-5} {player.MaxHealth,-5} {player.Power,-7} {player.Armor,-6} [{player.YPos},{player.XPos + "]", -7} {player.Inventory.Items.Count}");
             
             DrawMap(player, map);       // Ritar ut kartan i en forloop och skriver över med en spelarikon där spelarens y och x pos är.
 
             map[player.YPos,player.XPos].RunTile(playerList);// Kör den aktuella tile som spelaren står på med RunTile().
+            if(map[player.YPos,player.XPos].RemoveTile == true)
+                map[player.YPos,player.XPos] = new Tile(); 
 
             MovePlayer(playerList, map);    // Skapar möjlighet för spelaren att göra förflyttning.
+
 
         }
     }

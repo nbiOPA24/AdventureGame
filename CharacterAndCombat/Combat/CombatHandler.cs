@@ -35,6 +35,8 @@ public static  class CombatHandler
                     {
                         CharacterTurn(c,currentSession.EnemyList,currentSession.PlayerList);
                         RemoveDeadCharacters(enemyList,playerList);
+                        if (enemyList.Count <= 0)
+                            return true;
                     }
                     if(enemyList.Count == 0) return true;
                     break;

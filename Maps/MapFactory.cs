@@ -5,8 +5,8 @@ class MapFactory
         Tile[,] countRoom = new CR().Room; //Skapar detta rum för att använda det till att beräkna storleken av rum.
 
         //Förutsatt att alla rooms har lika många rader och kolumner då detta ska bygga den nya mappen korrekt med arraystorlek.
-        int nrRowsInRoom = countRoom.GetLength(0);
-        int nrColsInRoom = countRoom.GetLength(1);
+        int nrRowsInRoom = countRoom.GetLength(0); // Tar reda på hur många rader denna array har.
+        int nrColsInRoom = countRoom.GetLength(1); // Tar reda på hur många columner denna array har.
         int nrRowsInMap = rows * nrRowsInRoom; // Antal rader i en array med room element * antal rader i room.
         int nrColsInMap = cols * nrColsInRoom; // Antal kolumner i en array med room element * antal kolumner i room.
 

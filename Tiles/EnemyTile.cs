@@ -13,11 +13,13 @@ class EnemyTile : RewardTile
     public override void RunSolidTile(List<Character> playerList)
     {
         
-        if (TileState == false) // Never entered the tile before!
+        if (!IsVisited) // Never entered the tile before!
         {
             string encounterMessage = $"As you step into the enemy lair, {NrOfEnemies} fierce foes appear, blocking your path!";
             Success = CombatHandler.RunCombatScenario(NPCFactory.GenerateNPCs(ConsoleColor.DarkRed,50,eEnemyFamily.Goblin,NrOfEnemies),playerList,encounterMessage);
-            TileState = true;
+            IsVisited = true;
+            if (Success)
+                Solid = false;
 
         }
         else // Entered the tile before

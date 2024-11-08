@@ -7,7 +7,7 @@ public class DoorTile : Tile
     public override void RunSolidTile(List<Character> playerList)
     {
         Character player = playerList[0];
-        if (TileState == false)
+        if (!IsVisited)
         {
             bool hasKey = false;
             foreach(Item item in player.Inventory.Items)
@@ -33,7 +33,8 @@ public class DoorTile : Tile
                             player.Inventory.Items.RemoveAt(i);
                         }
                     }
-                    TileState = true;
+                    IsVisited = true;
+                    RemoveTile = true;
                 }
             }
             else
