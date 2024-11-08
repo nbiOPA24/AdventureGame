@@ -14,7 +14,7 @@ public class PlayerCombatSelector : ICombatSelection
         AbilityList = new();
         RandomNumber = new Random();
     }
-    public Ability SelectAbility(List<Character> playerList,List<Character> enemyList)
+    public Ability SelectAbility(Character self,List<Character> playerList,List<Character> enemyList)
     {
         //int chosenIndex = Utilities.PickIndexFromList(Utilities.ToStringList(abilityList),"What ability do you want to use?");
         //return abilityList[chosenIndex];
@@ -22,12 +22,13 @@ public class PlayerCombatSelector : ICombatSelection
         bool stillChoosing = true;
         Ability returnAbility = null;
         
-
+        
         while(stillChoosing)
         {
             Console.Clear();
             CombatHandler.DisplayCharacterList(playerList);
             CombatHandler.DisplayCharacterList(enemyList);
+            Utilities.ConsoleWriteLineColor("-------"+self.Name+" Turn-------",ConsoleColor.DarkYellow);
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine("What ability do you want to use?");
             Console.ResetColor();

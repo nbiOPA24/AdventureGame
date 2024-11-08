@@ -28,7 +28,7 @@ public class CombatEffect
         else affectedCharacters.Add(target);
         foreach(Character c in affectedCharacters)
         {
-            if(c.IsImmune == true)
+            if(c.IsImmune && Type != eCombatEffect.ArmorBuff  )
             {
             Console.WriteLine($"{c.Name} is Immune and unaffected by {Type}");
             }
@@ -82,7 +82,6 @@ public class CombatEffect
         {
             Duration--;
         }   
-        
     }
     public virtual void AfterRound(Character character)
     {
@@ -107,21 +106,24 @@ public class CombatEffect
         switch(Type)
         {
             case eCombatEffect.Freeze:
-                Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.Blue);
+                Utilities.ConsoleWriteColor($"(Frozen {Duration})",ConsoleColor.Blue);
                 break;
             case eCombatEffect.Poison:
-                Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.DarkMagenta);
+                Utilities.ConsoleWriteColor($"(Poisoned {Duration})",ConsoleColor.DarkMagenta);
                 break;
             case eCombatEffect.Burn:
-                Utilities.ConsoleWriteColor($"({Duration})", ConsoleColor.Red); // Add this line for burn
+                Utilities.ConsoleWriteColor($"(Burning {Duration})", ConsoleColor.Red); // Add this line for burn
                 break;
             case eCombatEffect.Immune:
-                Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.White);
+                Utilities.ConsoleWriteColor($"(Immune {Duration})",ConsoleColor.White);
                 break;
             case eCombatEffect.HealingOverTime:
-                Utilities.ConsoleWriteColor($"({Duration})",ConsoleColor.DarkGreen);
+                Utilities.ConsoleWriteColor($"(HoT {Duration})",ConsoleColor.DarkGreen);
                 break;
             case eCombatEffect.Shield:
+                break;
+            case eCombatEffect.ArmorBuff:
+                Utilities.ConsoleWriteColor($"(Armored {Duration})",ConsoleColor.DarkYellow);
                 break;
         }
         //code for removing the effect

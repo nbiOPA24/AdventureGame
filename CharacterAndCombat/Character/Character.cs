@@ -142,8 +142,8 @@ public class Character
             case eCombatEffect.ArmorBuff:
                 TempArmor = 0;
                 Utilities.ConsoleWriteColor(Name,NameColor);
-                Utilities.ConsoleWriteLineColor("s Armor",ConsoleColor.DarkYellow);
-                Console.Write($" is no longer enhanced");
+                Utilities.ConsoleWriteColor("s Armor",ConsoleColor.DarkYellow);
+                Console.WriteLine($" is no longer enhanced");
                 break;
             case eCombatEffect.Freeze:
                 AbleToAct = true;
@@ -179,7 +179,7 @@ public class Character
             case eCombatEffect.Immune:
                 Utilities.ConsoleWriteColor(Name,NameColor);
                 Console.Write($" is no longer ");
-                Utilities.ConsoleWriteLineColor("Immune",ConsoleColor.DarkGreen);
+                Utilities.ConsoleWriteLineColor("Immune",ConsoleColor.White);
                 IsImmune = false;
                 break;
             case eCombatEffect.Shield:

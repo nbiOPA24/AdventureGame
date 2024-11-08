@@ -150,7 +150,7 @@ public static  class CombatHandler
        
         if(self.AbleToAct) //if not frozen or otherwise hindered
         {  
-            Ability chosenAbility = self.ICombatHandler.SelectAbility(enemyList,friendList);  //selects the ability to use
+            Ability chosenAbility = self.ICombatHandler.SelectAbility(self,enemyList,friendList);  //selects the ability to use
 
             if(chosenAbility == null) return;
             Utilities.ConsoleWriteColor("--------------",ConsoleColor.DarkYellow);
@@ -346,7 +346,6 @@ public static  class CombatHandler
             Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
             PrintAllEffectIcons(c);
             Console.WriteLine();
-            
         }
         Utilities.ConsoleWriteLineColor("************************************",ConsoleColor.DarkGray);
     }

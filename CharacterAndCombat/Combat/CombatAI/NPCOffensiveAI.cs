@@ -225,7 +225,7 @@ public class NPCOffensiveAI : ICombatSelection
             CurrentCombatState = eCombatState.Offensive;
     }
 
-    public Ability SelectAbility(List<Character> playerList, List<Character> enemyList)
+    public Ability SelectAbility(Character self,List<Character> playerList, List<Character> enemyList)
     {
         Ability ability = null;
 

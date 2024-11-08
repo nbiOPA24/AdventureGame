@@ -1,5 +1,48 @@
 public static class PlayerFactory
 {
+
+
+
+    public static List<Character> GenerateParty()
+    {
+        List<string> fullPartyOptions = ["yes","no"];
+        List<Character> returnList = new();
+        int index = Utilities.PickIndexFromList(fullPartyOptions,"Do you want to create a Custom party?");
+        if(index == 0)
+        {
+            List<string> characterOption = ["Pyromancer","Priest","Rogue","Warrior"];
+            for(int i = 0; i < 4;i++)
+            {
+                Utilities.ConsoleWriteLineColor("Create your party",ConsoleColor.DarkGreen);
+                index = Utilities.PickIndexFromList(characterOption,$"Pick character nr {i+1}",ConsoleColor.DarkGreen);
+                switch(index)
+                {
+                    case 0:
+                        returnList.Add(GenerateFireMage("Pyromancer"));
+                        break;
+                    case 1:
+                        returnList.Add(GeneratePriest("Priest"));
+                        break;
+                    case 2:
+                        returnList.Add(GenerateRogue("Rogue"));
+                        break;
+                    case 3:
+                        returnList.Add(GenerateWarrior("Warrior"));
+                        break;
+                }
+            }
+           
+        }
+        else 
+        {
+            returnList.Add(GenerateFireMage("Pyromancer"));
+            returnList.Add(GeneratePriest("Priest"));
+            returnList.Add(GenerateRogue("Rogue"));
+            returnList.Add(GenerateWarrior("Warrior"));
+            
+        }
+        return returnList;
+    }
     //Power == % increase in magnitude on abilities and effects
     //10% reduction: 5.56 armor
     //20% reduction: 12.5 armor
