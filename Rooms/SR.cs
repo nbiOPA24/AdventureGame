@@ -8,7 +8,7 @@ public class SR : Room
     public Tile[,] GenerateRoom()
     {
         Tile s = new StarterTile();
-        Tile e = new Tile();
+        Tile e = new EmptyTile();
         Tile o = new ObstacleTile();
         Tile d = new DoorTile();
         Tile m = new MysteryTile(10);

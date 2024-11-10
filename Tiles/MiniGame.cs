@@ -26,13 +26,17 @@ class MiniGame : Tile
             IsVisited = true;
 
         }
+        if (Success)
+        {
+            RemoveTile = true;
+            Solid = false;
+        }
         else // If you revisit the same tile 
         {
             Console.WriteLine("You again!!! Wanna try your luck again??");
+            Console.ReadKey(true);
             Success = miniGames[MethodIndex](playerName);
         }
-        if (Success)
-            RemoveTile = true;
     }
 
     private bool GuessNr(Character player)
@@ -125,6 +129,7 @@ class MiniGame : Tile
         Console.WriteLine($"{player.Name} enters a dark big darkroom, he can see three levers in front of him self. Each lever has diffrent elements shining on them. 'FIRE', 'WATER', 'EARTH'.");
         Console.WriteLine($"Suddenly a tall figure appears from no where.. And walkes towards {player.Name} and sais: ");
         Console.WriteLine("Are you ready?");
+        Console.ReadKey(true);
         List<string> replys = ["YES! Bring it on!", "How do i know what element i will face?", "Who are you?"];
         Console.WriteLine();
         bool isRunning = true;
@@ -144,21 +149,97 @@ class MiniGame : Tile
                     Console.WriteLine("Not your buisness..");
                     break;
             }
+            Console.ReadKey(true);
         }
 
         Console.WriteLine();
+        Random random = new();
 
         List<string> elements = ["FIRE", "WATER", "EARTH"];
+        int wins = 0;
+        int loss = 0;
         bool elementGameIsRunning = true;
         while (elementGameIsRunning)
         {
-            int elementChoice = Utilities.PickIndexFromList(elements, "PREPARE YOURSELF!! The room started crumbling.. One of the elements is on its way. Quickly what do you choose?! ");
+            int elementChoice = Utilities.PickIndexFromList(elements, $"PREPARE YOURSELF!! The room started crumbling.. One of the elements is on its way. Quickly what do you choose?! WINS: {wins} Losses: {loss} ");
+            string yourElement = elements[elementChoice];
+            int indexChoice = random.Next(0,elements.Count);
+            string elementNPC = elements[indexChoice];
+
+            if (yourElement == "FIRE")
+            {
+                if(elementNPC == "EARTH")
+                {
+                    Console.WriteLine("The room halts.. Greatjob! You succeded!");
+                    wins ++;
+                }
+                else if(elementNPC == "WATER")
+                {
+                    Console.WriteLine("The room continues and you FIRE get swallowed by the water that pourishes in on you..");
+                    loss ++;
+                }
+                else
+                {
+                    Console.WriteLine("Fire clashes with fire, nothing happnes...");
+                }
+            }
+
+            else if(yourElement == "WATER")
+            {
+                if(elementNPC == "FIRE")
+                {
+                    Console.WriteLine("The room halts.. Greatjob! You succeded!");
+                    wins ++;
+                }
+                else if(elementNPC == "EARTH")
+                {
+                    Console.WriteLine("The rooms spawns EARTH everywere, it soaks your water. You failed..");
+                    loss++;
+                }
+                else
+                {
+                    Console.WriteLine("Water clashes with water, your element of choice shields you by nothing consumes eachother. Nothing happens.");
+                }
+            }
+
+            else if (yourElement == "EARTH")
+            {
+                if(elementNPC == "WATER")
+                {
+                    Console.WriteLine("Your earth soaks in all the water that arrives. You have parried the water! Great JOB!");
+                    wins ++;
+                }
+                else if(elementNPC == "FIRE")
+                {
+                    Console.WriteLine("THe fire destroyes the earth. You failed.");
+                    loss ++;
+                }
+                else
+                {
+                    Console.WriteLine("Earth collides with earth, Nothing happens!");
+                }
+
+            }
+
+            if (wins == 3)
+            {
+                Console.WriteLine("You won!");
+                player.Armor += 10;
+                Console.WriteLine("Here you go! 10 extra armor!");
+                Thread.Sleep(1500);
+                return true;
+            }
+            if (loss == 3)
+            {
+                Console.WriteLine("You lose!");
+                player.Armor -= 10;
+                Console.WriteLine("You loose 10 armor!");
+                Thread.Sleep(1500);                
+                return false;
+            }
+            Console.ReadKey(true);
         }
-
-
-
         return false;
-
     }
 
     private bool HangMan(Character player)

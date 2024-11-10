@@ -1,6 +1,6 @@
-public class TileKey : Tile
+public class KeyTile : Tile
 {
-    public TileKey() : base("Key tile", " ⚿ ")
+    public KeyTile() : base("Key tile", " ⚿ ")
     {
     }
     public override void RunTile(List<Character> playerList)

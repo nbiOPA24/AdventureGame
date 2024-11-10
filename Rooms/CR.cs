@@ -8,10 +8,9 @@ public class CR : Room
     }
     public Tile[,] GeneratRandomRoom()
     {
-        Tile e = new Tile();
+        Tile e = new EmptyTile();
         Tile o = new ObstacleTile();
         Tile d = new DoorTile();
-        Tile k = new TileKey();
         Tile x = new EnemyTile("Dragon Lair", 10, 3);
         Tile m = new MysteryTile(20);
         Tile r = new ItemRewardTile();
@@ -46,7 +45,7 @@ public class CR : Room
             { o, e , e , e , o , e , e , e , e },
             { o, e , e , e , o , e , e , e , e },
             { o, o , d , o , o , e , e , e , e },
-            { e, e , e , e , e , e , o , k , e },
+            { e, e , e , e , e , e , o , e , e },
             { o, e , e , e , e , e , e , e , e }
         };
 
@@ -57,7 +56,7 @@ public class CR : Room
             { o, e , e , o , e , e , e , e , e },
             { o, x , e , o , e , e , e , e , e },
             { o, o , o , o , e , e , e , e , e },
-            { e, e , e , e , e , e , o , k , e },
+            { e, e , e , e , e , e , o , e , e },
             { o, e , e , e , e , e , e , e , e }
         };
 
@@ -65,7 +64,7 @@ public class CR : Room
         {
             { o, o , o , o , o , e , o , o , o },
             { o, e , e , e , o , e , e , e , e },
-            { o, e , k , e , d , e , e , x , e },
+            { o, e , e , e , d , e , e , x , e },
             { o, e , e , e , o , e , e , e , e },
             { o, o , o , o , o , e , e , e , e },
             { e, e , e , e , e , e , o , e , e },
@@ -76,7 +75,7 @@ public class CR : Room
         {
             { o, o , o , o , o , e , o , o , o },
             { o, e , e , e , o , e , e , e , e },
-            { o, e , e , e , o , e , x , k , e },
+            { o, e , e , e , o , e , x , e , e },
             { o, r , e , e , o , e , e , e , e },
             { o, o , o , d , o , e , e , e , e },
             { e, e , e , e , e , e , o , e , e },

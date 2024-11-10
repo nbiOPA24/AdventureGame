@@ -3,7 +3,9 @@ public class DoorTile : Tile
     public DoorTile() : base("Door tile", " ≡ ")
     {
         Solid = true;
+        Tile KeyTile = new KeyTile();
     }
+
     public override void RunSolidTile(List<Character> playerList)
     {
         Character player = playerList[0];
@@ -31,7 +33,9 @@ public class DoorTile : Tile
                         if(player.Inventory.Items[i].Name.ToLower().Contains("key"))
                         {
                             player.Inventory.Items.RemoveAt(i);
+                            break;
                         }
+
                     }
                     IsVisited = true;
                     RemoveTile = true;

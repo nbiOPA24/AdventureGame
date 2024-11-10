@@ -87,6 +87,7 @@ class MapHandler
             else
             {
                 mapArray[player.YPos, player.XPos + 1].RunSolidTile(playerList);
+                player.XPos -= 1;
                 MovePlayer(playerList, mapArray);
             }
         }
