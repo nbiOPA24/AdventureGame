@@ -37,6 +37,28 @@ class MapHandler
         }
         Console.ResetColor();
     }
+
+    public static void DrawMiniMap(Character player, Tile[,] mapArray)
+    {
+        for(int row = 0; row < mapArray.GetLength(0); row++)
+        {
+            for(int col = 0; col < mapArray.GetLength(1); col++)
+            {
+                if (row == player.YPos && col == player.XPos)
+                {
+                    Utilities.ConsoleWriteColor(" ☻ ", ConsoleColor.DarkMagenta);
+                }
+                else if (row >= player.YPos -5 && row <= player.YPos +5 && col >= player.XPos -5 && col <= player.XPos +5)  
+                {
+                    Utilities.ConsoleWriteColor(mapArray[row,col].Icon, mapArray[row,col].Color);
+                }
+            }
+            Console.WriteLine();
+        }
+
+    }
+
+
     // Movement i förhållande till en Arrays kanter och om Tile är Solid.
     public static void MovePlayer(List<Character> playerList, Tile[,] mapArray)
     {
@@ -114,7 +136,7 @@ class MapHandler
             Console.WriteLine($"{"Name",-8} {"HP",-5} {"Max HP", -5} {"Power",-7} {"Armor",-6} {"Cords",-7} {"Inventory Items"}");
             Console.WriteLine($"{player.Name,-8} {player.CurrentHealth,-5} {player.MaxHealth,-5} {player.Power,-7} {player.Armor,-6} [{player.YPos},{player.XPos + "]", -7} {player.Inventory.Items.Count}");
             
-            DrawMap(player, map);       // Ritar ut kartan i en forloop och skriver över med en spelarikon där spelarens y och x pos är.
+            DrawMiniMap(player, map);       // Ritar ut kartan i en forloop och skriver över med en spelarikon där spelarens y och x pos är.
 
             map[player.YPos,player.XPos].RunTile(playerList);// Kör den aktuella tile som spelaren står på med RunTile().
             if(map[player.YPos,player.XPos].RemoveTile == true)
