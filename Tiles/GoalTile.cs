@@ -2,6 +2,7 @@ public class GoalTile : Tile
 {
     public GoalTile() : base("Goal tile", " ⚑ ")
     {
+        Color = ConsoleColor.Green;
     }
     public override void RunTile(List<Character> playerList)
     {

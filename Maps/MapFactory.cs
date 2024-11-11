@@ -65,33 +65,15 @@ class MapFactory
                     {
                         do
                         {
-                            int posOrNeg = random.Next(0,4);                                           
-                            testX = random.Next(1,20);
-                            testY = random.Next(1,20);
-                            switch (posOrNeg)
-                            {
-                                case 0:
-                                    testX *= -1;
-                                    testY *= -1;
-                                    break;
-                                case 1:
-                                    testX *= 1;
-                                    testY *= 1;
-                                    break;
-                                case 2:
-                                    testX *= 1;
-                                    testY *= -1;
-                                    break;
-                                case 3:
-                                    testX *= -1;
-                                    testY *= 1;
-                                    break;
-                            }
+                            testX = random.Next(-20,20);
+                            testY = random.Next(-20,20);
 
-                        } while (
-                            ((row+testY) > useMap.GetLength(0)-1 || (row+testY) < 0 ) 
+
+                        } while 
+                            (
+                            (row+testY) > useMap.GetLength(0)-1 || (row+testY) < 0  
                             || 
-                            ((col+testX) > useMap.GetLength(1)-1 || (col+testX) < 0)
+                            (col+testX) > useMap.GetLength(1)-1 || (col+testX) < 0
                             );
 
                         if (useMap[row+testY,col+testX] is EmptyTile)

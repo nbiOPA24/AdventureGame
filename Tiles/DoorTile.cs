@@ -4,6 +4,7 @@ public class DoorTile : Tile
     {
         Solid = true;
         Tile KeyTile = new KeyTile();
+        Color = ConsoleColor.DarkGray;
     }
 
     public override void RunSolidTile(List<Character> playerList)
@@ -22,10 +23,10 @@ public class DoorTile : Tile
 
             if(hasKey)
             {
-                Console.WriteLine("Do you wish to open the door? [Y] or [N]");
+                /* Console.WriteLine("Do you wish to open the door? [Y] or [N]");
                 string reply = Utilities.ValidateString();
                 if (reply.ToLower() == "y")
-                {
+                { */
                     Solid = false;   
                     Console.WriteLine("The door opens...");
                     for (int i = 0; i < player.Inventory.Items.Count; i++)
@@ -39,7 +40,7 @@ public class DoorTile : Tile
                     }
                     IsVisited = true;
                     RemoveTile = true;
-                }
+                /* } */
             }
             else
             {

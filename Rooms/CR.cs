@@ -14,12 +14,13 @@ public class CR : Room
         Tile x = new EnemyTile("Dragon Lair", 10, 3);
         Tile m = new MysteryTile(20);
         Tile r = new ItemRewardTile();
+        Tile g = new MiniGame();
 
 
         Tile[,] crossRoom = new Tile[,]
         {
             { o, o , o , o , e , o , o , o , o },
-            { o, e , e , e , e , e , e , e , e },
+            { o, e , e , e , e , e , e , g , e },
             { o, e , e , e , e , e , o , e , e },
             { e, e , e , x , e , e , e , e , e },
             { o, e , o , e , e , e , e , e , e },
@@ -42,7 +43,7 @@ public class CR : Room
         {
             { o, o , o , o , o , e , o , o , o },
             { o, m , e , e , o , e , e , e , e },
-            { o, e , e , e , o , e , e , e , e },
+            { o, e , e , g , o , e , e , e , e },
             { o, e , e , e , o , e , e , e , e },
             { o, o , d , o , o , e , e , e , e },
             { e, e , e , e , e , e , o , e , e },
@@ -88,7 +89,7 @@ public class CR : Room
             { o, e , o , e , e , e , o , m , e },
             { e, e , e , x , o , e , e , e , e },
             { o, e , o , e , e , e , e , o , e },
-            { o, e , e , e , e , e , o , e , e },
+            { o, g , e , e , e , e , o , e , e },
             { o, e , e , e , e , e , e , e , e }
         };
         

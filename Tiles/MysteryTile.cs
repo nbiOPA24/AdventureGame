@@ -3,6 +3,7 @@ class MysteryTile : RewardTile
 
     public MysteryTile(int reward) : base("Mystery Gift", " ? ", reward)
     {
+        Color = ConsoleColor.Gray;
     }
 
     public override void RunTile(List<Character> playerList)
@@ -32,6 +33,7 @@ class MysteryTile : RewardTile
                 HandleReward("very rare", random, hp, playerList[0]);
             }
             IsVisited = true;
+            RemoveTile = true;
         }
         else
         {
@@ -45,7 +47,10 @@ class MysteryTile : RewardTile
         if (badOrGood == 1)
         {
             Console.WriteLine($"You get a {rarityLevel} good reward! Your health increases by {hp} + {Reward} points.");
-            player.CurrentHealth += hp + Reward; // Kontrollera att det inte är större än maxHP
+            if (player.CurrentHealth + hp + Reward >= player.MaxHealth)
+                player.CurrentHealth = player.MaxHealth;
+            else
+                player.CurrentHealth += hp + Reward; // Kontrollera att det inte är större än maxHP
         }
 
         else

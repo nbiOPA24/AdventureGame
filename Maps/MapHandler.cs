@@ -26,23 +26,23 @@ class MapHandler
             {
                 if (i == player.YPos && j == player.XPos)
                 {
-                    Console.Write(" ☻ ");
+                    Utilities.ConsoleWriteColor(" ☻ ", ConsoleColor.DarkMagenta);
                 }
-
                 else
                 {
-                    Console.Write(mapArray[i,j].Icon);   
+                    Utilities.ConsoleWriteColor(mapArray[i,j].Icon, mapArray[i,j].Color);   
                 }
             }
             Console.WriteLine();
         }
+        Console.ResetColor();
     }
     // Movement i förhållande till en Arrays kanter och om Tile är Solid.
     public static void MovePlayer(List<Character> playerList, Tile[,] mapArray)
     {
         Character player = playerList[0];
         ConsoleKeyInfo control = Console.ReadKey(true);
-        if (control.Key == ConsoleKey.UpArrow)
+        if (control.Key == ConsoleKey.UpArrow || control.Key == ConsoleKey.W)
         {
             if (!mapArray[player.YPos - 1, player.XPos].Solid)
             {
@@ -51,10 +51,12 @@ class MapHandler
             else
             {
                 mapArray[player.YPos - 1, player.XPos].RunSolidTile(playerList);
+                if(mapArray[player.YPos - 1,player.XPos].RemoveTile == true)
+                    mapArray[player.YPos - 1,player.XPos] = new EmptyTile();
                 MovePlayer(playerList, mapArray);
             }
         }
-        else if (control.Key == ConsoleKey.DownArrow)
+        else if (control.Key == ConsoleKey.DownArrow || control.Key == ConsoleKey.S)
         {
             if (!mapArray[player.YPos + 1, player.XPos].Solid)
             {
@@ -63,10 +65,12 @@ class MapHandler
             else
             {
                 mapArray[player.YPos + 1, player.XPos].RunSolidTile(playerList);
+                if(mapArray[player.YPos + 1,player.XPos].RemoveTile == true)
+                    mapArray[player.YPos + 1,player.XPos] = new EmptyTile();
                 MovePlayer(playerList, mapArray);
             }
         }
-        else if (control.Key == ConsoleKey.LeftArrow)
+        else if (control.Key == ConsoleKey.LeftArrow || control.Key == ConsoleKey.A)
         {
             if (!mapArray[player.YPos, player.XPos - 1].Solid)
             {
@@ -75,10 +79,12 @@ class MapHandler
             else
             {
                 mapArray[player.YPos, player.XPos - 1].RunSolidTile(playerList);
+                if(mapArray[player.YPos,player.XPos - 1].RemoveTile == true)
+                    mapArray[player.YPos,player.XPos - 1] = new EmptyTile();
                 MovePlayer(playerList, mapArray);
             }
         }
-        else if (control.Key == ConsoleKey.RightArrow)
+        else if (control.Key == ConsoleKey.RightArrow || control.Key == ConsoleKey.D)
         {
             if (!mapArray[player.YPos, player.XPos + 1].Solid)
             {
@@ -87,7 +93,8 @@ class MapHandler
             else
             {
                 mapArray[player.YPos, player.XPos + 1].RunSolidTile(playerList);
-                player.XPos -= 1;
+                if(mapArray[player.YPos,player.XPos + 1].RemoveTile == true)
+                    mapArray[player.YPos,player.XPos + 1] = new EmptyTile();
                 MovePlayer(playerList, mapArray);
             }
         }
@@ -111,15 +118,9 @@ class MapHandler
 
             map[player.YPos,player.XPos].RunTile(playerList);// Kör den aktuella tile som spelaren står på med RunTile().
             if(map[player.YPos,player.XPos].RemoveTile == true)
-                map[player.YPos,player.XPos] = new Tile(); 
+                map[player.YPos,player.XPos] = new EmptyTile(); 
 
             MovePlayer(playerList, map);    // Skapar möjlighet för spelaren att göra förflyttning.
-
-
         }
     }
-
-
-
-    
 }

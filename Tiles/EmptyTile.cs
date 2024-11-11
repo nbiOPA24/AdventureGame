@@ -1,20 +1,9 @@
 public class EmptyTile : Tile
 {
 
-    public EmptyTile(string tileName, string tileIcon)
+    public EmptyTile() : base("Empty", "███") 
     {
-        Name = tileName;
-        Icon = tileIcon;
-        IsVisited = false;
-        Solid = false;
-    }
-    public EmptyTile()
-    {
-        Name = "Empty Tile";
-        Icon = "   ";
-        IsVisited = false;
-        Solid = false;
-        RemoveTile = false;
+        Color = ConsoleColor.Black;
     }
 
 }

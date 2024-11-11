@@ -5,6 +5,7 @@ public class Tile
     public bool RemoveTile {get;set;}
     public string Icon {get; set;}
     public bool Solid {get;set;}
+    public ConsoleColor Color {get; set;}
     public Tile(string tileName, string tileIcon)
     {
         Name = tileName;

@@ -2,6 +2,7 @@ public class StarterTile : Tile
 {
     public StarterTile() : base("Start", " S ")
     {
+        Color = ConsoleColor.Cyan;
     }
 
     public override void RunTile(List<Character> playerList)

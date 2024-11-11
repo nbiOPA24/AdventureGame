@@ -8,6 +8,7 @@ class EnemyTile : RewardTile
     {
         NrOfEnemies = nrOfEnemies;
         Solid = true;
+        Color = ConsoleColor.Red;
     }
 
     public override void RunSolidTile(List<Character> playerList)
@@ -20,6 +21,7 @@ class EnemyTile : RewardTile
             IsVisited = true;
             if (Success)
                 Solid = false;
+                RemoveTile = true;
 
         }
         else // Entered the tile before

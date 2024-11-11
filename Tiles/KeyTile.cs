@@ -2,6 +2,7 @@ public class KeyTile : Tile
 {
     public KeyTile() : base("Key tile", " ⚿ ")
     {
+        Color = ConsoleColor.Yellow;
     }
     public override void RunTile(List<Character> playerList)
     {
