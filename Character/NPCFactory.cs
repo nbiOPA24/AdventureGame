@@ -92,8 +92,8 @@ public static class NPCFactory
                 character.Abilities.Add(PurifyPoison);   //CleanseOther removes poison
                 character.Abilities.Add(waterBucket);    //CleanseOther removes burn effect
                 //Initializes the combatAI and asigns important variables
-                character.ICombatHandler.AbilityList = character.Abilities;
-                character.ICombatHandler.Self = character;
+                character.ICombatSelector.AbilityList = character.Abilities;
+                character.ICombatSelector.Self = character;
                 break;
             case eEnemyType.Caster:
                 ai = new NPCOffensiveAI();
@@ -132,8 +132,8 @@ public static class NPCFactory
                 character.Abilities.Add(flamePurge);       // CleanseOther removes burn effect on allies
 
                 // Initializes the combatAI and assigns important variables
-                character.ICombatHandler.AbilityList = character.Abilities;
-                character.ICombatHandler.Self = character;
+                character.ICombatSelector.AbilityList = character.Abilities;
+                character.ICombatSelector.Self = character;
                 break;
             case eEnemyType.Bruiser:
                 ai = new NPCOffensiveAI();
@@ -170,8 +170,8 @@ public static class NPCFactory
                 character.Abilities.Add(battleCry);      // Supportive ability that boosts attack power
 
                 // Initializes the combatAI and assigns important variables
-                character.ICombatHandler.AbilityList = character.Abilities;
-                character.ICombatHandler.Self = character;
+                character.ICombatSelector.AbilityList = character.Abilities;
+                character.ICombatSelector.Self = character;
                     break;   
         }
         return character;

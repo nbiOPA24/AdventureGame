@@ -94,9 +94,6 @@ public class PlayerCombatSelector : ICombatSelection
                         stillChoosing = false;
                     }
                     break;
-                case ConsoleKey.Escape:
-                case ConsoleKey.Backspace:
-                    return null;
             }
             Console.Clear();
         }
@@ -133,7 +130,6 @@ public class PlayerCombatSelector : ICombatSelection
                     Console.WriteLine();
                 }
             }
-
             ConsoleKeyInfo pressedKey = Console.ReadKey(true);
             switch (pressedKey.Key)
             {

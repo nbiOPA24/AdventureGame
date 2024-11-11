@@ -4,7 +4,7 @@ public class Damage : CombatEffect
     {
     }
 
-    public override void ApplyEffect(Character self,Character target,List<Character> targetTeam)
+    public override void ApplyEffect(Character caster,Character target,List<Character> targetTeam)
     {
         List<Character> affectedCharacters = new();
         if(AreaEffect)
@@ -16,7 +16,7 @@ public class Damage : CombatEffect
         {
             if (!c.IsImmune) // Check if the character isn't immune
             {
-                UpdateMagnitude(self.Power);
+                UpdateMagnitude(caster.Power);
                 // Character resolves the damage taken
                 c.TakeDamage(Magnitude);
             }

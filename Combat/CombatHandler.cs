@@ -8,37 +8,32 @@ public static  class CombatHandler
     /// </summary>
     /// <param name="enemyList"></param>
     /// <returns></returns>
-    public static bool RunCombatScenario(List<Character> enemyList,List<Character> playerList,string message)
+    public static bool RunCombatScenario(List<Character> enemyList,List<Character> playerList,string message) 
     {
-        //Displays entering message and waits for keypress
         Console.Clear();
-        Utilities.CharByCharLine(message,5,ConsoleColor.DarkGreen,true);
+        Utilities.CharByCharLine(message,5,ConsoleColor.DarkGreen,true);    //Displays entering message and waits for keypress
         Console.ReadKey(true);
-        //Initializing CombatSession object carrying playerlist enemylist and such
-        CombatSession currentSession = new(playerList,enemyList);
-        InitialiseCombatSelectors(playerList,enemyList);
-        InitialiseCombatSelectors(enemyList,playerList);
         
-
+        CombatSession currentSession = new(playerList,enemyList); //Initializing CombatSession object carrying playerlist enemylist and such
+        InitialiseCombatSelectors(playerList,enemyList);
         //Round start
-        while(playerList[0].CurrentHealth > 0 && enemyList.Count > 0 && currentSession.StillInCombat )
+        while(playerList.Count > 0 )
         {
-            Console.ReadKey(true);
-            //player takes a Turn 
+            
+            
             //returns index choice if player wants to attack == 0, use item == 1, attempt to flee  == 2
             int choiceIndex = PickAction(currentSession);
             switch(choiceIndex)
             {
                 case 0:          
-                    //handles the using of an ability and the target of said ability
+                    //Each Player takes a turn in order
                     foreach(Character c in playerList)
                     {
-                        CharacterTurn(c,currentSession.EnemyList,currentSession.PlayerList);
-                        RemoveDeadCharacters(enemyList,playerList);
-                        if (enemyList.Count <= 0)
-                            return true;
+                        CharacterTurn(c,currentSession.EnemyList,currentSession.PlayerList); 
+                        Console.ReadKey(true);
+                        RemoveDeadCharacters(enemyList,playerList); //Removes all dead characters from respective list
+                        if (enemyList.Count <= 0)return true;   
                     }
-                    if(enemyList.Count == 0) return true;
                     break;
                 case 1:
                     //TODO create items and inventory first
@@ -46,7 +41,11 @@ public static  class CombatHandler
                     break;
                 case 2:
                     //attempt to flee results in a loss
-                    currentSession.StillInCombat = false;
+                    if(TryToEscape()) 
+                    {
+                        Utilities.CharByCharLine("You manage to run away safely",4);
+                        return false;
+                    }
                     break;
             }
             //ALL enemies take their turn
@@ -58,27 +57,8 @@ public static  class CombatHandler
             EndOfRound(currentSession);
             RemoveDeadCharacters(enemyList,playerList);
             if(enemyList.Count == 0) return true;
-            currentSession.CurrentRound++;
         }
-        //Checks if player is alive after the Combat has finnished
-        if(playerList[0].CurrentHealth > 0 )
-        {
-            if(enemyList.Count <= 0)
-            {
-                Console.WriteLine("You have slain all enemies. Collect your reward");
-                return true; //player killed all monsters
-            }
-            else
-            {
-                Console.WriteLine("You have fled! shame on you");
-                return false;
-            }
-        }
-        else //current health is <= 0
-        {
-            Console.WriteLine("You have Died! Adjust your strategy and try again");
-            return false; // player died
-        }   
+        return false;
     }
     //Displays enemylist in a userfriendly format
 
@@ -143,16 +123,23 @@ public static  class CombatHandler
         }
         return returnValue;
     }
+    public static bool TryToEscape()
+    {
+                    Random random  = new Random(); 
+                    int canEscape = random.Next(0,2);
+                    if(canEscape == 0) return false;
+                    else return true;              
+    }
 
     public static void CharacterTurn(Character self,List<Character> enemyList,List<Character> friendList)
     {  
 
-        self.ICombatHandler.UpdateCombatState();
+        self.ICombatSelector.UpdateCombatState();
 
        
         if(self.AbleToAct) //if not frozen or otherwise hindered
         {  
-            Ability chosenAbility = self.ICombatHandler.SelectAbility(self,enemyList,friendList);  //selects the ability to use
+            Ability chosenAbility = self.ICombatSelector.SelectAbility(self,enemyList,friendList);  //selects the ability to use
 
             if(chosenAbility == null) return;
             Utilities.ConsoleWriteColor("--------------",ConsoleColor.DarkYellow);
@@ -196,7 +183,7 @@ public static  class CombatHandler
                 }
                 if(foundOther)
                 {
-                    Character chosenFriend = self.ICombatHandler.ChooseTarget(a,self,eTargetType.Friendly,FriendlyTargetList,FriendlyTargetList,EnemyTargetList);
+                    Character chosenFriend = self.ICombatSelector.ChooseTarget(a,self,eTargetType.Friendly,FriendlyTargetList,FriendlyTargetList,EnemyTargetList);
                     UseAbilityOn(self,chosenFriend,a,self.NameColor,self.NameColor,FriendlyTargetList); //Casts Ability on friend
                     Console.ReadKey(true);
                 }
@@ -204,12 +191,12 @@ public static  class CombatHandler
                 Console.WriteLine("There is no suitable target for that ability");
                 break;
             case eTargetType.AnyFriend:
-                    Character chosenAnyFriend = self.ICombatHandler.ChooseTarget(a,self,eTargetType.AnyFriend,FriendlyTargetList,FriendlyTargetList,EnemyTargetList);
+                    Character chosenAnyFriend = self.ICombatSelector.ChooseTarget(a,self,eTargetType.AnyFriend,FriendlyTargetList,FriendlyTargetList,EnemyTargetList);
                     UseAbilityOn(self,chosenAnyFriend,a,self.NameColor,self.NameColor,FriendlyTargetList); //Casts Ability on friend
                     Console.ReadKey(true);
                 break;
             case eTargetType.Enemy: //if an enemy target spell
-                Character chosenEnemy = self.ICombatHandler.ChooseTarget(a,self,eTargetType.Enemy,EnemyTargetList,FriendlyTargetList,EnemyTargetList);
+                Character chosenEnemy = self.ICombatSelector.ChooseTarget(a,self,eTargetType.Enemy,EnemyTargetList,FriendlyTargetList,EnemyTargetList);
                 UseAbilityOn(self,chosenEnemy,a,self.NameColor,chosenEnemy.NameColor,EnemyTargetList); //Deals damage to the enemy object
                 Console.ReadKey(true);
                 break;
@@ -249,15 +236,17 @@ public static  class CombatHandler
     }
     public static void RemoveDeadCharacters(List<Character> enemyList,List<Character> playerList)
     {
-        if(playerList[0].CurrentHealth > 0)
+        if(playerList.Count >= 0)
         {
             for(int i = 0 ; i < enemyList.Count ; i++)
             {
                 if(enemyList[i].CurrentHealth <= 0)
                 {
                     enemyList.Remove(enemyList[i]);
-                }
+                    i--;
+                } 
             }
+            Console.WriteLine(enemyList.Count); //REMOVE
             for(int i = 0 ; i < playerList.Count ; i++)
             {
                 if(playerList[i].CurrentHealth <= 0)
@@ -265,10 +254,8 @@ public static  class CombatHandler
                     playerList.Remove(playerList[i]);
                 }
             }
-        }
-        else
-        playerList[0].CurrentHealth = 0;
-        
+        }    
+        Console.ReadKey();//Remove
     }
     public static void AfterTurn(Character character)
     {
@@ -325,18 +312,29 @@ public static  class CombatHandler
         
         Console.ReadKey(true);
     }
+    //The combat selectors are initialized for each character in 1 team
     public static void InitialiseCombatSelectors(List<Character> friendList,List<Character> enemyList)
     {
+        //Sets up each characters IcommbatSelectors to know who is their friend and who is their foe and also who "Self" represents
+        //Also updates the abilityList of each character in both list
         foreach(Character c in friendList)
         {
-            c.ICombatHandler.FriendList = friendList;
-            c.ICombatHandler.EnemyList = enemyList;
-            c.ICombatHandler.AbilityList = c.Abilities;
-            c.ICombatHandler.Self = c;
+            c.ICombatSelector.FriendList = friendList;
+            c.ICombatSelector.EnemyList = enemyList;
+            c.ICombatSelector.AbilityList = c.Abilities;
+            c.ICombatSelector.Self = c;
+        }
+        foreach(Character c in enemyList)
+        {
+            c.ICombatSelector.FriendList = enemyList;
+            c.ICombatSelector.EnemyList = friendList;
+            c.ICombatSelector.AbilityList = c.Abilities;
+            c.ICombatSelector.Self = c;
         }
     }
     
     #region Displaying things
+    //Displays a list of characters in combat format with a gray box outside aswell as their health
     public static void DisplayCharacterList(List<Character> listToDisplay)
     {   
         Utilities.ConsoleWriteLineColor(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",ConsoleColor.DarkGray);

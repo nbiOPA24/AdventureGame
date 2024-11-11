@@ -4,7 +4,7 @@ public class Healing : CombatEffect
     {
     }
 
-    public override void ApplyEffect(Character self,Character target,List<Character> targetTeam)
+    public override void ApplyEffect(Character caster,Character target,List<Character> targetTeam)
     {
         List<Character> affectedCharacters = new();
         if(AreaEffect)
@@ -16,7 +16,7 @@ public class Healing : CombatEffect
         {
             if (c.CurrentHealth < c.MaxHealth) // Only apply if healing is needed
             {
-                UpdateMagnitude(self.Power);
+                UpdateMagnitude(caster.Power);
                 Console.Write($"{c.Name} heals ");
                 Utilities.ConsoleWriteColor($"{Magnitude} health", ConsoleColor.Green);
                 Console.WriteLine(" from the healing effect.");

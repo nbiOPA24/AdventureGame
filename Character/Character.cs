@@ -18,14 +18,11 @@ public class Character
     public List<CombatEffect> CurrentStatusEffects {get;set;}
     public Inventory Inventory {get;set;}
     public bool AbleToAct {get;set;}
-    public ICombatSelection ICombatHandler {get;set;}
-    public int StartingHealth { get;set; }
+    public ICombatSelection ICombatSelector {get;set;}
     public int Intelligence {get;set;}
-    public int V1 { get; }
-    public int V2 { get; }
-    public int V3 { get; }
-    public PlayerCombatSelector PlayerCombatSelector { get; }
-    public ConsoleColor Cyan { get; }
+
+ 
+
 
     public Character(string name,int startingHealth,int power,int armor,ICombatSelection icombatHandler,int intelligence,ConsoleColor selfColor)
     {
@@ -34,18 +31,17 @@ public class Character
         Power = power;
         Name = name;
         MaxHealth = CurrentHealth;
-        Armor = armor;
+        Shield = 0;
         //En spelares användningsredo abilities. 4 stycken
         Abilities = new(); 
         CurrentStatusEffects = new List<CombatEffect>();
         IsImmune = false;
         Inventory = new();
-        ICombatHandler = icombatHandler;
-        Shield = 0;
-        NameColor = selfColor;
+        Armor = armor;
+        ICombatSelector = icombatHandler;
         TempArmor = 0;
         Intelligence = intelligence;
-        
+        NameColor = selfColor;
 
     }
     // Constructor for players only
@@ -57,18 +53,16 @@ public class Character
         Name = name;
         MaxHealth = CurrentHealth;
         Armor = armor;
-        //En spelares användningsredo abilities. 4 stycken
         Abilities = new(); 
         CurrentStatusEffects = new List<CombatEffect>();
         IsImmune = false;
         Inventory = new();
-        ICombatHandler = new PlayerCombatSelector();
+        ICombatSelector = new PlayerCombatSelector();
         Shield = 0;
         NameColor = ConsoleColor.Cyan;
         TempArmor = 0;
         Intelligence = 1;
         
-
     }
 
 
