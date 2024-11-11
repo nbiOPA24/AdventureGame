@@ -323,6 +323,7 @@ public static  class CombatHandler
             c.ICombatSelector.EnemyList = enemyList;
             c.ICombatSelector.AbilityList = c.Abilities;
             c.ICombatSelector.Self = c;
+            
         }
         foreach(Character c in enemyList)
         {
@@ -330,6 +331,10 @@ public static  class CombatHandler
             c.ICombatSelector.EnemyList = friendList;
             c.ICombatSelector.AbilityList = c.Abilities;
             c.ICombatSelector.Self = c;
+            foreach(Character d in friendList)
+            {
+                c.ICombatSelector.AggroDictionary.Add(d,0);
+            }
         }
     }
     

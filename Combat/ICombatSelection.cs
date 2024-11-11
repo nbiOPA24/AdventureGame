@@ -4,6 +4,7 @@ public interface ICombatSelection
     public List<Ability> AbilityList {get;set;}
     public List<Character> FriendList {get;set;}
     public List<Character> EnemyList {get;set;}
+    public Dictionary<Character,int> AggroDictionary {get;set;}
     public Random RandomNumber {get;set;}
     public Character Self{get;set;}
     Ability SelectAbility();
