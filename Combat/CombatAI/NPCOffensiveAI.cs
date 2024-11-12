@@ -14,6 +14,7 @@ public class NPCOffensiveAI : ICombatSelection
         AbilityList = new List<Ability>();
         FriendList = new List<Character>();
         EnemyList = new List<Character>();
+        AggroDictionary = new();
         RandomNumber = new Random();
     }
     public Ability SelectAbility()
@@ -59,8 +60,8 @@ public class NPCOffensiveAI : ICombatSelection
             }
             else
             {
-                // Choose a random target if the intelligence check fails
-                return potentialTargets[RandomNumber.Next(0, potentialTargets.Count)];
+                List<Character> targetList = CombatUtil.ReturnHighestThreatList(self,potentialTargets);
+                return targetList[RandomNumber.Next(0,targetList.Count)];
             }
         }
         else if (targetType == eTargetType.Self)

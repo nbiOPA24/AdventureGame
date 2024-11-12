@@ -17,6 +17,7 @@ public class NPCSupportAI : ICombatSelection
         FriendList = new List<Character>();
         EnemyList = new List<Character>();
         RandomNumber = new Random();
+        AggroDictionary = new();
     }
     public Ability SelectAbility()
     {
@@ -52,7 +53,9 @@ public class NPCSupportAI : ICombatSelection
         switch(targetType)
         {
             case eTargetType.Self: return self;
-            case eTargetType.Enemy: return potentialTargets[RandomNumber.Next(0,potentialTargets.Count)];             
+            case eTargetType.Enemy:
+                List<Character> targetList = CombatUtil.ReturnHighestThreatList(self,potentialTargets);
+                return targetList[RandomNumber.Next(0,targetList.Count)];          
             case eTargetType.Friendly: return GetSupportiveTarget(FriendList);
         }
         return null; // should be unreachable
