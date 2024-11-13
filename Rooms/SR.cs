@@ -13,13 +13,15 @@ public class SR : Room
         Tile d = new DoorTile();
         Tile m = new MysteryTile(10);
         Tile g = new MiniGame();
+        Tile l = new LogicTile();
+
 
 
         Tile[,] starterRoom = new Tile [,]
         {
             { o, o , o , o , e , o , o , o , o },
             { o, e , e , e , e , e , e , e , e },
-            { o, e , e , e , e , e , e , e , e },
+            { o, e , l , e , e , e , e , e , e },
             { o, s , e , e , m , e , e , e , e },    
             { o, e , e , e , g , e , e , e , e },   
             { o, e , e , e , e , e , e , e , e },

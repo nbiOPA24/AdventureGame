@@ -4,6 +4,7 @@ public class Tile
     public bool IsVisited {get;set;} 
     public bool RemoveTile {get;set;}
     public string Icon {get; set;}
+    public string EmptyIcon {get; set;}
     public bool Solid {get;set;}
     public ConsoleColor Color {get; set;}
     public Tile(string tileName, string tileIcon)
@@ -20,6 +21,7 @@ public class Tile
         IsVisited = false;
         Solid = false;
         RemoveTile = false;
+        EmptyIcon = "   ";
     }
 
     public virtual void RunTile(List<Character> playerList)

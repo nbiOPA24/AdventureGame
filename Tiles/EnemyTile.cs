@@ -20,8 +20,10 @@ class EnemyTile : RewardTile
             Success = CombatHandler.RunCombatScenario(NPCFactory.GenerateNPCs(ConsoleColor.DarkRed,50,eEnemyFamily.Goblin,NrOfEnemies),playerList,encounterMessage);
             IsVisited = true;
             if (Success)
+            {
                 Solid = false;
                 RemoveTile = true;
+            }
 
         }
         else // Entered the tile before
@@ -30,11 +32,7 @@ class EnemyTile : RewardTile
             {
                 string encounterMessage = $"\"Ah, it's you again! You weak and pitiful human, fleeing from us last time. You should have stayed away, coward!\"";
                 Success = CombatHandler.RunCombatScenario(NPCFactory.GenerateNPCs(ConsoleColor.DarkRed,50,eEnemyFamily.Goblin,NrOfEnemies),playerList,encounterMessage);
-            }
-            else
-            {
-                Utilities.CharByCharLine("The room is quiet now... The scent of past victory lingers in the air. You have been here before.", 8, ConsoleColor.DarkBlue);
-            }                
+            }               
         }
     }
 }

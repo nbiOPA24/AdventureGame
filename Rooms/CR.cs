@@ -15,16 +15,17 @@ public class CR : Room
         Tile m = new MysteryTile(20);
         Tile r = new ItemRewardTile();
         Tile g = new MiniGame();
+        Tile l = new LogicTile();
 
 
         Tile[,] crossRoom = new Tile[,]
         {
             { o, o , o , o , e , o , o , o , o },
             { o, e , e , e , e , e , e , g , e },
-            { o, e , e , e , e , e , o , e , e },
-            { e, e , e , x , e , e , e , e , e },
-            { o, e , o , e , e , e , e , e , e },
-            { o, e , e , e , e , e , o , e , e },
+            { o, e , o , o , d , o , o , e , e },
+            { e, e , o , x , e , e , o , e , e },
+            { o, e , o , e , e , l , o , e , e },
+            { o, e , o , o , o , o , o , e , e },
             { o, e , e , e , e , e , e , e , e }
         };
 
@@ -32,11 +33,11 @@ public class CR : Room
         {
             { o, o , o , o , e , o , o , o , o },
             { o, m , e , e , e , e , e , e , e },
-            { o, o , o , o , e , e , e , e , e },
-            { e, e , e , e , e , e , e , e , e },
+            { o, e , e , e , e , e , e , e , e },
+            { o, e , o , o , o , o , o , o , e },
             { o, e , x , e , e , e , e , e , e },
-            { o, e , e , e , e , e , o , e , e },
-            { o, e , e , e , e , e , e , e , e }            
+            { o, o , o , o , o , o , o , o , e },
+            { e, e , e , e , e , l , e , e , e }            
         };
 
         Tile[,] crossRoomThree = new Tile[,]
@@ -46,13 +47,13 @@ public class CR : Room
             { o, e , e , g , o , e , e , e , e },
             { o, e , e , e , o , e , e , e , e },
             { o, o , d , o , o , e , e , e , e },
-            { e, e , e , e , e , e , o , e , e },
+            { l, e , e , e , e , e , o , e , e },
             { o, e , e , e , e , e , e , e , e }
         };
 
         Tile[,] crossRoomFour = new Tile[,]
         {
-            { o, o , o , o , o , e , o , o , o },
+            { o, o , o , o , o , l , o , o , o },
             { o, e , e , d , e , e , e , e , e },
             { o, e , e , o , e , e , e , e , e },
             { o, x , e , o , e , e , e , e , e },
@@ -63,23 +64,23 @@ public class CR : Room
 
         Tile[,] crossRoomFive = new Tile[,]
         {
-            { o, o , o , o , o , e , o , o , o },
-            { o, e , e , e , o , e , e , e , e },
-            { o, e , e , e , d , e , e , x , e },
-            { o, e , e , e , o , e , e , e , e },
-            { o, o , o , o , o , e , e , e , e },
-            { e, e , e , e , e , e , o , e , e },
+            { o, o , o , e , o , o , o , o , o },
+            { o, e , e , e , o , e , e , o , e },
+            { o, e , e , e , d , e , x , o , e },
+            { o, e , e , e , o , e , e , o , e },
+            { o, e , e , e , o , o , o , o , e },
+            { e, e , e , e , e , e , e , e , e },
             { o, e , e , e , e , e , e , e , e }
         };
 
         Tile[,] crossRoomSix = new Tile[,]
         {
             { o, o , o , o , o , e , o , o , o },
-            { o, e , e , e , o , e , e , e , e },
-            { o, e , e , e , o , e , x , e , e },
-            { o, r , e , e , o , e , e , e , e },
-            { o, o , o , d , o , e , e , e , e },
-            { e, e , e , e , e , e , o , e , e },
+            { o, e , e , o , e , e , e , e , e },
+            { o, e , e , o , e , e , x , e , e },
+            { o, r , e , o , e , o , o , o , e },
+            { o, o , d , o , e , d , e , o , e },
+            { e, e , l , e , e , o , o , o , e },
             { o, e , e , e , e , e , e , e , e }
         };
         Tile[,] crossRoomSeven = new Tile[,]

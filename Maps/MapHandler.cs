@@ -40,9 +40,9 @@ class MapHandler
 
     public static void DrawMiniMap(Character player, Tile[,] mapArray)
     {
-        for(int row = 0; row < mapArray.GetLength(0); row++)
+        for (int row = Math.Max(0, player.YPos - 5); row <= Math.Min(mapArray.GetLength(0) - 1, player.YPos + 5); row++)
         {
-            for(int col = 0; col < mapArray.GetLength(1); col++)
+            for (int col = Math.Max(0, player.XPos - 5); col <= Math.Min(mapArray.GetLength(1) - 1, player.XPos + 5); col++)
             {
                 if (row == player.YPos && col == player.XPos)
                 {
@@ -55,7 +55,6 @@ class MapHandler
             }
             Console.WriteLine();
         }
-
     }
 
 
@@ -136,13 +135,13 @@ class MapHandler
             Console.WriteLine($"{"Name",-8} {"HP",-5} {"Max HP", -5} {"Power",-7} {"Armor",-6} {"Cords",-7} {"Inventory Items"}");
             Console.WriteLine($"{player.Name,-8} {player.CurrentHealth,-5} {player.MaxHealth,-5} {player.Power,-7} {player.Armor,-6} [{player.YPos},{player.XPos + "]", -7} {player.Inventory.Items.Count}");
             
-            DrawMiniMap(player, map);       // Ritar ut kartan i en forloop och skriver över med en spelarikon där spelarens y och x pos är.
+            DrawMap(player, map);                                   // Ritar ut kartan i en forloop och skriver över med en spelarikon där spelarens y och x pos är.
 
-            map[player.YPos,player.XPos].RunTile(playerList);// Kör den aktuella tile som spelaren står på med RunTile().
+            map[player.YPos,player.XPos].RunTile(playerList);       // Kör den aktuella tile som spelaren står på med RunTile().
             if(map[player.YPos,player.XPos].RemoveTile == true)
                 map[player.YPos,player.XPos] = new EmptyTile(); 
 
-            MovePlayer(playerList, map);    // Skapar möjlighet för spelaren att göra förflyttning.
+            MovePlayer(playerList, map);                            // Skapar möjlighet för spelaren att göra förflyttning.
         }
     }
 }

@@ -14,9 +14,5 @@ public class KeyTile : Tile
             IsVisited = true;
             RemoveTile = true;
         }
-        else
-        {
-            Console.WriteLine("You've already gotten the key. But you can always revisit for nostalgia.");
-        }
     }
 }
