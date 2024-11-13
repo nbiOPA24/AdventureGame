@@ -106,16 +106,13 @@ public class CombatEffect
         switch(Type)
         {
             case eCombatEffect.Freeze:
-                Utilities.ConsoleWriteColor($"(Frozen {Duration})",ConsoleColor.Blue);
+                Utilities.ConsoleWriteColor($"(FRZ {Duration})",ConsoleColor.Blue);
                 break;
             case eCombatEffect.Poison:
-                Utilities.ConsoleWriteColor($"(Poisoned {Duration})",ConsoleColor.DarkMagenta);
-                break;
-            case eCombatEffect.Burn:
-                Utilities.ConsoleWriteColor($"(Burning {Duration})", ConsoleColor.Red); // Add this line for burn
+                Utilities.ConsoleWriteColor($"(PSN{Duration})", ConsoleColor.Red); // Add this line for burn
                 break;
             case eCombatEffect.Immune:
-                Utilities.ConsoleWriteColor($"(Immune {Duration})",ConsoleColor.White);
+                Utilities.ConsoleWriteColor($"(IMN {Duration})",ConsoleColor.White);
                 break;
             case eCombatEffect.HealingOverTime:
                 Utilities.ConsoleWriteColor($"(HoT {Duration})",ConsoleColor.DarkGreen);
@@ -123,7 +120,10 @@ public class CombatEffect
             case eCombatEffect.Shield:
                 break;
             case eCombatEffect.ArmorBuff:
-                Utilities.ConsoleWriteColor($"(Armored {Duration})",ConsoleColor.DarkYellow);
+                Utilities.ConsoleWriteColor($"(ARMOR+ {Duration})",ConsoleColor.DarkGray);
+                break;
+            case eCombatEffect.AttackBuff:
+                Utilities.ConsoleWriteColor($"(ATK+ {Duration})",ConsoleColor.DarkYellow);
                 break;
         }
         //code for removing the effect

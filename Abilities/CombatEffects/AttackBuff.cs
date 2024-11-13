@@ -1,6 +1,6 @@
-public class ArmorBuff : CombatEffect
+public class AttackBuff : CombatEffect
 {
-    public ArmorBuff(int duration,int magnitude,bool areaEffect) : base(duration,magnitude,eCombatEffect.ArmorBuff,areaEffect)
+    public AttackBuff(int duration,int magnitude,bool areaEffect) : base(duration,magnitude,eCombatEffect.AttackBuff,areaEffect)
     {
         
     }
@@ -16,14 +16,14 @@ public class ArmorBuff : CombatEffect
         else affectedCharacters.Add(target);
         foreach(Character c in affectedCharacters)
         {
-            c.TempArmor = Magnitude;
+            c.TempPower = Magnitude;
         }
     }
     public override void PrintApplication(Character character)
     {
 
-            Utilities.ConsoleWriteColor(character.Name,character.NameColor);
-            Utilities.ConsoleWriteColor("s Armor",ConsoleColor.DarkGray);
+            Utilities.ConsoleWriteColor(character.Name+"s",character.NameColor);
+            Utilities.ConsoleWriteColor(" Attack",ConsoleColor.DarkYellow);
             Console.Write($" Has Increased ");
             Console.WriteLine($" for {Duration} rounds");
     }
@@ -45,6 +45,6 @@ public class ArmorBuff : CombatEffect
     }
     public override CombatEffect CloneEffect()
     {
-        return new ArmorBuff(Duration,Magnitude,AreaEffect);
+        return new AttackBuff(Duration,Magnitude,AreaEffect);
     }
 }

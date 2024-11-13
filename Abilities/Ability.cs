@@ -68,6 +68,11 @@ public class Ability
         ArmorBuff armorbuff = new(duration,magnitude,areaEffect);
         CombatEffects.Add(armorbuff);
     }
+    public void AddAttackBuffEffect(int magnitude,int duration,bool areaEffect)
+    {
+        AttackBuff attackBuff = new(duration,magnitude,areaEffect);
+        CombatEffects.Add(attackBuff);
+    }
     public void AddCleanseEffect(List<eCombatEffect> effects,bool areaEffect)
     {
         Cleanse cleanse = new Cleanse(effects,areaEffect);
