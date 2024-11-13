@@ -15,6 +15,21 @@ public static class CombatUtil
         }
         #endregion
         #region CharacterList sorting
+    public static List<Character> ReturnHighestThreatList(Character self,List<Character> potentialTargets)
+    {    
+                List<Character> returnList = new();
+                int highestThreat = 0;
+                foreach(Character c in potentialTargets)
+                {
+                    if(self.ICombatSelector.AggroDictionary[c] > highestThreat) 
+                    {
+                        returnList.Clear();
+                        returnList.Add(c);
+                    }
+                    else if(self.ICombatSelector.AggroDictionary[c] == highestThreat) returnList.Add(c);
+                }
+                return returnList;
+    }
     public static Character ReturnLowestHealthCharacter(List<Character> characterList)
     {
             if (characterList == null || characterList.Count == 0)

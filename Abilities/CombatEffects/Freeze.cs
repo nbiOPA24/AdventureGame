@@ -5,9 +5,9 @@ public class Freeze : CombatEffect
 
     }
 
-    public override void ApplyEffect(Character caster,Character target,List<Character> targetTeam)
+    public override void ApplyEffect(Character caster,Character target,List<Character> targetTeam,List<Character> otherTeam)
     {
-        base.ApplyEffect(caster,target,targetTeam);
+        base.ApplyEffect(caster,target,targetTeam,otherTeam);
         List<Character> affectedCharacters = new();
         if(AreaEffect)
         {

@@ -188,9 +188,10 @@ public static class PlayerFactory
         fortify.Description = "Temporarily raises armor to reduce incoming damage";
         fortify.AddArmorBuffEffect(25, 2,false); // Increases armor significantly for 2 turns
 
-        Ability swipe = new("Swipe", eTargetType.Enemy, 3, eAbilityType.OffensiveAOE);
-        swipe.Description = "Swipes in an area dealing low damage to all enemies";
-        swipe.AddDamageEffect(10,true); // Reflects a portion of damage back to the attacker
+        Ability commandingShout = new("Commanding Shout", eTargetType.Enemy, 3, eAbilityType.OffensiveAOE);
+        commandingShout.Description = "Screams at ALL nearby enemies causing them to likely target the caster";
+        commandingShout.AddDamageEffect(10,true); // Reflects a portion of damage back to the attacker
+        commandingShout.AddThreatEffect(300,true);
 
         // Supportive Abilities
         Ability rally = new("Rally", eTargetType.Self, 5, eAbilityType.HealingSelf);
@@ -202,8 +203,26 @@ public static class PlayerFactory
             strike,
             shieldBash,
             fortify,
-            swipe,
+            commandingShout,
             rally
+        };
+
+        Character returnCharacter = new(name, 120, 15, 20); // Adjusted stats for a tanky Warrior
+        returnCharacter.Abilities = abilityList;
+
+        return returnCharacter;
+    }
+        public static Character GenerateSummoner(string name)
+    { 
+        // Offensive Abilities
+        Ability summonGoblin = new("Summon Goblin", eTargetType.Self, 0, eAbilityType.DefensiveSelf);
+        summonGoblin.Description = "A basic melee attack that deals solid damage to the target";
+        summonGoblin.AddSummonEffect(eEnemyFamily.Goblin,eEnemyType.Minion,0,3); // Basic attack with no cooldown
+
+
+        List<Ability> abilityList = new()
+        {
+            summonGoblin
         };
 
         Character returnCharacter = new(name, 120, 15, 20); // Adjusted stats for a tanky Warrior

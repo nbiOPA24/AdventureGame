@@ -14,6 +14,7 @@ public class PlayerCombatSelector : ICombatSelection
         CurrentCombatState = eCombatState.Offensive;
         AbilityList = new();
         RandomNumber = new Random();
+        AggroDictionary = new();
     }
     public Ability SelectAbility(Character self,List<Character> playerList,List<Character> enemyList)
     {

@@ -16,7 +16,7 @@ class EnemyTile : RewardTile
         if (!IsVisited) // Never entered the tile before!
         {
             string encounterMessage = $"As you step into the enemy lair, {NrOfEnemies} fierce foes appear, blocking your path!";
-            Success = CombatHandler.RunCombatScenario(NPCFactory.GenerateNPCs(ConsoleColor.DarkRed,50,eEnemyFamily.Goblin,NrOfEnemies),playerList,encounterMessage);
+            Success = CombatHandler.RunCombatScenario(NPCFactory.GenerateNPCs(ConsoleColor.DarkRed,50,eEnemyFamily.Goblin,NrOfEnemies,eEnemyType.Supportive,true),playerList,encounterMessage);
             IsVisited = true;
             if (Success)
                 Solid = false;
@@ -27,7 +27,7 @@ class EnemyTile : RewardTile
             if (!Success)
             {
                 string encounterMessage = $"\"Ah, it's you again! You weak and pitiful human, fleeing from us last time. You should have stayed away, coward!\"";
-                Success = CombatHandler.RunCombatScenario(NPCFactory.GenerateNPCs(ConsoleColor.DarkRed,50,eEnemyFamily.Goblin,NrOfEnemies),playerList,encounterMessage);
+                Success = CombatHandler.RunCombatScenario(NPCFactory.GenerateNPCs(ConsoleColor.DarkRed,50,eEnemyFamily.Goblin,NrOfEnemies,eEnemyType.Supportive,true),playerList,encounterMessage);
             }
             else
             {

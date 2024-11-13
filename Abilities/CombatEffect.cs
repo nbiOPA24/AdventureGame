@@ -18,7 +18,7 @@ public class CombatEffect
         AreaEffect = areaEffect;
     }
     //Checks if the effect already is contained in the list of current ailments if not applies it
-    public virtual  void ApplyEffect(Character self,Character target,List<Character> targetTeam)
+    public virtual  void ApplyEffect(Character self,Character target,List<Character> targetTeam,List<Character> otherTeam)
     {
         List<Character> affectedCharacters = new();
         if(AreaEffect)
@@ -34,7 +34,7 @@ public class CombatEffect
             }
             else
             {
-                UpdateMagnitude(self.Power);
+                UpdateMagnitude(self.Power,self.TempPower);
                 bool alreadyContains = false;
                 bool foundStronger = false;
                 int foundIndex = 0;
@@ -135,9 +135,9 @@ public class CombatEffect
             PrintEffectIcon();
         }
     }
-    public void UpdateMagnitude(int power)
+    public void UpdateMagnitude(int power,int tempPower)
     {
-        double newMagnitude = BaseMagnitude * (1+power *0.01);
+        double newMagnitude = BaseMagnitude * ((1+power+tempPower) *0.01);
         Magnitude = (int)Math.Round(newMagnitude);
     }
 

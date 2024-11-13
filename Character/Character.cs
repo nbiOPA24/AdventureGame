@@ -7,6 +7,7 @@ public class Character
     public int CurrentHealth {get;set;}
     public int MaxHealth {get;set;}
     public int Power {get;set;}
+    public int TempPower{get;set;}
     public int Armor {get;set;}
     public int TempArmor {get;set;}
     public int Shield{get;set;}
@@ -29,6 +30,7 @@ public class Character
         AbleToAct = true;
         CurrentHealth = startingHealth;
         Power = power;
+        TempPower = 0;
         Name = name;
         MaxHealth = CurrentHealth;
         Shield = 0;
@@ -50,9 +52,11 @@ public class Character
         AbleToAct = true;
         CurrentHealth = startingHealth;
         Power = power;
+        TempPower = 0;
         Name = name;
         MaxHealth = CurrentHealth;
         Armor = armor;
+        TempArmor = 0;
         Abilities = new(); 
         CurrentStatusEffects = new List<CombatEffect>();
         IsImmune = false;

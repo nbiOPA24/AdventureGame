@@ -1,6 +1,6 @@
 public static class NPCFactory
 {
-
+    static Random randomNumber = new Random();
 
     /// <summary>
     /// Intelligence should be a number between 1-100
@@ -10,42 +10,44 @@ public static class NPCFactory
     /// <param name="selfColor"></param>
     /// <param name="intelligence"></param>
     /// <returns></returns>
-    public static Character GenerateNPC(ConsoleColor selfColor,int intelligence,eEnemyFamily family)
+    public static Character GenerateNPC(ConsoleColor selfColor,int intelligence,eEnemyFamily family,eEnemyType type)
     {
         //WIP just thrown together for codereview
         Character character = null;
-        eEnemyType enemyType = new eEnemyType();
-        Random random = new Random();
-        int number =random.Next(0,3);
-        
-        switch(number)
-        {
-            case 0:
-                enemyType = eEnemyType.Supportive;
-                break;
-            case 1:
-                enemyType = eEnemyType.Bruiser;
-                break;
-            case 2:
-                enemyType = eEnemyType.Caster;
-                break;
-        }
         switch(family)
         {
             case eEnemyFamily.Goblin:
-            character = GenerateGoblin(enemyType,ConsoleColor.DarkGreen,intelligence);
+            character = GenerateGoblin(type,selfColor,intelligence);
                 break;
 
         }
         return character;
     }
-    public static List<Character> GenerateNPCs(ConsoleColor selfColor,int intelligence,eEnemyFamily family,int amountOfNpcs)
+    public static List<Character> GenerateNPCs(ConsoleColor selfColor,int intelligence,eEnemyFamily family,int amountOfNpcs,eEnemyType type,bool randomType)
     {
         List<Character> returnListOfNPCs = new List<Character>();
 
-        for(int i = 0; i <amountOfNpcs ; i++)
+        for(int i = 0 ; i < amountOfNpcs ; i++)
         {
-            returnListOfNPCs.Add(GenerateNPC(selfColor,intelligence,family));
+
+            if(randomType)
+            {
+                switch(randomNumber.Next(0,3))
+                {
+                    case 0:
+                        type = eEnemyType.Supportive;
+                        break;
+                    case 1:
+                        type = eEnemyType.Bruiser;
+                        break; 
+                    case 2:
+                        type = eEnemyType.Caster;
+                        break;
+                }
+                
+            }
+            returnListOfNPCs.Add(GenerateNPC(selfColor,intelligence,family,type));
+            
         }
         return returnListOfNPCs;
     }
@@ -91,9 +93,6 @@ public static class NPCFactory
                 character.Abilities.Add(poisonDart);     //Offensive lower damage but adds poison
                 character.Abilities.Add(PurifyPoison);   //CleanseOther removes poison
                 character.Abilities.Add(waterBucket);    //CleanseOther removes burn effect
-                //Initializes the combatAI and asigns important variables
-                character.ICombatSelector.AbilityList = character.Abilities;
-                character.ICombatSelector.Self = character;
                 break;
             case eEnemyType.Caster:
                 ai = new NPCOffensiveAI();
@@ -130,10 +129,6 @@ public static class NPCFactory
                 character.Abilities.Add(fireball);         // Offensive fire-based attack with no cooldown
                 character.Abilities.Add(flameBurst);       // Offensive ability that inflicts burn DoT
                 character.Abilities.Add(flamePurge);       // CleanseOther removes burn effect on allies
-
-                // Initializes the combatAI and assigns important variables
-                character.ICombatSelector.AbilityList = character.Abilities;
-                character.ICombatSelector.Self = character;
                 break;
             case eEnemyType.Bruiser:
                 ai = new NPCOffensiveAI();
@@ -168,11 +163,36 @@ public static class NPCFactory
                 character.Abilities.Add(brutalStrike);         // AoE physical damage for multiple enemies
                 character.Abilities.Add(berserkRage);    // High-risk, high-reward attack
                 character.Abilities.Add(battleCry);      // Supportive ability that boosts attack power
+                    break;  
+                case eEnemyType.Minion:
+                    
+                    ai = new NPCOffensiveAI();
+                    switch(randomNumber.Next(0,3))
+                    {
+                        case 0:
+                            //offensive
+                            Ability scratch = new("Scratch",eTargetType.Enemy,0,eAbilityType.Offensive);
+                            scratch.AddDamageEffect(5,false);
+                            character = new Character("Goblin Grunt",25,5,1,ai,0,selfColor); // Adjusted stats for a tankier DPS
+                            character.Abilities.Add(scratch);
+                            break;
+                        case 1:
+                            Ability weakShot = new("Weak Shot",eTargetType.Enemy,0,eAbilityType.Offensive);
+                            weakShot.AddDamageEffect(5,false);
+                            character = new Character("Goblin Archer",20,5,1,ai,0,selfColor); // Adjusted stats for a tankier DPS
+                            character.Abilities.Add(weakShot);
+                            break;
+                        case 2:
+                            
+                            Ability magicBolt = new("Magic Bolt",eTargetType.Enemy,0,eAbilityType.Offensive);
+                            magicBolt.AddDamageEffect(5,false);
+                            character = new Character("Goblin Archer",15,7,1,ai,0,selfColor); // Adjusted stats for a tankier DPS
+                            character.Abilities.Add(magicBolt);
+                            break;
+                    }
+                    break;
 
-                // Initializes the combatAI and assigns important variables
-                character.ICombatSelector.AbilityList = character.Abilities;
-                character.ICombatSelector.Self = character;
-                    break;   
+
         }
         return character;
     }

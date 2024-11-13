@@ -5,7 +5,7 @@ public class HealingOverTime : CombatEffect
     
     }
 
-    public override void ApplyEffect(Character caster, Character target,List<Character> targetTeam)
+    public override void ApplyEffect(Character caster, Character target,List<Character> targetTeam,List<Character> otherTeam)
     {
         List<Character> affectedCharacters = new();
         if(AreaEffect)
@@ -15,7 +15,7 @@ public class HealingOverTime : CombatEffect
         else affectedCharacters.Add(target);
         foreach(Character c in affectedCharacters)
         {
-            UpdateMagnitude(caster.Power);
+            UpdateMagnitude(caster.Power,caster.TempPower);
             // Initial application message
             Utilities.ConsoleWriteColor(c.Name,c.NameColor);
             Console.WriteLine(" receives a healing over time effect.");

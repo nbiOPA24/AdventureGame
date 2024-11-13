@@ -27,7 +27,7 @@ public static  class CombatHandler
             {
                 case 0:          
                     //Each Player takes a turn in order
-                    foreach(Character c in playerList)
+                    foreach(Character c in playerList.ToList())
                     {
                         CharacterTurn(c,currentSession.EnemyList,currentSession.PlayerList); 
                         Console.ReadKey(true);
@@ -133,11 +133,11 @@ public static  class CombatHandler
 
     public static void CharacterTurn(Character self,List<Character> enemyList,List<Character> friendList)
     {  
-
+        
         self.ICombatSelector.UpdateCombatState();
 
        
-        if(self.AbleToAct) //if not frozen or otherwise hindered
+        if(self.AbleToAct) //if not frozen or hindered
         {  
             Ability chosenAbility = self.ICombatSelector.SelectAbility(self,enemyList,friendList);  //selects the ability to use
 
@@ -170,7 +170,7 @@ public static  class CombatHandler
         switch(a.Target)
         {
             case eTargetType.Self: //if a selfcast spell
-                UseAbilityOn(self,a,self.NameColor,FriendlyTargetList);
+                UseAbilityOn(self,a,self.NameColor,FriendlyTargetList,EnemyTargetList);
                 break;
             case eTargetType.Friendly: //if a friendly target spell
                 bool foundOther = false;
@@ -184,7 +184,7 @@ public static  class CombatHandler
                 if(foundOther)
                 {
                     Character chosenFriend = self.ICombatSelector.ChooseTarget(a,self,eTargetType.Friendly,FriendlyTargetList,FriendlyTargetList,EnemyTargetList);
-                    UseAbilityOn(self,chosenFriend,a,self.NameColor,self.NameColor,FriendlyTargetList); //Casts Ability on friend
+                    UseAbilityOn(self,chosenFriend,a,self.NameColor,self.NameColor,FriendlyTargetList,EnemyTargetList); //Casts Ability on friend
                     Console.ReadKey(true);
                 }
                 else
@@ -192,12 +192,12 @@ public static  class CombatHandler
                 break;
             case eTargetType.AnyFriend:
                     Character chosenAnyFriend = self.ICombatSelector.ChooseTarget(a,self,eTargetType.AnyFriend,FriendlyTargetList,FriendlyTargetList,EnemyTargetList);
-                    UseAbilityOn(self,chosenAnyFriend,a,self.NameColor,self.NameColor,FriendlyTargetList); //Casts Ability on friend
+                    UseAbilityOn(self,chosenAnyFriend,a,self.NameColor,self.NameColor,FriendlyTargetList,EnemyTargetList); //Casts Ability on friend
                     Console.ReadKey(true);
                 break;
             case eTargetType.Enemy: //if an enemy target spell
                 Character chosenEnemy = self.ICombatSelector.ChooseTarget(a,self,eTargetType.Enemy,EnemyTargetList,FriendlyTargetList,EnemyTargetList);
-                UseAbilityOn(self,chosenEnemy,a,self.NameColor,chosenEnemy.NameColor,EnemyTargetList); //Deals damage to the enemy object
+                UseAbilityOn(self,chosenEnemy,a,self.NameColor,chosenEnemy.NameColor,EnemyTargetList,FriendlyTargetList); //Deals damage to the enemy object
                 Console.ReadKey(true);
                 break;
             default:
@@ -208,7 +208,7 @@ public static  class CombatHandler
         a.CurrentCooldown = 0;
     }
     //uses ability on a target
-    public static void UseAbilityOn(Character self,Character target ,Ability a,ConsoleColor colorSelf,ConsoleColor colorTarget,List<Character> targetParty)
+    public static void UseAbilityOn(Character self,Character target ,Ability a,ConsoleColor colorSelf,ConsoleColor colorTarget,List<Character> targetParty,List<Character> otherTeam)
     {
         //if target != self  displays the target else only writes that its being used
         if(a.Target != eTargetType.Self)
@@ -221,17 +221,17 @@ public static  class CombatHandler
 
         foreach(CombatEffect s in a.CombatEffects)
         {
-            s.ApplyEffect(self,target,targetParty);
+            s.ApplyEffect(self,target,targetParty,otherTeam);
         }   
     } 
     //Ability used on self
-    public static void UseAbilityOn(Character self,Ability a,ConsoleColor color,List<Character> targetParty)
+    public static void UseAbilityOn(Character self,Ability a,ConsoleColor color,List<Character> targetParty,List<Character> otherTeam)
     {
         Utilities.ConsoleWriteColor(self.Name,color);
         Utilities.CharByCharLine($" Uses {a.Name} ",8);
         foreach(CombatEffect s in a.CombatEffects)
         {
-            s.ApplyEffect(self,self,targetParty);
+            s.ApplyEffect(self,self,targetParty,otherTeam);
         } 
     }
     public static void RemoveDeadCharacters(List<Character> enemyList,List<Character> playerList)
@@ -337,6 +337,7 @@ public static  class CombatHandler
             }
         }
     }
+
     
     #region Displaying things
     //Displays a list of characters in combat format with a gray box outside aswell as their health

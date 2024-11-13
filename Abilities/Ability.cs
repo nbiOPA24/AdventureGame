@@ -20,7 +20,7 @@ public class Ability
         Description = "Add description";
 
     }
-
+    #region  ADD COMBATEFFECTS
     public void AddFreezeEffect(int duration,bool areaEffect)
     {
         Freeze freeze = new(duration,areaEffect);
@@ -46,6 +46,11 @@ public class Ability
     {
         Damage damage = new(magnitude,areaEffect);
         CombatEffects.Add(damage);
+    }
+    public void AddThreatEffect(int magnitude,bool areaEffect)
+    {
+        Threat threat = new(magnitude,areaEffect);
+        CombatEffects.Add(threat);
     }
     
     public void AddHealingEffect(int magnitude,bool areaEffect)
@@ -79,6 +84,12 @@ public class Ability
         
         CombatEffects.Add(cleanse);
     }
+    public void AddSummonEffect(eEnemyFamily family,eEnemyType type,int intelligenceOfSummonedMonster,int amountOfNpcs)
+    {
+        Summon summon = new(family,type,intelligenceOfSummonedMonster,amountOfNpcs);
+        CombatEffects.Add(summon);
+    }
+    #endregion
 
     public Ability Clone()
     {

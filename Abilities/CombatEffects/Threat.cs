@@ -4,7 +4,7 @@ public class Threat : CombatEffect
     {
     }
 
-    public override void ApplyEffect(Character caster,Character target,List<Character> targetTeam)
+    public override void ApplyEffect(Character caster,Character target,List<Character> targetTeam,List<Character> otherTeam)
     {
         List<Character> affectedCharacters = new();
         if(AreaEffect)
@@ -16,7 +16,7 @@ public class Threat : CombatEffect
         {
             if (!c.IsImmune) // Check if the character isn't immune
             {
-                UpdateMagnitude(caster.Power);
+                UpdateMagnitude(caster.Power,caster.TempPower);
                 // Character resolves the damage taken
                 c.ICombatSelector.AggroDictionary[caster] += Magnitude;
             }
