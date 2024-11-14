@@ -1,8 +1,36 @@
 public static class CombatUtil
     {
         #region Ability list return
-            public static List<Ability> ReturnUsableAbilitiesOfType(List<Ability> abilityList, eAbilityType type)
+        /// <summary>
+        /// Returns the ability with the highest priority
+        /// </summary>
+        /// <param name="relevantAbilities"></param>
+        /// <returns></returns>
+        public static Ability ReturnPriorityAbility(List<Ability> relevantAbilities)
         {
+            Random random = new Random();
+            
+
+                relevantAbilities.OrderByDescending(x => x.PriorityValue);   
+                List<Ability> topPriorityAbilities = new();
+                int topPriorityNumber = relevantAbilities[0].PriorityValue;
+                for(int i = 0 ; i< relevantAbilities.Count; i++)
+                {
+                    if(relevantAbilities[i].PriorityValue == topPriorityNumber)
+                    {
+                        topPriorityAbilities.Add(relevantAbilities[i]);
+                    }
+                    else
+                        break;
+                }
+                
+                return topPriorityAbilities[random.Next(0,topPriorityAbilities.Count)]; 
+            
+
+        }
+        public static List<Ability> ReturnUsableAbilitiesOfType(List<Ability> abilityList, eAbilityType type)
+        {
+                
             List<Ability> returnList = new List<Ability>();
             for(int i = 0 ; i <abilityList.Count;i++)
             {

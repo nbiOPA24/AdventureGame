@@ -16,7 +16,8 @@ public class Summon : CombatEffect
     {
         for(int i = 0 ; i < AmountOfNpcs; i++)
             {
-                Character newCharacter = NPCFactory.GenerateNPC(target.NameColor,IntelligenceForSummon,FamilyToGenerateFrom,TypeToSummon);
+                ConsoleColor nameColor = target.NameColor == ConsoleColor.Magenta ? ConsoleColor.DarkRed : target.NameColor;
+                Character newCharacter = NPCFactory.GenerateNPC(nameColor,IntelligenceForSummon,FamilyToGenerateFrom,TypeToSummon);
                 Dictionary<Character ,int > newAggroDictionary = new();
 
                 newCharacter.ICombatSelector.AggroDictionary = newAggroDictionary;

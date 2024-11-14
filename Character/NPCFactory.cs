@@ -191,8 +191,15 @@ public static class NPCFactory
                             break;
                     }
                     break;
+                case eEnemyType.Boss:
+                    ai = new GoblinNecromancerAI();
+                    character = new Character("Goblin Necromancer",200,35,0,ai,0,selfColor);
+                    character.ICombatSelector.Self = character;
+                    character.Abilities = ai.AbilityList;
+                    
+                    character.TempArmor = 999;
 
-
+                    return character;
         }
         return character;
     }

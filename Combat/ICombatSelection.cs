@@ -7,7 +7,7 @@ public interface ICombatSelection
     public Dictionary<Character,int> AggroDictionary {get;set;}
     public Random RandomNumber {get;set;}
     public Character Self{get;set;}
-    Ability SelectAbility();
+    
     Ability SelectAbility(Character self,List<Character> playerList,List<Character> enemyList);
     Character ChooseTarget(Ability a,Character self,eTargetType targetType,List<Character> potentialTargets,List<Character> playerList,List<Character> enemyList);
     Character GetSupportiveTarget(List<Character> potentialTargets);

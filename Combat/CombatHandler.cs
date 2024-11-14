@@ -158,7 +158,7 @@ public static  class CombatHandler
 
     public static void EnemiesTurn(CombatSession session)
     {
-        foreach(Character e in session.EnemyList)
+        foreach(Character e in session.EnemyList.ToList())
         {
 
             CharacterTurn(e,session.PlayerList,session.EnemyList);

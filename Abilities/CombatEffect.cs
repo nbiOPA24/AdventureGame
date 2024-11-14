@@ -137,7 +137,7 @@ public class CombatEffect
     }
     public void UpdateMagnitude(int power,int tempPower)
     {
-        double newMagnitude = BaseMagnitude * ((1+power+tempPower) *0.01);
+        double newMagnitude = BaseMagnitude * (1+(power+tempPower) *0.01);
         Magnitude = (int)Math.Round(newMagnitude);
     }
 

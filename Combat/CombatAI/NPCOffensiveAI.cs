@@ -17,33 +17,7 @@ public class NPCOffensiveAI : ICombatSelection
         AggroDictionary = new();
         RandomNumber = new Random();
     }
-    public Ability SelectAbility()
-    {
-        Ability ability = null;
-
-        switch (CurrentCombatState)
-        {
-            case eCombatState.Offensive:
-                ability = ChooseOffensiveAbility();
-                break;
-            case eCombatState.Defensive:
-                ability = ChooseDefensiveAbility();
-                break;
-            case eCombatState.Supportive:
-                ability = ChooseSupportiveAbility();
-                break;
-            case eCombatState.Default:
-                ability = new Ability("Mana bolt", eTargetType.Enemy, 0, eAbilityType.Offensive);
-                ability.AddDamageEffect(5,false);
-                return ability;
-        }
-
-        if (ability != null)
-            return ability;
-
-        TransitionToNextState();
-        return SelectAbility();
-    }
+    
 
     
     public Character ChooseTarget(Ability a,Character self,eTargetType targetType,List<Character> potentialTargets,List<Character> playerList,List<Character> enemyList)
@@ -252,6 +226,6 @@ public class NPCOffensiveAI : ICombatSelection
             return ability;
 
         TransitionToNextState();
-        return SelectAbility();
+        return SelectAbility(self,playerList,enemyList);
     }
 }

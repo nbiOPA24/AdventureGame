@@ -10,8 +10,11 @@ public class GoblinNecromancerAI : ICombatSelection
     public Random RandomNumber {get;set;}
     public int Phase {get;set;}
     public Dictionary<int ,List<Ability>> AllAbilities {get;set;}
+    public int CurrentPartySize {get;set;} //
     public GoblinNecromancerAI()
     {
+        AllAbilities = new Dictionary<int, List<Ability>>();
+        InitializeAllSpells();
         CurrentCombatState = eCombatState.Defensive;
         AbilityList = new List<Ability>();
         FriendList = new List<Character>();
@@ -19,6 +22,7 @@ public class GoblinNecromancerAI : ICombatSelection
         AggroDictionary = new();
         RandomNumber = new Random();
         Phase = 1;
+        AbilityList = AllAbilities[0];
     }
 
    public Ability SelectAbility()
@@ -76,6 +80,11 @@ public class GoblinNecromancerAI : ICombatSelection
         {
             return GetSupportiveTarget(FriendList);
         }
+        else if(targetType == eTargetType.AnyFriend)
+        {
+            return potentialTargets[RandomNumber.Next(0,potentialTargets.Count)];
+        }
+        
         return null; // should be unreachable
     }
     public Character GetSupportiveTarget(List<Character> potentialTargets)
@@ -129,33 +138,44 @@ public class GoblinNecromancerAI : ICombatSelection
            relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,eAbilityType.HealingSelf);
            if(relevantAbilities.Count != 0)
            {
-                return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)]; 
+                return CombatUtil.ReturnPriorityAbility(relevantAbilities);
            }
            
         }
-        else if(CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,eAbilityType.DefensiveSelf).Count !=0)
+        if(CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,eAbilityType.DefensiveSelf).Count != 0)
         {
+
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,eAbilityType.DefensiveSelf);
             if(relevantAbilities.Count != 0)
             {
-                return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)]; 
+
+                
+                return CombatUtil.ReturnPriorityAbility(relevantAbilities);
             }
 
         } 
+        if (CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,eAbilityType.DefensiveOther).Count !=0)
+        {
+            relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,eAbilityType.DefensiveOther);
+            if(relevantAbilities.Count != 0)
+            {
+                return CombatUtil.ReturnPriorityAbility(relevantAbilities);
+            }
+        }
         return null;
     }
     public Ability ChooseOffensiveAbility()
     {
-        List<Ability> relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,eAbilityType.OffensiveStrong);
 
+        List<Ability> relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,eAbilityType.OffensiveStrong);
         if(relevantAbilities.Count > 0)
         {
-            return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)];
+            return CombatUtil.ReturnPriorityAbility(relevantAbilities);
         }
         relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,eAbilityType.Offensive);
         if(relevantAbilities.Count > 0)
         {
-            return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)];
+            return CombatUtil.ReturnPriorityAbility(relevantAbilities);
         }
         else return null;
     }
@@ -174,7 +194,7 @@ public class GoblinNecromancerAI : ICombatSelection
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,eAbilityType.HealingOther);
             if(relevantAbilities != null && relevantAbilities.Count != 0)
             {
-                return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)];
+                return CombatUtil.ReturnPriorityAbility(relevantAbilities);
             }
         }
         //if anyone has an applicable debuff that can be cleansed 
@@ -183,7 +203,7 @@ public class GoblinNecromancerAI : ICombatSelection
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,eAbilityType.CleanseOther);
             if(relevantAbilities != null && relevantAbilities.Count != 0)
             {
-                return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)];
+                return CombatUtil.ReturnPriorityAbility(relevantAbilities);
                 
             }
         }
@@ -193,7 +213,7 @@ public class GoblinNecromancerAI : ICombatSelection
             relevantAbilities = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,eAbilityType.HealingOther);
             if(relevantAbilities.Count != 0)
             {
-                return relevantAbilities[RandomNumber.Next(0,relevantAbilities.Count)];
+                return CombatUtil.ReturnPriorityAbility(relevantAbilities);
             }
         }
         
@@ -201,30 +221,29 @@ public class GoblinNecromancerAI : ICombatSelection
     }
     public void UpdateCombatState()
     {
-        bool foundSupportive = false;
-        bool foundDefensive = false;
-        Character dispellTarget = CombatUtil.ReturnBestDispellTarget(Self,FriendList,AbilityList);
-        List<Ability> healingSpells = CombatUtil.ReturnUsableAbilitiesOfType(AbilityList,eAbilityType.HealingOther);
-        foreach(Character c in FriendList)
-        {
-            if((c != Self && (double)c.CurrentHealth/c.MaxHealth < 0.3  && healingSpells.Count != 0 )|| dispellTarget != null )
-            {
-                foundSupportive = true;
+        switch(Phase)
+        {    
+            case 1:
                 break;
-            }
+            case 2:
+
+                break;
+            case 3:
+                break;
         }
-        if((double)Self.CurrentHealth / Self.MaxHealth < 0.5) foundDefensive = true;
+
         
-        CurrentCombatState = foundSupportive ? eCombatState.Supportive:
-                             foundDefensive ? eCombatState.Defensive:
+        CurrentCombatState = Phase == 1 ? eCombatState.Defensive:
+                             Phase == 2 ? eCombatState.Defensive:
                              eCombatState.Offensive;                        
     }
     public void TransitionToNextState()
     {
-        if (CurrentCombatState == eCombatState.Offensive)
-            CurrentCombatState = eCombatState.Defensive;
-        else if (CurrentCombatState == eCombatState.Defensive)
+        if (CurrentCombatState == eCombatState.Defensive)
+            CurrentCombatState = eCombatState.Offensive;
+        else if (CurrentCombatState == eCombatState.Offensive)
             CurrentCombatState = eCombatState.Supportive;
+        
         else if (CurrentCombatState == eCombatState.Supportive)
             CurrentCombatState = eCombatState.Default;
         else
@@ -247,8 +266,8 @@ public class GoblinNecromancerAI : ICombatSelection
                 ability = ChooseSupportiveAbility();
                 break;
             case eCombatState.Default:
-                ability = new Ability("Mana bolt", eTargetType.Enemy, 0, eAbilityType.Offensive);
-                ability.AddDamageEffect(5,false);
+                ability = new Ability("not mana bolt", eTargetType.Enemy, 0, eAbilityType.Offensive);
+                ability.AddDamageEffect(25,false);
                 return ability;
         }
 
@@ -256,29 +275,36 @@ public class GoblinNecromancerAI : ICombatSelection
             return ability;
 
         TransitionToNextState();
-        return SelectAbility();
+        return SelectAbility(self,playerList,enemyList);
     }
 
     public  void InitializeAllSpells()
     {
+
         //Phase 1 spells
-        Ability summonGoblin = new("Summon Goblins",eTargetType.None,3,eAbilityType.DefensiveSelf); //Summon 3 goblin minions
+        Ability summonGoblin = new("Summon Goblins",eTargetType.AnyFriend,3,eAbilityType.DefensiveSelf,3); //Summon 3 goblin minions
         summonGoblin.AddSummonEffect(eEnemyFamily.Goblin,eEnemyType.Minion,0,3);
   
-        Ability shadowyWard = new("Shadowy Ward",eTargetType.Friendly,2,eAbilityType.DefensiveOther); //Increases the Armor of all friends
+        Ability shadowyWard = new("Shadowy Ward",eTargetType.AnyFriend,2,eAbilityType.DefensiveSelf,2); //Increases the Armor of all friends
         shadowyWard.AddArmorBuffEffect(40,3,true);
 
-        Ability shadowyAmplification = new("Shadowy Amplification",eTargetType.Friendly,4,eAbilityType.DefensiveOther);
-        //EDIT Add ATK UP effect
-        Ability shadowBolt = new("Shadow Bolt",eTargetType.Enemy,0,eAbilityType.Offensive); // singletarget no cd ability
+        Ability shadowyAmplification = new("Shadowy Amplification",eTargetType.AnyFriend,4,eAbilityType.DefensiveSelf,2);
+        shadowyAmplification.AddAttackBuffEffect(25,3,true);
+        
+        Ability shadowBolt = new("Shadow Bolt",eTargetType.Enemy,0,eAbilityType.Offensive,1); // singletarget no cd ability
         shadowBolt.AddDamageEffect(25,false);
-        Ability shadowNova = new("Shadow Nova",eTargetType.Enemy,2,eAbilityType.Offensive); // aoe abulity
+
+        Ability shadowNova = new("Shadow Nova",eTargetType.Enemy,2,eAbilityType.Offensive,2); // aoe ability
         shadowNova.AddDamageEffect(15,true);
-        AllAbilities[0].Add(summonGoblin);
-        AllAbilities[0].Add(shadowyWard);
-        AllAbilities[0].Add(shadowyAmplification);
-        AllAbilities[0].Add(shadowBolt);
-        AllAbilities[0].Add(shadowNova);
+        AllAbilities[0] = new List<Ability>()
+        {
+            summonGoblin,
+            shadowyWard,
+            shadowyAmplification,
+            shadowBolt,
+            shadowNova
+        };
+
         //Phase 2 spells
         //Phase 3 spells
     }

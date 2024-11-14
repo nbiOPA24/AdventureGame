@@ -11,7 +11,8 @@ public enum eCombatEffect  // CombatEffects are effects that an ability can caus
     ArmorBuff,
     Burn,
     Threat,
-    Summon
+    Summon,
+    AttackBuff,
 
 }
 public enum eAbilityType // Ability type is a way to catagorise abilities to make a more intelligent AI possible.
@@ -49,7 +50,8 @@ public enum eEnemyType //EnemyType ensures a character gets the proper ICombatSe
     Tank,
     Caster,
     Rogue,
-    Minion
+    Minion,
+    Boss
 }
 public enum eEnemyFamily // Decides what subset of monsters that the enemy will be created from
 {

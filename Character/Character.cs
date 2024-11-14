@@ -137,10 +137,16 @@ public class Character
     {
         switch(effect.Type)
         {
+            case eCombatEffect.AttackBuff:
+                TempPower = 0;
+                Utilities.ConsoleWriteColor(Name,NameColor);
+                Utilities.ConsoleWriteColor("s Attack",ConsoleColor.DarkYellow);
+                Console.WriteLine($" is no longer enhanced");
+                break;
             case eCombatEffect.ArmorBuff:
                 TempArmor = 0;
                 Utilities.ConsoleWriteColor(Name,NameColor);
-                Utilities.ConsoleWriteColor("s Armor",ConsoleColor.DarkYellow);
+                Utilities.ConsoleWriteColor("s Armor",ConsoleColor.DarkGray);
                 Console.WriteLine($" is no longer enhanced");
                 break;
             case eCombatEffect.Freeze:

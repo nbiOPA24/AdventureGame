@@ -7,6 +7,7 @@ public class Ability
     public eAbilityType Type {get;set;}
     public int CoolDownTimer {get;set;}
     public int CurrentCooldown {get;set;}
+    public int PriorityValue {get;set;}
 
     
     public Ability(string name,eTargetType target,int cooldown,eAbilityType type)
@@ -18,6 +19,20 @@ public class Ability
         CurrentCooldown = cooldown+1;
         Type = type;
         Description = "Add description";
+        PriorityValue = 0;
+
+    }
+    //Constructor Mainly used for bosses! it adds customisable priority value to an ability. highest value == used first
+    public Ability(string name,eTargetType target,int cooldown,eAbilityType type,int priorityValue)
+    {
+        Name = name;
+        CombatEffects = new();
+        Target = target;
+        CoolDownTimer = cooldown+1;
+        CurrentCooldown = cooldown+1;
+        Type = type;
+        Description = "Add description";
+        PriorityValue = priorityValue;
 
     }
     #region  ADD COMBATEFFECTS

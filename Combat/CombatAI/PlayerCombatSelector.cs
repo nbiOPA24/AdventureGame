@@ -119,14 +119,14 @@ public class PlayerCombatSelector : ICombatSelection
                 if (i == markedIndex)
                 {
                     Utilities.ConsoleWriteColor("*", ConsoleColor.Blue);
-                    Utilities.ConsoleWriteColor(target.Name, ConsoleColor.DarkRed);
+                    Utilities.ConsoleWriteColor(target.Name, target.NameColor);
                     Utilities.ConsoleWriteColor($"   [{target.CurrentHealth}/{target.MaxHealth}]",ConsoleColor.Red);
                     CombatHandler.PrintAllEffectIcons(target);
                     Utilities.ConsoleWriteLineColor("*", ConsoleColor.Blue);
                 }
                 else
                 {
-                    Utilities.ConsoleWriteColor(target.Name, ConsoleColor.DarkRed);
+                    Utilities.ConsoleWriteColor(target.Name, target.NameColor);
                     Utilities.ConsoleWriteColor($"   [{target.CurrentHealth}/{target.MaxHealth}]",ConsoleColor.Red);
                     CombatHandler.PrintAllEffectIcons(target);
                     Console.WriteLine();
