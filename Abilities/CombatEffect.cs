@@ -67,10 +67,6 @@ public class CombatEffect
             }
         }
     
-    public virtual void StartOfRound()
-    {
-        Console.WriteLine("this effect has no StartOfRound() Method fix asap");
-    }
     public virtual void EndOfRound(Character character)
     {
         if(Duration > 0 )
@@ -104,8 +100,12 @@ public class CombatEffect
                 Utilities.ConsoleWriteColor($"(FRZ {Duration})",ConsoleColor.Blue);
                 break;
             case eCombatEffect.Poison:
-                Utilities.ConsoleWriteColor($"(PSN{Duration})", ConsoleColor.Red); // Add this line for burn
+                Utilities.ConsoleWriteColor($"(PSN {Duration})", ConsoleColor.Magenta); 
                 break;
+            case eCombatEffect.Burn:
+                Utilities.ConsoleWriteColor($"(BRN {Duration})", ConsoleColor.Red); 
+                break;
+
             case eCombatEffect.Immune:
                 Utilities.ConsoleWriteColor($"(IMN {Duration})",ConsoleColor.White);
                 break;

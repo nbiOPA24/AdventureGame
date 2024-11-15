@@ -16,6 +16,7 @@ public class Immune : CombatEffect
         else affectedCharacters.Add(target);
         foreach(Character c in affectedCharacters)
         {
+            
             c.ClearAllEffects();
             c.IsImmune = true;
         }
@@ -28,22 +29,10 @@ public class Immune : CombatEffect
         Console.WriteLine($" for {Duration} rounds");
     }
     public override void AfterRound(Character character)
-    {
-        if(Duration == 0)
-        {
-            Console.WriteLine($"{character.Name} is no longer immune to damage ");
-            character.IsImmune = false;
-        }
-        else
-        {
-            Console.Write($"{character.Name} is ");
-            Utilities.ConsoleWriteColor("Immune ",ConsoleColor.DarkMagenta);
-            Console.WriteLine($" for {Duration}more rounds");
-            
-        }
-        //reduces duration by 1round
+    {   
         if(!FirstRound)
-        {
+        {   
+            //reduces duration by 1round if its not the first round
             if(Duration > 0 )
             {
                 Duration--;
@@ -53,6 +42,19 @@ public class Immune : CombatEffect
         {
             FirstRound = false;
         }
+        if(Duration == 0)
+        {
+            character.IsImmune = false;
+        }
+        else
+        {
+            Console.Write($"{character.Name} is ");
+            Utilities.ConsoleWriteColor("Immune ",ConsoleColor.DarkMagenta);
+            Console.WriteLine($" for {Duration}more rounds");
+            
+        }
+        
+
     }
     public override CombatEffect CloneEffect()
     {
