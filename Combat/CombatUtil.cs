@@ -49,12 +49,12 @@ public static class CombatUtil
                 int highestThreat = 0;
                 foreach(Character c in potentialTargets)
                 {
-                    if(self.ICombatSelector.AggroDictionary[c] > highestThreat) 
+                    if(self.AggroDictionary[c] > highestThreat) 
                     {
                         returnList.Clear();
                         returnList.Add(c);
                     }
-                    else if(self.ICombatSelector.AggroDictionary[c] == highestThreat) returnList.Add(c);
+                    else if(self.AggroDictionary[c] == highestThreat) returnList.Add(c);
                 }
                 return returnList;
     }

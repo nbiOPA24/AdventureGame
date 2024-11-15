@@ -34,6 +34,9 @@ public enum eCombatState //States of Combat for enemies also integral to making 
     Defensive,
     Supportive,
     Default,
+    PhaseOne,
+    PhaseTwo,
+    PhaseThree
 }
 public enum eTargetType  //TargetType decides who can be targeted by a certain ability
 {
@@ -41,7 +44,7 @@ public enum eTargetType  //TargetType decides who can be targeted by a certain a
     Friendly,
     AnyFriend,
     Enemy,
-    None
+    AnyEnemy
 }
 public enum eEnemyType //EnemyType ensures a character gets the proper ICombatSelector // Enemies only
 {
