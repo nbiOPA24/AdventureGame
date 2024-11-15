@@ -18,19 +18,14 @@ public class CombatEffect
         AreaEffect = areaEffect;
     }
     //Checks if the effect already is contained in the list of current ailments if not applies it
-    public virtual  void ApplyEffect(Character self,Character target,List<Character> targetTeam,List<Character> otherTeam)
+    public virtual  void ApplyEffect(Character self,Character target)
     {
-        List<Character> affectedCharacters = new();
-        if(AreaEffect)
-        {
-            affectedCharacters = targetTeam;
-        }
-        else affectedCharacters.Add(target);
-        foreach(Character c in affectedCharacters)
-        {
-            if(c.IsImmune && Type != eCombatEffect.ArmorBuff  )
+
+
+        
+            if(target.IsImmune && Type != eCombatEffect.ArmorBuff  )
             {
-            Console.WriteLine($"{c.Name} is Immune and unaffected by {Type}");
+            Console.WriteLine($"{target.Name} is Immune and unaffected by {Type}");
             }
             else
             {
@@ -38,11 +33,11 @@ public class CombatEffect
                 bool alreadyContains = false;
                 bool foundStronger = false;
                 int foundIndex = 0;
-                for(int i = 0; i < c.CurrentStatusEffects.Count; i++)
+                for(int i = 0; i < target.CurrentStatusEffects.Count; i++)
                 {
-                    if(c.CurrentStatusEffects[i].Type == Type) //checking if the type already is contained in the list.
+                    if(target.CurrentStatusEffects[i].Type == Type) //checking if the type already is contained in the list.
                     {
-                        if(c.CurrentStatusEffects[i].Magnitude*c.CurrentStatusEffects[i].Duration >= Magnitude*Duration) //if the full damage over time is higher on already contained effect
+                        if(target.CurrentStatusEffects[i].Magnitude*target.CurrentStatusEffects[i].Duration >= Magnitude*Duration) //if the full damage over time is higher on already contained effect
                         {
                             alreadyContains = true; // says its already contained and wont be added
                         }
@@ -58,20 +53,20 @@ public class CombatEffect
                 {
                     if(foundStronger) //if effect*duration is stronger in the new effect the old version is overwritten
                     {
-                        c.CurrentStatusEffects[foundIndex] = CloneEffect();  
-                        PrintApplication(c);  
+                        target.CurrentStatusEffects[foundIndex] = CloneEffect();  
+                        PrintApplication(target);  
 
                     }
                     else
                     {
-                        c.CurrentStatusEffects.Add(CloneEffect());
-                        PrintApplication(c);
+                        target.CurrentStatusEffects.Add(CloneEffect());
+                        PrintApplication(target);
                     }
                 }
 
             }
         }
-    }
+    
     public virtual void StartOfRound()
     {
         Console.WriteLine("this effect has no StartOfRound() Method fix asap");
@@ -128,11 +123,12 @@ public class CombatEffect
         }
         //code for removing the effect
     }
+    
     public void PrintAllEffectIcons(List<CombatEffect> list)
     {
         foreach(CombatEffect ce in list)
         {
-            PrintEffectIcon();
+            ce.PrintEffectIcon();
         }
     }
     public void UpdateMagnitude(int power,int tempPower)

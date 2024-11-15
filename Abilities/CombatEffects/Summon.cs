@@ -12,25 +12,26 @@ public class Summon : CombatEffect
         AmountOfNpcs = amountOfNpcs;
     }
 
-    public override void ApplyEffect(Character caster,Character target,List<Character> targetTeam,List<Character> otherTeam)
+    public override void ApplyEffect(Character caster,Character target)
     {
         for(int i = 0 ; i < AmountOfNpcs; i++)
             {
                 ConsoleColor nameColor = target.NameColor == ConsoleColor.Magenta ? ConsoleColor.DarkRed : target.NameColor;
                 Character newCharacter = NPCFactory.GenerateNPC(nameColor,IntelligenceForSummon,FamilyToGenerateFrom,TypeToSummon);
                 Dictionary<Character ,int > newAggroDictionary = new();
+                newCharacter.AggroDictionary = newAggroDictionary;
+                
+                newCharacter.FriendList = caster.FriendList;
+                newCharacter.EnemyList = caster.EnemyList;
+                target.FriendList.Add(newCharacter);
 
-                newCharacter.ICombatSelector.AggroDictionary = newAggroDictionary;
-                newCharacter.ICombatSelector.AbilityList = newCharacter.Abilities;
-                newCharacter.ICombatSelector.FriendList = caster.ICombatSelector.FriendList;
-                newCharacter.ICombatSelector.EnemyList = caster.ICombatSelector.EnemyList;
-                newCharacter.ICombatSelector.Self = newCharacter;
-                targetTeam.Add(newCharacter);
+              
+
                 Console.WriteLine($"A {newCharacter.Name} has been summoned");
-                foreach(Character c in otherTeam)
+                foreach(Character c in target.EnemyList)
                 {
-                    c.ICombatSelector.AggroDictionary.Add(newCharacter,0);
-                    newCharacter.ICombatSelector.AggroDictionary.Add(c,0);
+                    c.AggroDictionary.Add(newCharacter,0);
+                    newCharacter.AggroDictionary.Add(c,0);
                 }
             }
 

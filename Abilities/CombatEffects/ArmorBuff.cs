@@ -5,13 +5,13 @@ public class ArmorBuff : CombatEffect
         
     }
 
-    public override void ApplyEffect(Character caster,Character target,List<Character> targetTeam,List<Character> otherTeam)
+    public override void ApplyEffect(Character self,Character target)
     {
-        base.ApplyEffect(caster,target,targetTeam,otherTeam);
+        base.ApplyEffect(self,target);
         List<Character> affectedCharacters = new();
         if(AreaEffect)
         {
-            affectedCharacters = targetTeam;
+            affectedCharacters = target.FriendList;
         }
         else affectedCharacters.Add(target);
         foreach(Character c in affectedCharacters)

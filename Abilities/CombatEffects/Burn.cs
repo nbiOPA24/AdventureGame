@@ -4,9 +4,9 @@ public class Burn : CombatEffect
     {
     }
 
-    public override void ApplyEffect(Character caster,Character target,List<Character> targetTeam,List<Character> otherTeam)
+    public override void ApplyEffect(Character caster,Character target)
     {
-        base.ApplyEffect(caster,target,targetTeam,otherTeam); // Reuse the base logic for applying effects
+        base.ApplyEffect(caster,target); // Reuse the base logic for applying effects
     }
 
     public override void PrintApplication(Character character)
