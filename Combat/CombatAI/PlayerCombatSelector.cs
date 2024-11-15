@@ -70,18 +70,15 @@ public class PlayerCombatBrain
             {
                 case ConsoleKey.W:
                 case ConsoleKey.UpArrow:
-                    if(markedIndex > 0 )
-                    {
-                        markedIndex--;
-                        
-                    }
+                    if(markedIndex > 0 )markedIndex--; 
+                    else if(markedIndex == 0) markedIndex = self.Abilities.Count-1;
+
                     break;
                 case ConsoleKey.S:
                 case ConsoleKey.DownArrow:
-                    if(markedIndex < self.Abilities.Count -1 )
-                    {
-                        markedIndex++;  
-                    }
+                    if(markedIndex < self.Abilities.Count -1 ) markedIndex++;  
+                    else if(markedIndex == self.Abilities.Count -1) markedIndex = 0;
+
                     break;
                 case ConsoleKey.Enter:
                     if(self.Abilities[markedIndex].CurrentCooldown == self.Abilities[markedIndex].CoolDownTimer)
@@ -90,6 +87,9 @@ public class PlayerCombatBrain
                         stillChoosing = false;
                     }
                     break;
+                case ConsoleKey.Backspace:
+                case ConsoleKey.Escape:
+                    return null;
             }
             Console.Clear();
         }
@@ -156,8 +156,11 @@ public class PlayerCombatBrain
                     break;
                 case ConsoleKey.Enter:
                         stillChoosing = false;
-                   
-                    break;
+                   break;
+                case ConsoleKey.Backspace:
+                case ConsoleKey.Escape:
+                    return null;
+
             }
         }
         

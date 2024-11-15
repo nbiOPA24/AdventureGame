@@ -21,44 +21,52 @@ public static  class CombatHandler
             //Player takes turn
             foreach(Player p in playerList.ToList())
             {   
-                int choiceIndex = PickAction(p); //Character gets a choice of what to do
-
-                if (enemyList.Count <= 0)
-                    return true;   //Returns true if all enemies are dead
-                switch(choiceIndex)
+                Character target = null;
+                Ability chosenAbility = null;
+                while(chosenAbility == null && target == null)
                 {
-                    case 0:              
-                        if(p.AbleToAct) //if not frozen or hindered
-                        {  
-                            Ability chosenAbility = p.CombatBrain.SelectAbility(p);  //selects the ability to use
-                            Character target = p.CombatBrain.ChooseTarget(p,chosenAbility);
+                    if (enemyList.Count <= 0)
+                        return true;   //Returns true if all enemies are dead
+                    int choiceIndex = PickAction(p); //Character gets a choice of what to do
 
-                            p.CombatBrain.UseAbilityOnTarget(p,chosenAbility,target);
-                        
-                            //DisplayTurnOutcome(chosenAbility,p,target); //Basicly displayes the character using the ability
-                        }
-                        else
-                        {
-                            Utilities.ConsoleWriteColor(p.Name,p.NameColor);
-                            Console.WriteLine($" is hindered and not able to act");
-                        } 
-                        AfterTurn(p);  
-
-                        break;
-                    case 1:
-                        
-                        //Lists usable consumables such as healing potions or such
-                        break;
-                    case 2:
-                        //attempt to flee results in a loss
-                        if(TryToEscape()) 
-                        {
-                            Utilities.CharByCharLine("You manage to run away safely",4);
-                            return false;
-                        }
-                        break;
+                    switch(choiceIndex)
+                    {
+                        case 0:              
+                            if(p.AbleToAct) //if not frozen or hindered
+                            {   
+                                while(target == null)
+                                {
+                                    chosenAbility = p.CombatBrain.SelectAbility(p);  //selects the ability to use
+                                    if(chosenAbility != null)
+                                        target = p.CombatBrain.ChooseTarget(p,chosenAbility);
+                                    else break;
+                                    if(target != null)
+                                        p.CombatBrain.UseAbilityOnTarget(p,chosenAbility,target);
+                                }
+                                AfterTurn(p);  
+                                RemoveDeadCharacters(enemyList,playerList); //Removes all dead characters from respective list
+                            }
+                            else
+                            {
+                                Utilities.ConsoleWriteColor(p.Name,p.NameColor);
+                                Console.WriteLine($" is hindered and not able to act");
+                            } 
+                            break;
+                        case 1:
+                            
+                            //Lists usable consumables such as healing potions or such
+                            break;
+                        case 2:
+                            //attempt to flee results in a loss
+                            if(TryToEscape()) 
+                            {
+                                Utilities.CharByCharLine("You manage to run away safely",4);
+                                return false;
+                            }
+                            break;
+                    }
+                    
                 }
-                RemoveDeadCharacters(enemyList,playerList); //Removes all dead characters from respective list
             }
             
             //returns index choice if player wants to attack == 0, use item == 1, attempt to flee  == 2
@@ -222,7 +230,6 @@ public static  class CombatHandler
                 }
             }
         }    
-        Console.ReadKey();//Remove
     }
     public static void AfterTurn(Character character)
     {
@@ -309,17 +316,17 @@ public static  class CombatHandler
     //Displays a list of characters in combat format with a gray box outside aswell as their health
     public static void DisplayCharacterList(List<Character> listToDisplay)
     {   
-        Utilities.ConsoleWriteLineColor(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",ConsoleColor.DarkGray);
+        Utilities.ConsoleWriteLineColor("┌──────────────────────────────────┐",ConsoleColor.DarkGray);
         foreach(Character c in listToDisplay)
         {
-            Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
+            Utilities.ConsoleWriteColor("│",ConsoleColor.DarkGray);
             Utilities.ConsoleWriteColor($"{c.Name,-25}",c.NameColor);
             Utilities.ConsoleWriteColor($"[{c.CurrentHealth,-3}/{c.MaxHealth,3}]",ConsoleColor.Red);
-            Utilities.ConsoleWriteColor("|",ConsoleColor.DarkGray);
+            Utilities.ConsoleWriteColor("│",ConsoleColor.DarkGray);
             PrintAllEffectIcons(c);
             Console.WriteLine();
         }
-        Utilities.ConsoleWriteLineColor("************************************",ConsoleColor.DarkGray);
+        Utilities.ConsoleWriteLineColor("└──────────────────────────────────┘",ConsoleColor.DarkGray);
     }
     public static void DisplayTurnOutcome(Ability ability,Character self,Character target)
     {
@@ -344,19 +351,6 @@ public static  class CombatHandler
                 break;
         }
 
-
-
-       
-
-
-        
-
- 
-
-    
-       
-
-    
     }
 
     public static void PrintAllEffectIcons(Character character)

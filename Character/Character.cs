@@ -187,8 +187,15 @@ public class Character
     {
         for(int i = 0; i< CurrentStatusEffects.Count ; i++)
         {
-            ClearEffect(CurrentStatusEffects[i]);
-            CurrentStatusEffects.Remove(CurrentStatusEffects[i]);
+            if(CurrentStatusEffects[i].Type != eCombatEffect.Immune 
+            && CurrentStatusEffects[i].Type != eCombatEffect.ArmorBuff
+            && CurrentStatusEffects[i].Type != eCombatEffect.AttackBuff
+            && CurrentStatusEffects[i].Type != eCombatEffect.HealingOverTime
+              )
+            {
+                ClearEffect(CurrentStatusEffects[i]);
+                CurrentStatusEffects.Remove(CurrentStatusEffects[i]);
+            }
         }
     }
 
