@@ -13,20 +13,21 @@ public class Character
     public int Shield{get;set;}
     public int XPos {get;set;}
     public int YPos {get;set;}
+    public List<Character> FriendList {get;set;}
+    public List<Character> EnemyList {get;set;}
     public ConsoleColor NameColor {get;set;}
     public bool IsImmune {get;set;}
     public List<Ability>  Abilities {get;set;}
+    public Dictionary<Character,int> AggroDictionary {get;set;}
     public List<CombatEffect> CurrentStatusEffects {get;set;}
     public Inventory Inventory {get;set;}
     public bool AbleToAct {get;set;}
-    public ICombatSelection ICombatSelector {get;set;}
-    public int Intelligence {get;set;}
-
- 
 
 
-    public Character(string name,int startingHealth,int power,int armor,ICombatSelection icombatHandler,int intelligence,ConsoleColor selfColor)
+    public Character(string name,int startingHealth,int power,int armor,ConsoleColor selfColor)
     {
+        AggroDictionary = new Dictionary<Character, int>();
+        
         AbleToAct = true;
         CurrentHealth = startingHealth;
         Power = power;
@@ -40,35 +41,12 @@ public class Character
         IsImmune = false;
         Inventory = new();
         Armor = armor;
-        ICombatSelector = icombatHandler;
         TempArmor = 0;
-        Intelligence = intelligence;
         NameColor = selfColor;
+        FriendList = new List<Character>();
+        EnemyList = new List<Character>();
 
     }
-    // Constructor for players only
-    public Character(string name,int startingHealth,int power,int armor)
-    {
-        AbleToAct = true;
-        CurrentHealth = startingHealth;
-        Power = power;
-        TempPower = 0;
-        Name = name;
-        MaxHealth = CurrentHealth;
-        Armor = armor;
-        TempArmor = 0;
-        Abilities = new(); 
-        CurrentStatusEffects = new List<CombatEffect>();
-        IsImmune = false;
-        Inventory = new();
-        ICombatSelector = new PlayerCombatSelector();
-        Shield = 0;
-        NameColor = ConsoleColor.Cyan;
-        TempArmor = 0;
-        Intelligence = 1;
-        
-    }
-
 
     #region Taking damage
     public void TakeTrueDamage(int damage)
