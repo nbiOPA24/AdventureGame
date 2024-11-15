@@ -1,22 +1,16 @@
 
-public class PlayerCombatSelector : ICombatSelection
+using System.Runtime;
+
+public class PlayerCombatBrain 
 {
-    public eCombatState CurrentCombatState {get;set;}
-    public List<Ability> AbilityList {get;set;}
-    public List<Character> FriendList { get;set; }
-    public List<Character> EnemyList { get; set; }
-    public Dictionary<Character,int> AggroDictionary {get;set;}
     public Character Self {get;set;}
     public Random RandomNumber { get; set; }
 
-    public PlayerCombatSelector()
+    public PlayerCombatBrain()
     {
-        CurrentCombatState = eCombatState.Offensive;
-        AbilityList = new();
         RandomNumber = new Random();
-        AggroDictionary = new();
     }
-    public Ability SelectAbility(Character self,List<Character> playerList,List<Character> enemyList)
+    public Ability SelectAbility(Character self)
     {
         //int chosenIndex = Utilities.PickIndexFromList(Utilities.ToStringList(abilityList),"What ability do you want to use?");
         //return abilityList[chosenIndex];
@@ -28,45 +22,45 @@ public class PlayerCombatSelector : ICombatSelection
         while(stillChoosing)
         {
             Console.Clear();
-            CombatHandler.DisplayCharacterList(playerList);
-            CombatHandler.DisplayCharacterList(enemyList);
+            CombatHandler.DisplayCharacterList(self.EnemyList);
+            CombatHandler.DisplayCharacterList(self.FriendList);
             Utilities.ConsoleWriteLineColor("-------"+self.Name+" Turn-------",ConsoleColor.DarkYellow);
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine("What ability do you want to use?");
             Console.ResetColor();
-            for(int i = 0; i < AbilityList.Count; i++)
+            for(int i = 0; i < self.Abilities.Count; i++)
             {
                 if(i == markedIndex)
                 {
                     Utilities.ConsoleWriteColor("*",ConsoleColor.Blue);
-                    if(AbilityList[i].CurrentCooldown < AbilityList[i].CoolDownTimer)
+                    if(self.Abilities[i].CurrentCooldown < self.Abilities[i].CoolDownTimer)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.Write($"[{AbilityList[i].Name+"]",-20}");
-                        Console.Write($" ({AbilityList[i].CoolDownTimer - AbilityList[i].CurrentCooldown})");
-                        Console.Write(AbilityList[i].Description);
+                        Console.Write($"[{self.Abilities[i].Name+"]",-20}");
+                        Console.Write($" ({self.Abilities[i].CoolDownTimer - self.Abilities[i].CurrentCooldown})");
+                        Console.Write(self.Abilities[i].Description);
                     }
                     else
                     {
-                    Console.Write($"[{AbilityList[i].Name+"]",-20}");
-                    Console.Write(AbilityList[i].Description);
+                    Console.Write($"[{self.Abilities[i].Name+"]",-20}");
+                    Console.Write(self.Abilities[i].Description);
                     }
                     Utilities.ConsoleWriteLineColor("*",ConsoleColor.Blue);
 
                 }
                 else
                 {
-                    if(AbilityList[i].CurrentCooldown < AbilityList[i].CoolDownTimer)
+                    if(self.Abilities[i].CurrentCooldown < self.Abilities[i].CoolDownTimer)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.Write($"[{AbilityList[i].Name+"]",-20}");
-                        Console.Write($" ({AbilityList[i].CoolDownTimer - AbilityList[i].CurrentCooldown})");
-                        Console.WriteLine(AbilityList[i].Description);
+                        Console.Write($"[{self.Abilities[i].Name+"]",-20}");
+                        Console.Write($" ({self.Abilities[i].CoolDownTimer - self.Abilities[i].CurrentCooldown})");
+                        Console.WriteLine(self.Abilities[i].Description);
                     }
                     else
                     {
-                        Console.Write($"[{AbilityList[i].Name+"]",-20}");
-                        Console.WriteLine(AbilityList[i].Description);
+                        Console.Write($"[{self.Abilities[i].Name+"]",-20}");
+                        Console.WriteLine(self.Abilities[i].Description);
                     }
                     Console.ResetColor();
                 }
@@ -84,15 +78,15 @@ public class PlayerCombatSelector : ICombatSelection
                     break;
                 case ConsoleKey.S:
                 case ConsoleKey.DownArrow:
-                    if(markedIndex < AbilityList.Count -1 )
+                    if(markedIndex < self.Abilities.Count -1 )
                     {
                         markedIndex++;  
                     }
                     break;
                 case ConsoleKey.Enter:
-                    if(AbilityList[markedIndex].CurrentCooldown == AbilityList[markedIndex].CoolDownTimer)
+                    if(self.Abilities[markedIndex].CurrentCooldown == self.Abilities[markedIndex].CoolDownTimer)
                     {
-                        returnAbility = AbilityList[markedIndex];
+                        returnAbility = self.Abilities[markedIndex];
                         stillChoosing = false;
                     }
                     break;
@@ -101,15 +95,32 @@ public class PlayerCombatSelector : ICombatSelection
         }
         return returnAbility;
     }
-    public Character ChooseTarget(Ability a,Character self,eTargetType targetType,List<Character> potentialTargets,List<Character> playerList,List<Character> enemyList)
+
+    public Character ChooseTarget(Character self,Ability a)
     {
+        List<Character> potentialTargets = new List<Character>();
+        switch(a.Target)
+        {
+            case eTargetType.Self:
+            case eTargetType.AnyFriend:
+                return self;
+            case eTargetType.Friendly:
+                potentialTargets = self.FriendList;
+                break;
+            case eTargetType.Enemy:
+                potentialTargets = self.EnemyList;
+                break;
+            case eTargetType.AnyEnemy:
+                return self.EnemyList[0];
+        }
+
         int markedIndex = 0;
         bool stillChoosing = true;
         while (stillChoosing)
         {
             Console.Clear();
-            CombatHandler.DisplayCharacterList(enemyList);
-            CombatHandler.DisplayCharacterList(playerList);
+            CombatHandler.DisplayCharacterList(self.EnemyList);
+            CombatHandler.DisplayCharacterList(self.FriendList);
             Console.WriteLine("Who do you want to target?");
             
             for (int i = 0; i < potentialTargets.Count; i++)
@@ -120,14 +131,14 @@ public class PlayerCombatSelector : ICombatSelection
                 {
                     Utilities.ConsoleWriteColor("*", ConsoleColor.Blue);
                     Utilities.ConsoleWriteColor(target.Name, target.NameColor);
-                    Utilities.ConsoleWriteColor($"   [{target.CurrentHealth}/{target.MaxHealth}]",ConsoleColor.Red);
+                    Utilities.ConsoleWriteColor($"   [{target.CurrentHealth}/{target.MaxHealth}]",potentialTargets[i].NameColor);
                     CombatHandler.PrintAllEffectIcons(target);
                     Utilities.ConsoleWriteLineColor("*", ConsoleColor.Blue);
                 }
                 else
                 {
                     Utilities.ConsoleWriteColor(target.Name, target.NameColor);
-                    Utilities.ConsoleWriteColor($"   [{target.CurrentHealth}/{target.MaxHealth}]",ConsoleColor.Red);
+                    Utilities.ConsoleWriteColor($"   [{target.CurrentHealth}/{target.MaxHealth}]",potentialTargets[i].NameColor);
                     CombatHandler.PrintAllEffectIcons(target);
                     Console.WriteLine();
                 }
@@ -144,56 +155,42 @@ public class PlayerCombatSelector : ICombatSelection
                     if (markedIndex < potentialTargets.Count - 1) markedIndex++;
                     break;
                 case ConsoleKey.Enter:
-                    if(potentialTargets[markedIndex] != self || a.Target == eTargetType.AnyFriend)
-                    {
                         stillChoosing = false;
-                    }
-                    else
-                    {
-                        Utilities.ConsoleWriteLineColor("You cant target yourself",ConsoleColor.Red);
-                    }
+                   
                     break;
             }
         }
         
         return potentialTargets[markedIndex];
     }
-    public Character GetSupportiveTarget(List<Character> potentialTargets)
+    public void UseAbilityOnTarget(Character self,Ability ability, Character target)
     {
-       throw new NotImplementedException();
-    }
+        List<Character> charactersHitByAbility = new List<Character>();
+        switch(ability.Target)
+        {   
+            case eTargetType.Enemy:
+            case eTargetType.Friendly :
+            case eTargetType.Self:
+                charactersHitByAbility.Add(target);
+                break;
+            case eTargetType.AnyFriend:
+            case eTargetType.AnyEnemy:
+                charactersHitByAbility = target.FriendList;
+                break;
 
+        }
+            Console.Clear();
+            CombatHandler.DisplayCharacterList(self.EnemyList);
+            CombatHandler.DisplayCharacterList(self.FriendList);
+            CombatHandler.DisplayTurnOutcome(ability,self,target);
+            foreach(Character c in charactersHitByAbility)
+            {
+                foreach(CombatEffect e in ability.CombatEffects)
+                {
+                    e.ApplyEffect(self,c);
+                }
+            }
+        
 
-    public void UpdateCombatState()
-    {
-        //player doesnt need this. also figure out a better way to not have all these stupid methods that does nothing for the player.
-    }
-
-    public Ability ChooseOffensiveAbility()
-    {
-        //Dont implement for player
-        throw new NotImplementedException();
-    }
-
-    public Ability ChooseDefensiveAbility()
-    {
-        //Dont implement for player
-        throw new NotImplementedException();
-    }
-
-    public Ability ChooseSupportiveAbility()
-    {
-        //Dont implement for player
-        throw new NotImplementedException();
-    }
-
-    public void TransitionToNextState()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Ability SelectAbility()
-    {
-        throw new NotImplementedException();
     }
 }
