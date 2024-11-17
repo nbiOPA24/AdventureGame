@@ -19,6 +19,7 @@ public class ArmorBuff : CombatEffect
             c.TempArmor = Magnitude;
         }
     }
+    //Message that is displayed when the effect affects a character! 
     public override void PrintApplication(Character character)
     {
 
@@ -30,7 +31,7 @@ public class ArmorBuff : CombatEffect
         public override void AfterRound(Character character)
     {
 
-        //reduces duration by 1round
+        //reduces duration by 1round as long as its not the first round of application
         if(!FirstRound)
         {
             if(Duration > 0 )

@@ -1,4 +1,4 @@
-public interface IAbilitySelectionStrategy
+public interface IAbilitySelectionStrategy // Requirements for a brain to correctly select an ability
 {
     Random RandomNumber {get;set;}
     Ability SelectAbility(NPC self);

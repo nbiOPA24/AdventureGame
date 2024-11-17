@@ -49,10 +49,8 @@ public enum eTargetType  //TargetType decides who can be targeted by a certain a
 public enum eEnemyType //EnemyType ensures a character gets the proper ICombatSelector // Enemies only
 {
     Supportive,
-    Bruiser,
-    Tank,
-    Caster,
-    Rogue,
+    Defensive,
+    Offensive,
     Minion,
     Boss
 }

@@ -19,6 +19,7 @@ public class AttackBuff : CombatEffect
             c.TempPower = Magnitude;
         }
     }
+    //Message that is displayed when the effect affects a character! 
     public override void PrintApplication(Character character)
     {
 

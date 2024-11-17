@@ -3,7 +3,7 @@ public class Healing : CombatEffect
     public Healing(int magnitude,bool areaEffect) : base(1, magnitude, eCombatEffect.Healing,areaEffect) // Duration of 1 for instant application
     {
     }
-
+    //Applies instant healing to the target(s) and displays a message planning to separate logic and  graphics later
     public override void ApplyEffect(Character caster,Character target)
     {
         List<Character> affectedCharacters = new();
@@ -38,5 +38,6 @@ public class Healing : CombatEffect
         return new Healing(Magnitude,AreaEffect);
     }
 
-    // No need for ResolveEffect since it's an instant effect
+
+    // No need for Afterturn(round) methods since it's an instant effect
 }

@@ -4,11 +4,13 @@ public class Burn : CombatEffect
     {
     }
 
+    //Decided to leave this in case i want to alter it later
     public override void ApplyEffect(Character caster,Character target)
     {
         base.ApplyEffect(caster,target); // Reuse the base logic for applying effects
     }
 
+    //Message that is displayed when the effect affects a character! 
     public override void PrintApplication(Character character)
     {
         Utilities.ConsoleWriteColor(character.Name, character.NameColor);
@@ -17,6 +19,7 @@ public class Burn : CombatEffect
         Console.WriteLine($" for {Duration} rounds");
     }
 
+    //Message displayed aftter each round 
     public override void AfterRound(Character character)
     {
         Console.Write($"{character.Name} takes {Magnitude} damage due to ");

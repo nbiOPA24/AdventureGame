@@ -6,6 +6,7 @@ public class Cleanse : CombatEffect
         TypesToCleanse = typesToCleanse;
     }
 
+    //Clears all the abilities in "TypesToCleanse" on the target
     public override void ApplyEffect(Character caster,Character target)
     {   
         List<Character> affectedCharacters = new();

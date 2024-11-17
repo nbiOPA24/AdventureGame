@@ -1,4 +1,4 @@
-public interface ITargetSelectionStrategy
+public interface ITargetSelectionStrategy //Required for brains to select targets properly
 {
     Random RandomNumber {get;set;}
     Character GetTarget(NPC self,Ability ability);

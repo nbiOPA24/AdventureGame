@@ -4,7 +4,7 @@ public class Freeze : CombatEffect
     {
 
     }
-
+    //Characters affected are unable to act once frozen
     public override void ApplyEffect(Character caster,Character target)
     {
         base.ApplyEffect(caster,target);
@@ -19,6 +19,7 @@ public class Freeze : CombatEffect
             c.AbleToAct = false;
         }
     }
+    //Displays the Application of the effect to the console
     public override void PrintApplication(Character character)
     {
 
@@ -42,6 +43,7 @@ public class Freeze : CombatEffect
             FirstRound = false;
         }
     }
+    //this is displayed after each round
     public override void AfterRound(Character character)
     {
         Utilities.ConsoleWriteColor(character.Name,character.NameColor);

@@ -74,12 +74,13 @@ public class CombatEffect
             Duration--;
         }   
     }
-    public virtual void AfterRound(Character character)
+    
+    public virtual void AfterRound(Character character)                     //This is only used by certain Effects
     {
 
     }
-    public virtual void AfterTurn(Character character)
-    {
+    public virtual void AfterTurn(Character character)                      //This is only used by certain effects, since some abilitys need both afterround and afterturn methods ive decided 
+    {                                                                       //To not use inheritence and create subclasses
 
     }
 
@@ -92,6 +93,7 @@ public class CombatEffect
     {
         Console.WriteLine("this effect has no PrintApplication() method fix asap");
     }
+    //This method is used to display icons next to characternames to display what type of ongoing effect is affecting them
     public virtual void PrintEffectIcon()
     {
         switch(Type)
@@ -123,7 +125,7 @@ public class CombatEffect
         }
         //code for removing the effect
     }
-    
+    //Loops through all combat effects and prints their icon! used in combadhandler
     public void PrintAllEffectIcons(List<CombatEffect> list)
     {
         foreach(CombatEffect ce in list)
@@ -131,6 +133,7 @@ public class CombatEffect
             ce.PrintEffectIcon();
         }
     }
+    //Updates the magnitude of spells before application
     public void UpdateMagnitude(int power,int tempPower)
     {
         double newMagnitude = BaseMagnitude * (1+(power+tempPower) *0.01);

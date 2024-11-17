@@ -11,5 +11,6 @@ public class NPC : Character
         Intelligence = intelligence;
         AbilityListDictionary = new();
     }
+
 }
 

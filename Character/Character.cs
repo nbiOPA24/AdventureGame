@@ -78,11 +78,13 @@ public class Character
         Utilities.ConsoleWriteColor(Name,NameColor);
         Console.Write(" Takes ");
         string stringOfDamage = damage.ToString();
-        string stringOfAbsorbed = absorbed.ToString();
         Utilities.ConsoleWriteColor(stringOfDamage,ConsoleColor.Red);
-        Console.Write(", ");
+        Console.Write(" Damage, after  ");
+        string stringOfAbsorbed = absorbed.ToString();
         Utilities.ConsoleWriteColor(stringOfAbsorbed,ConsoleColor.DarkYellow);
-        Console.WriteLine(" absorbed by armor");
+        Console.WriteLine(" is absorbed by armor");
+
+
     }
     public int ReduceDamageByArmor(int unmitigatedDamage)
     {

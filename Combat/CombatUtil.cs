@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 public static class CombatUtil
     {
         #region Ability list return
@@ -6,7 +8,7 @@ public static class CombatUtil
         /// </summary>
         /// <param name="relevantAbilities"></param>
         /// <returns></returns>
-        public static Ability ReturnPriorityAbility(List<Ability> relevantAbilities)
+        public static Ability ReturnPriorityAbility(List<Ability> relevantAbilities) 
         {
             Random random = new Random();
             
@@ -28,6 +30,7 @@ public static class CombatUtil
             
 
         }
+        //This method loops through the supplied list and returns a list that only has abilities of the type in second parameter that is currently off cooldown
         public static List<Ability> ReturnUsableAbilitiesOfType(List<Ability> abilityList, eAbilityType type)
         {
                 
@@ -58,6 +61,7 @@ public static class CombatUtil
                 }
                 return returnList;
     }
+    //Returns the lowest health (percentagewise) character from the supplied list
     public static Character ReturnLowestHealthCharacter(List<Character> characterList)
     {
             if (characterList == null || characterList.Count == 0)
@@ -76,25 +80,26 @@ public static class CombatUtil
             }
             return returnCharacter;
     }
-        public static Character ReturnLowestHealthFriendlyCharacter(Character self,List<Character> friendList)
+    //Does the same as the returnLowestHealthCharacter but excludes Self from being returned
+    public static Character ReturnLowestHealthFriendlyCharacter(Character self,List<Character> friendList)
     {
-            if (friendList == null || friendList.Count == 0)
-            return self; // Should not happen. combatloop only continues if the lists have characters in them
+        if (friendList == null || friendList.Count == 0)
+        return self; // Should not happen. combatloop only continues if the lists have characters in them
 
-            Character returnCharacter = self;
-            double lowestPercentage = 1;
-            for(int i = 0 ; i< friendList.Count;i++)
+        Character returnCharacter = self;
+        double lowestPercentage = 1;
+        for(int i = 0 ; i< friendList.Count;i++)
+        {
+            double percentageHealth = (double)friendList[i].CurrentHealth/friendList[i].MaxHealth;
+            if(percentageHealth < lowestPercentage && friendList[i] != self)
             {
-                double percentageHealth = (double)friendList[i].CurrentHealth/friendList[i].MaxHealth;
-                if(percentageHealth < lowestPercentage && friendList[i] != self)
-                {
-                    returnCharacter = friendList[i];
-                    lowestPercentage = percentageHealth;
-                }
+                returnCharacter = friendList[i];
+                lowestPercentage = percentageHealth;
             }
-            return returnCharacter;
+        }
+        return returnCharacter;
     }
-    
+    //Returns the friendlycharacter target that would benefit the most from the characters possible cleanses
     public static Character ReturnBestDispellTarget(Character self,List<Character> friendList, List<Ability> abilityList)
     {
         List<Ability> relevantAbilities = ReturnUsableAbilitiesOfType(abilityList,eAbilityType.CleanseOther);
@@ -113,9 +118,9 @@ public static class CombatUtil
                 }
             }
         }
-        if(!relevantAbilities.Any())
+        if(!relevantAbilities.Any()) //if relevantabillities isnt empty
         {
-            foreach(Character c in friendList)
+            foreach(Character c in friendList)  // will select in order of priority freeze being top priority and poison second burn being third
             {
                 if(c.CharacterHasEffect(eCombatEffect.Freeze) && cleanseTypes.Contains(eCombatEffect.Freeze)&& c!= self)
                 {   

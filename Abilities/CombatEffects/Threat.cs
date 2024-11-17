@@ -3,7 +3,7 @@ public class Threat : CombatEffect
     public Threat(int magnitude,bool areaEffect) : base(1, magnitude, eCombatEffect.Threat,areaEffect) // Duration of 1 for instant application
     {
     }
-
+    //Adds a value to the AggroDictionary of the target ensuring  NPCs attack the proper target
     public override void ApplyEffect(Character caster,Character target)
     {
         List<Character> affectedCharacters = new();

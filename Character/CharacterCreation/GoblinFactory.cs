@@ -12,7 +12,7 @@ public static class GoblinFactory
         BossNPCs.Add(GenerateGoblinNecromancer);
 
     }
-    
+    //Returns a goblin from specified type
     public static NPC GenerateGoblin(ConsoleColor selfColor,int intelligence,eEnemyType type)
     {
         NPC character = null;
@@ -36,7 +36,7 @@ public static class GoblinFactory
     private static NPC GenerateGoblinShaman(ConsoleColor selfColor,int intelligence)
     {
                 NPC newGoblin;
-                ICombatBrain brain = new NPCSupportiveAI(); //EDIT CHANGE TO SUPPORTIVE AI CHANGED FOR TESTING PURPOSES
+                ICombatBrain brain = new NPCSupportiveAI();
 
                 //Increases Armor
                 Ability naturesArmor= new Ability("Nature's Armor",eTargetType.Self,0,eAbilityType.DefensiveSelf);

@@ -8,15 +8,14 @@ public static  class CombatHandler
     /// </summary>
     /// <param name="enemyList"></param>
     /// <returns></returns>
-    public static bool RunCombatScenario(List<Character> playerList,List<Character> enemyList,string message) 
+    public static bool RunCombatScenario(List<Character> playerList,List<Character> enemyList,string message)  //This is the main combat Loop
     {
         Console.Clear();
         Utilities.CharByCharLine(message,5,ConsoleColor.DarkGreen,true);    //Displays entering message and waits for keypress
         Console.ReadKey(true);
 
         InitialiseFriendsAndFoes(playerList,enemyList);
-        //Round start
-        while(playerList.Count > 0 )
+        while(playerList.Count > 0 )                        //For as long as the playerlist has characters in it
         {
             //Player takes turn
             foreach(Player p in playerList.ToList())
@@ -25,8 +24,8 @@ public static  class CombatHandler
                 Ability chosenAbility = null;
                 while(chosenAbility == null && target == null)
                 {
-                    if (enemyList.Count <= 0)
-                        return true;   //Returns true if all enemies are dead
+                    if (enemyList.Count <= 0) return true;   //Returns true if all enemies are dead
+
                     int choiceIndex = PickAction(p); //Character gets a choice of what to do
 
                     switch(choiceIndex)
@@ -51,10 +50,11 @@ public static  class CombatHandler
                                 Utilities.ConsoleWriteColor(p.Name,p.NameColor);
                                 Console.WriteLine($" is hindered and not able to act");
                             } 
+                            Console.ReadKey(true);
                             break;
                         case 1:
-                            
-                            //Lists usable consumables such as healing potions or such
+                            //Skips that characters turn
+                           
                             break;
                         case 2:
                             //attempt to flee results in a loss
@@ -83,17 +83,13 @@ public static  class CombatHandler
         }
         return false;
     }
-    //Displays enemylist in a userfriendly format
-
-
-
     //basicly a copy of the utilities method for returning index frmo list but also displaying the enemies
     public static int PickAction(Player character)
     {
         List<string> combatOptions = new()
         {
             "Act",
-            "Use item",
+            "Skip Turn",
             "Flee"
         };   
         int markedIndex = 0 ;
@@ -174,6 +170,7 @@ public static  class CombatHandler
             Console.WriteLine($" is hindered and not able to act");
         } 
         AfterTurn(self);  
+        Console.ReadKey(true); //Maybe REMOVE
     }
     
 
@@ -210,6 +207,7 @@ public static  class CombatHandler
         }
 
     }
+    //Checks and removes dead characters from both player and enemyList
     public static void RemoveDeadCharacters(List<Character> enemyList,List<Character> playerList)
     {
         if(playerList.Count >= 0)
@@ -231,6 +229,7 @@ public static  class CombatHandler
             }
         }    
     }
+    //Every character goes through this after their turn
     public static void AfterTurn(Character character)
     {
         if(character.CurrentStatusEffects.Count > 0)
@@ -245,9 +244,9 @@ public static  class CombatHandler
                 }
             }
             
-            //Console.ReadKey(true);
         }
     }
+    //Everycharacter goes through this after all characters have done their turn
     public static void AfterRound(Character character)
     {
         //loops through the afterRound methods of combateffects
@@ -261,7 +260,6 @@ public static  class CombatHandler
                     character.ClearEffect(character.CurrentStatusEffects[i]);
                 }
             }
-            //Console.ReadKey(true);
         }
         //Ability is 1 round closer to ready
         foreach(Ability a in character.Abilities)
@@ -328,6 +326,7 @@ public static  class CombatHandler
         }
         Utilities.ConsoleWriteLineColor("└──────────────────────────────────┘",ConsoleColor.DarkGray);
     }
+    //After a character uses an ability this is displayed
     public static void DisplayTurnOutcome(Ability ability,Character self,Character target)
     {
         Utilities.ConsoleWriteColor("--------------",ConsoleColor.DarkYellow);
@@ -352,7 +351,7 @@ public static  class CombatHandler
         }
 
     }
-
+    //Displays all effecticons of the effects affecting 1 character
     public static void PrintAllEffectIcons(Character character)
     {
         foreach(CombatEffect effect in character.CurrentStatusEffects)

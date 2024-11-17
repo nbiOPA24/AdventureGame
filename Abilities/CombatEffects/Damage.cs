@@ -3,7 +3,7 @@ public class Damage : CombatEffect
     public Damage(int magnitude,bool areaEffect) : base(1, magnitude, eCombatEffect.Damage,areaEffect) // Duration of 1 for instant application
     {
     }
-
+    //All characters affected by a damagetype combateffect take instant damage once
     public override void ApplyEffect(Character caster,Character target)
     {
         List<Character> affectedCharacters = new();
