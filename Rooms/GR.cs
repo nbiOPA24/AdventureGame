@@ -8,12 +8,14 @@ public class GR : Room
     public Tile[,] GenerateRoom()
     {
         Tile s = new StarterTile();
-        Tile e = new Tile();
+        Tile e = new EmptyTile();
         Tile o = new ObstacleTile();
         Tile d = new DoorTile();
         Tile m = new MysteryTile(10);
         Tile g = new GoalTile();
         Tile x = new EnemyTile("Enemy", 10, 3);
+        Tile b = new BossTile();
+        Tile l = new LogicTile();
 
 
         Tile[,] goalRoom = new Tile [,]
@@ -21,7 +23,7 @@ public class GR : Room
             { o, o , o , o , e , o , o , o , o },
             { o, e , e , e , e , e , e , e , e },
             { o, e , e , e , e , e , e , o , o },
-            { e, e , e , e , m , e , e , e , g },    
+            { e, e , e , e , m , e , l , b , g },    
             { o, e , e , e , e , e , e , o , o },   
             { o, e , e , e , e , e , e , e , e },
             { o, e , e , e , e , e , e , e , e }

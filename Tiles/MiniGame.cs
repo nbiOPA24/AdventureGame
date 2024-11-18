@@ -5,18 +5,19 @@ class MiniGame : Tile
     public MiniGame() : base("Mini Game", " ⛶ ")
     {
         Solid = true;
+        Color = ConsoleColor.Cyan;
     }
 
     public override void RunSolidTile(List<Character> playerList)
     {
-        Console.Clear();
         Character playerName = playerList[0];
-        
+        Console.Clear();
+        // Creates a list of methods that has a predicate delegate. The method returns a bool and takes a character.
         List<Predicate<Character>> miniGames = [GuessNr, RockPaperSissor];
 
-        if (!IsVisited)
+        if (!IsVisited) // If you visit the tile for the first time. A Random game will start.
         {
-            Random random = new ();
+            Random random = new();
             MethodIndex = random.Next(0, miniGames.Count);
             Console.WriteLine($"Greetings {playerName.Name}!");
             Console.WriteLine($"Are you ready for a challenge?!");
@@ -24,15 +25,24 @@ class MiniGame : Tile
             Console.ReadKey(true);
             Success = miniGames[MethodIndex](playerName);
             IsVisited = true;
-
+            if (Success) // If Success is true the tile will be removed and Solid will be false. It will disappear.
+            {
+                RemoveTile = true;
+                Solid = false;
+            }
         }
+
         else // If you revisit the same tile 
         {
-            Console.WriteLine("You again!!! Wanna try your luck again??");
-            Success = miniGames[MethodIndex](playerName);
+            Console.WriteLine("You again!!! Wanna try your luck again?? [Y] or [N]");
+            string reply = Utilities.ValidateString();
+            Success = reply.ToLower() == "y" ? miniGames[MethodIndex](playerName) : false;
+            if (Success) // If Success is true the tile will be removed and Solid will be false. It will disappear.
+            {
+                RemoveTile = true;
+                Solid = false;
+            }
         }
-        if (Success)
-            RemoveTile = true;
     }
 
     private bool GuessNr(Character player)
@@ -122,49 +132,129 @@ class MiniGame : Tile
 
     private bool RockPaperSissor(Character player)
     {
-        Console.WriteLine($"{player.Name} enters a dark big darkroom, he can see three levers in front of him self. Each lever has diffrent elements shining on them. 'FIRE', 'WATER', 'EARTH'.");
-        Console.WriteLine($"Suddenly a tall figure appears from no where.. And walkes towards {player.Name} and sais: ");
-        Console.WriteLine("Are you ready?");
-        List<string> replys = ["YES! Bring it on!", "How do i know what element i will face?", "Who are you?"];
+        Console.WriteLine($"{player.Name} steps into a dark, cavernous room. Before them stand three levers, each one glowing faintly with an element: 'FIRE', 'WATER', 'EARTH'.");
+        Console.WriteLine($"Out of the shadows, a tall, mysterious figure appears, moving silently towards {player.Name} and speaks in a low, echoing voice:");
+        Console.WriteLine("Are you prepared for what lies ahead?");
+        Console.ReadKey(true);
+        List<string> replies = ["YES! Bring it on!", "How do I know which element I will face?", "Who are you?"];
         Console.WriteLine();
         bool isRunning = true;
         while (isRunning)
         {
-            int replyIndex = Utilities.PickIndexFromList(replys,"Friend.. This room will be filled with one of the 3 elements you see for 5 rounds. You must dodge the element by encounter it with it opposite weakness");
+            int replyIndex = Utilities.PickIndexFromList(replies, "Stranger... This room will be engulfed in one of these three elements for 5 rounds. You must counter it with its opposing element.");
             switch (replyIndex)
             {
                 case 0:
-                    Console.WriteLine("Lets go!");
+                    Console.WriteLine("Very well, let's begin!");
                     isRunning = false;
+                    Thread.Sleep(1000);
                     break;
                 case 1:
-                    Console.WriteLine("You dont..");
+                    Console.WriteLine("You won’t... not until it’s too late.");
+                    Thread.Sleep(1000);
                     break;
                 case 2:
-                    Console.WriteLine("Not your buisness..");
+                    Console.WriteLine("That is of no concern to you.");
+                    Thread.Sleep(1000);
                     break;
             }
         }
 
         Console.WriteLine();
+        Random random = new();
 
         List<string> elements = ["FIRE", "WATER", "EARTH"];
+        int wins = 0;
+        int loss = 0;
         bool elementGameIsRunning = true;
         while (elementGameIsRunning)
         {
-            int elementChoice = Utilities.PickIndexFromList(elements, "PREPARE YOURSELF!! The room started crumbling.. One of the elements is on its way. Quickly what do you choose?! ");
+            int indexChoice = random.Next(0, elements.Count);
+            string elementNPC = elements[indexChoice];
+            int elementChoice = Utilities.PickIndexFromList(elements, $" {elementNPC} !!!! BRACE YOURSELF!! The ground trembles, and one of the elements is taking form. Choose your counter! Wins: {wins} | Losses: {loss}");
+            string yourElement = elements[elementChoice];
+
+            if (yourElement == "FIRE")
+            {
+                if (elementNPC == "EARTH")
+                {
+                    Console.WriteLine("The room pauses... Your flames consume the earth around you. You have succeeded!");
+                    wins++;
+                }
+                else if (elementNPC == "WATER")
+                {
+                    Console.WriteLine("The water floods in, extinguishing your flames... You have failed.");
+                    loss++;
+                }
+                else
+                {
+                    Console.WriteLine("Fire meets fire, both are locked in a fierce, unyielding clash...");
+                }
+            }
+
+            else if (yourElement == "WATER")
+            {
+                if (elementNPC == "FIRE")
+                {
+                    Console.WriteLine("The room calms... Your water douses the raging flames. You succeed!");
+                    wins++;
+                }
+                else if (elementNPC == "EARTH")
+                {
+                    Console.WriteLine("The earth absorbs all your water, leaving nothing behind... You have failed.");
+                    loss++;
+                }
+                else
+                {
+                    Console.WriteLine("Water meets water, a calmness fills the room as both forces neutralize each other.");
+                }
+            }
+
+            else if (yourElement == "EARTH")
+            {
+                if (elementNPC == "WATER")
+                {
+                    Console.WriteLine("Your solid ground absorbs the rushing water, standing firm. You have parried the attack! Well done!");
+                    wins++;
+                }
+                else if (elementNPC == "FIRE")
+                {
+                    Console.WriteLine("The flames scorch the ground, turning earth to ashes... You have failed.");
+                    loss++;
+                }
+                else
+                {
+                    Console.WriteLine("Earth meets earth, an immovable silence fills the room...");
+                }
+            }
+
+            if (wins == 3)
+            {
+                Console.WriteLine("Victory is yours! You have proven your strength!");
+                player.Armor += 10;
+                Console.WriteLine("As a reward, you gain 10 armor!");
+                Thread.Sleep(1500);
+                return true;
+            }
+            if (loss == 3)
+            {
+                player.Armor -= 10;
+                Console.WriteLine("Defeat... you feel your strength wane as you lose 10 armor.");
+                Thread.Sleep(1500);                
+                return false;
+            }
+            Console.ReadKey(true);
         }
-
-
-
         return false;
-
     }
+
 
     private bool HangMan(Character player)
     {
+        List<string> words = new();
         Console.WriteLine("Hangman");
         Console.ReadKey(true);
+
         return true;
 
     }

@@ -8,6 +8,7 @@ class EnemyTile : RewardTile
     {
         NrOfEnemies = nrOfEnemies;
         Solid = true;
+        Color = ConsoleColor.Red;
     }
 
     public override void RunSolidTile(List<Character> playerList)
@@ -19,7 +20,10 @@ class EnemyTile : RewardTile
             Success = CombatHandler.RunCombatScenario(NPCFactory.GenerateNPCs(ConsoleColor.DarkRed,50,eEnemyFamily.Goblin,NrOfEnemies,eEnemyType.Supportive,true),playerList,encounterMessage);
             IsVisited = true;
             if (Success)
+            {
                 Solid = false;
+                RemoveTile = true;
+            }
 
         }
         else // Entered the tile before

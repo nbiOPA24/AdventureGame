@@ -1,7 +1,8 @@
-public class TileKey : Tile
+public class KeyTile : Tile
 {
-    public TileKey() : base("Key tile", " ⚿ ")
+    public KeyTile() : base("Key tile", " ⚿ ")
     {
+        Color = ConsoleColor.Yellow;
     }
     public override void RunTile(List<Character> playerList)
     {
@@ -12,10 +13,6 @@ public class TileKey : Tile
             player.Inventory.Items.Add(new Item("DoorKey", "A mysterious key... What can it be for..?"));
             IsVisited = true;
             RemoveTile = true;
-        }
-        else
-        {
-            Console.WriteLine("You've already gotten the key. But you can always revisit for nostalgia.");
         }
     }
 }

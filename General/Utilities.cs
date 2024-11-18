@@ -99,12 +99,14 @@ class Utilities
     }
     #endregion
     #region ConsoleWriteColor
-    public static void ConsoleWriteColor(string input, ConsoleColor color)
+    public static void ConsoleWriteColor(string input, ConsoleColor foregroundColor, ConsoleColor backgroundColor = ConsoleColor.Black)
     {
-        Console.ForegroundColor = color;
+        Console.ForegroundColor = foregroundColor;
+        Console.BackgroundColor = backgroundColor;
         Console.Write(input);
         Console.ResetColor();
     }
+
     public static void ConsoleWriteLineColor(string input, ConsoleColor color)
     {
         ConsoleWriteColor(input,color);
