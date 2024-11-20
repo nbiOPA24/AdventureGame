@@ -18,6 +18,8 @@ public class ItemRewardTile : Tile
             {
                 Nothing(player);
             }
+            IsVisited = true;
+            RemoveTile = true;
         }
     }
 
