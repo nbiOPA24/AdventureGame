@@ -16,6 +16,7 @@ public class CR : Room
         Tile r = new ItemRewardTile();
         Tile g = new MiniGame();
         Tile l = new LogicTile();
+        Tile s = new SnakeTile();
 
 
         Tile[,] crossRoom = new Tile[,]
@@ -23,7 +24,7 @@ public class CR : Room
             { o, o , o , o , e , o , o , o , o },
             { o, e , e , e , e , e , e , g , e },
             { o, e , o , o , d , o , o , e , e },
-            { e, e , o , x , e , e , o , e , e },
+            { e, e , o , x , e , e , o , s , e },
             { o, e , o , e , e , l , o , e , e },
             { o, e , o , o , o , o , o , e , e },
             { o, e , e , e , e , e , e , e , e }
@@ -33,7 +34,7 @@ public class CR : Room
         {
             { o, o , o , o , e , o , o , o , o },
             { o, m , e , e , e , e , e , e , e },
-            { o, e , e , e , e , e , e , e , e },
+            { o, e , e , s , e , e , e , e , e },
             { o, e , o , o , o , o , o , o , e },
             { o, e , x , e , e , e , e , e , e },
             { o, o , o , o , o , o , o , o , e },
@@ -47,7 +48,7 @@ public class CR : Room
             { o, e , e , g , o , e , e , e , e },
             { o, e , e , e , o , e , e , e , e },
             { o, o , d , o , o , e , e , e , e },
-            { l, e , e , e , e , e , o , e , e },
+            { l, e , e , e , s , e , o , e , e },
             { o, e , e , e , e , e , e , e , e }
         };
 
@@ -66,7 +67,7 @@ public class CR : Room
         {
             { o, o , o , e , o , o , o , o , o },
             { o, e , e , e , o , e , e , o , e },
-            { o, e , e , e , d , e , x , o , e },
+            { o, e , e , s , d , e , x , o , e },
             { o, e , e , e , o , e , e , o , e },
             { o, e , e , e , o , o , o , o , e },
             { e, e , e , e , e , e , e , e , e },

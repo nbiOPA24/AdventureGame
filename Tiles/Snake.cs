@@ -30,40 +30,62 @@ public class Snake
         return GameUi;
     }
 
-    private void DrawSnakeMap(object[,] gameUi)
+    private void DrawSnakeMap(HeadTile[,] gameUi)
     {
-        int x = 0;
-        int markedRow = 9;
-        int markedCol = 9;
+        int speed = 300;
+        int markedRow = gameUi.GetLength(0)/2;
+        int markedCol = gameUi.GetLength(1)/2;
         bool hasFood = false;
-        int snakeEatenCount = 0;
         bool isRunning = true;
         Direction direction = Direction.down;
+        HeadTile snakeHead = new SnakeHead();
+        List<HeadTile> snakeTails = new();
         while (isRunning)
         {
+            speed = 300 - snakeHead.Counter * 10;
+            Console.Clear();
+            for (int i = snakeTails.Count - 1; i >= 0; i--)
+            {
+                snakeTails[i].Counter--;
+                if (snakeTails[i].Counter < 1)
+                {
+                    snakeTails.RemoveAt(i);
+                }
+            }
+
             if(!hasFood)
             {
                 CreateFood();
                 hasFood = true;
             }
-            Console.Clear();
+
+            if(snakeHead.Counter > 0)
+                snakeTails.Add(GenerateTail(markedRow, markedCol, snakeHead));
+            
             for(int row = 0; row < gameUi.GetLength(0); row++)
             {
                 for(int col = 0; col < gameUi.GetLength(1); col++)
                 {
                     if (row == markedRow && col == markedCol)
                     {
-                        Console.Write(" @ ");
+                        Console.Write(snakeHead.Icon);
                     }
-
                     else
                     {
-                        Console.Write(gameUi[row,col]);
+                        Console.Write(gameUi[row,col].Icon);
                     }
+
+                    if(gameUi[row,col] is SnakeTail && gameUi[row,col].Counter == 0)
+                    {
+                        gameUi[row,col] = new EmptyPos();
+                    }
+
+
                 }
                 Console.WriteLine();
             }
-            Thread.Sleep(200);
+            Thread.Sleep(speed);
+            
 
 
             if (Console.KeyAvailable)
@@ -76,13 +98,17 @@ public class Snake
             switch (direction)
             {
                 case Direction.up:
-                    if(markedRow - 1 > 0)
+                    if(markedRow - 1 > 0 && (gameUi[markedRow - 1,markedCol] is EmptyPos || gameUi[markedRow -1,markedCol] is SnakeFood))
                     {
                         markedRow --;
-                        if(gameUi[markedRow,markedCol] == " * ")
+                        if(gameUi[markedRow,markedCol] is SnakeFood)
                         {
-                            gameUi[markedRow,markedCol] = "   ";
-                            snakeEatenCount ++;
+                            gameUi[markedRow,markedCol] = new EmptyPos();
+                            snakeHead.Counter ++;
+                            foreach(HeadTile snakeTail in snakeTails)
+                            {
+                                snakeTail.Counter++;
+                            }
                             hasFood = false;
                         }
 
@@ -92,13 +118,17 @@ public class Snake
                     break;
 
                 case Direction.down:
-                    if(markedRow + 1 < gameUi.GetLength(0)-1)
+                    if(markedRow + 1 < gameUi.GetLength(0)-1 && (gameUi[markedRow + 1,markedCol] is EmptyPos || gameUi[markedRow+1,markedCol] is SnakeFood))
                     {
                         markedRow ++;
-                        if(gameUi[markedRow,markedCol] == " * ")
+                        if(gameUi[markedRow,markedCol] is SnakeFood)
                         {
-                            gameUi[markedRow,markedCol] = "   ";
-                            snakeEatenCount ++;
+                            gameUi[markedRow,markedCol] = new EmptyPos();
+                            snakeHead.Counter ++;
+                            foreach(HeadTile snakeTail in snakeTails)
+                            {
+                                snakeTail.Counter++;
+                            }
                             hasFood = false;
                         }
 
@@ -108,13 +138,17 @@ public class Snake
                     break;
 
                 case Direction.left:
-                    if(markedCol - 1 > 0)
+                    if(markedCol - 1 > 0 && (gameUi[markedRow,markedCol-1] is EmptyPos || gameUi[markedRow,markedCol-1] is SnakeFood))
                     {
                         markedCol --;
-                        if(gameUi[markedRow,markedCol] == " * ")
+                        if(gameUi[markedRow,markedCol] is SnakeFood)
                         {
-                            gameUi[markedRow,markedCol] = "   ";
-                            snakeEatenCount ++;
+                            gameUi[markedRow,markedCol] = new EmptyPos();
+                            snakeHead.Counter ++;
+                            foreach(HeadTile snakeTail in snakeTails)
+                            {
+                                snakeTail.Counter++;
+                            }
                             hasFood = false;
                         }
 
@@ -124,43 +158,31 @@ public class Snake
                     break;
 
                 case Direction.right:
-                    if(markedCol + 1 < gameUi.GetLength(1)-1)
+                    if(markedCol + 1 < gameUi.GetLength(1)-1 && (gameUi[markedRow,markedCol+1] is EmptyPos || gameUi[markedRow,markedCol+1] is SnakeFood))
                     {
                         markedCol ++;
-                        if(gameUi[markedRow,markedCol] == " * ")
+                        if(gameUi[markedRow,markedCol] is SnakeFood)
                         {
-                            gameUi[markedRow,markedCol] = "   ";
-                            snakeEatenCount ++;
+                            gameUi[markedRow,markedCol] = new EmptyPos();
+                            snakeHead.Counter ++;
+                            foreach(HeadTile snakeTail in snakeTails)
+                            {
+                                snakeTail.Counter++;
+                            }
                             hasFood = false;
                         }
 
                     }
                     else
-                        isRunning = false;                        
+                        isRunning = false;
                     break;
             }
             
         }
     }
 
-    private void GameLogic(int width, int height)
-    {
-        char[,] snakeGameSize = new char[width,height];
-        for(int row = 0; row < snakeGameSize.GetLength(0); row++)
-        {
-            for(int col = 0; col < snakeGameSize.GetLength(1); col++)
-            {
-                if (row == 0 || row == snakeGameSize.GetLength(0) || col == 0 || col == snakeGameSize.GetLength(1))
-                {
-                    snakeGameSize[row,col] = '0';
-                }
-            }
-        }
-    }
-
     private void MoveDirection(ConsoleKey key, ref Direction direction)
     {
-
         switch (key)
         {
             case ConsoleKey.W:
@@ -196,7 +218,6 @@ public class Snake
                 }
                 break;
         }
-         
     }
 
     private enum Direction
@@ -214,13 +235,20 @@ public class Snake
         int randomCol;
         do
         {
-            randomRow = random.Next(1, GameUi.GetLength(0));
-            randomCol = random.Next(1, GameUi.GetLength(1));
+            randomRow = random.Next(1, GameUi.GetLength(0)-1);
+            randomCol = random.Next(1, GameUi.GetLength(1)-1);
         }
-        while (3 == 2); //TODO
-        
+        while (GameUi[randomRow,randomCol] is not EmptyPos);
+        GameUi[randomRow,randomCol] = new SnakeFood();        
             
     }
+
+    private HeadTile GenerateTail(int markedRow, int markedCol, HeadTile snakeHead)
+    {
+        return GameUi[markedRow,markedCol] = new SnakeTail(snakeHead.Counter);
+    }
+
+
 
 
     private class SnakeHead : HeadTile
@@ -230,12 +258,20 @@ public class Snake
 
         }
     }
+    private class SnakeFood : HeadTile
+    {
+        public SnakeFood() : base(" * ", false, 0)
+        {
+
+        }
+    }
 
     private class SnakeTail : HeadTile
     {
-        public SnakeTail() : base(" ▣ ", false, 0)
+        public SnakeTail(int counter) : base(" ▣ ", false, counter)
         {
         }
+        
     }
 
     private class EmptyPos : HeadTile
@@ -260,7 +296,7 @@ public class Snake
     {
         public string Icon {get; set;}
         public bool RemoveIcon {get; set;}
-        int Counter {get;set;}
+        public int Counter {get;set;}
         public HeadTile(string icon, bool removeIcon, int counter)
         {
             Icon = icon;
